@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>ROUND AND ROUND WE GO! WHAT MAKES ROTARY
+POSITIONAL ENCODINGS USEFUL? | Sunset</title>
+<meta name="keywords" content="Paper, features">
+<meta name="description" content="RoPE에 대한 분석">
+<meta name="author" content="">
+<link rel="canonical" href="https://new-sunset-shimmer.github.io/Round/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.5cfc680b1eeaeef9efbced92d46c2a9e876b72ee14fba85846afc4cff9e6e6f8.css" integrity="sha256-XPxoCx7q7vnvvO2S1Gwqnodrcu4U&#43;6hYRq/Ez/nm5vg=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://new-sunset-shimmer.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://new-sunset-shimmer.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://new-sunset-shimmer.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://new-sunset-shimmer.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://new-sunset-shimmer.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://new-sunset-shimmer.github.io/Round/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript><style>
+    @media screen and (min-width: 769px) {
+
+         
+        .post-content input[type="checkbox"]:checked~label>img {
+            transform: scale(1.6);
+            cursor: zoom-out;
+            position: relative;
+            z-index: 999;
+        }
+
+        .post-content img.zoomCheck {
+            transition: transform 0.15s ease;
+            z-index: 999;
+            cursor: zoom-in;
+        }
+    }
+</style><meta property="og:title" content="ROUND AND ROUND WE GO! WHAT MAKES ROTARY
+POSITIONAL ENCODINGS USEFUL?" />
+<meta property="og:description" content="RoPE에 대한 분석" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://new-sunset-shimmer.github.io/Round/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-12-12T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-12-12T00:00:00+00:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="ROUND AND ROUND WE GO! WHAT MAKES ROTARY
+POSITIONAL ENCODINGS USEFUL?"/>
+<meta name="twitter:description" content="RoPE에 대한 분석"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://new-sunset-shimmer.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "ROUND AND ROUND WE GO! WHAT MAKES ROTARY\nPOSITIONAL ENCODINGS USEFUL?",
+      "item": "https://new-sunset-shimmer.github.io/Round/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "ROUND AND ROUND WE GO! WHAT MAKES ROTARY\nPOSITIONAL ENCODINGS USEFUL?",
+  "name": "ROUND AND ROUND WE GO! WHAT MAKES ROTARY\nPOSITIONAL ENCODINGS USEFUL?",
+  "description": "RoPE에 대한 분석",
+  "keywords": [
+    "Paper", "features"
+  ],
+  "articleBody": " Full Title : ROUND AND ROUND WE GO! WHAT MAKES ROTARY POSITIONAL ENCODINGS USEFUL?\nLink : 2410.06205 (.org)\nRelated Link : RoFormer (arxiv.org) RoPE (Rotary positional embeddings) explained: The positional workhorse of modern LLMs - YouTube\n[[논문리뷰] Enhanced Transformer with Rotary Position Embedding(RoFormer) (tistory.com)](https://g3lu.tistory.com/38) [[논문리뷰] RoFormer: Enhanced Transformer with Rotary Position Embedding - 전생했더니 인공지능이었던 건에 대하여 (kimjy99.github.io)](https://kimjy99.github.io/%EB%85%BC%EB%AC%B8%EB%A6%AC%EB%B7%B0/roformer/) [https://drive.google.com/file/d/152NPPyNjo-N6MMIaupXacS41BUJgjE5l/view](https://drive.google.com/file/d/152NPPyNjo-N6MMIaupXacS41BUJgjE5l/view) [[논문리뷰] RoFormer: Enhanced Transformer with Rotary Position Embedding (velog.io)](https://velog.io/@you-genie/%EB%85%BC%EB%AC%B8%EB%A6%AC%EB%B7%B0-RoFormer-Enhanced-Transformer-with-Rotary-Position-Embedding) Released Date : 2024 10 08\nReview Date : 2024 11 15\nRoPE에 대한 분석\nMotivation 이번논문에서는 RoPE(Rotary Positional Encodings)이 실제로 좋은 방법인지를 확인한다. Research questions RoPE는 효과적인 방법론이 맞는가?\nRoPE는 왜 효과적인가?\nNoPE는 왜 효과적인가?\nMethodology RoPE\n기존의 Attention은 Query와 Key의 내적으로 계산된다. 이때 Query와 Key의 상대적인 정보는 고려되지 않는다. 그렇기에 RoPE이전에도 Attention을 계산할때 많은 위치정보도 같이 주는 연구들이 있었다. 위의 그림에서 보다싶이 이전 연구들은 단순히 더해주거나 아니면 곱해주는 방식으로 접근했다. 이러한 방식은 원본값을 크게 아니면 적게, 다른 방향으로 다른 스케일로 변환되어 비효율적이다. - Rotary Positional Encodings은 특정한 값을 더해주거나 곱해주는게 아닌 현재해당 위치에 따라 매트릭스를 회전시켜준다. 가중치 W와 입력 X를 각각 cos, sin을 이용하여 회전시킨다. 여기서 delta는 Frequency, hyperparameter(식 4의 10000처럼)다. 위의 식을 다차원으로 확장하여 아래와 같이 서술한다. R은 아래와같이 유사 대각행렬로 표현할수있다.\n계상효율화를 위해서 elementwise연산을 사용할수있다.\n위의 RoPE는 현재 많이 쓰이고있다. 가장 훌륭한 예시로 LLama 모델이 해당 방법론을 사용하고있다. 하지만 이 방법론에도 단점이 존재하며 이번 논문에서는 해당 문제점을 다룬다. RoPE의 성질 Long-term decay. RoPE는 위치가 먼 token들간에 어텐션 score가 낮아진다. RoPE논문에서는 해당 성질은 먼 단어들은 서로 연관이 적다는 intuitaion과 일치한다고 서술했다.\n하지만 이번 논문에서는 Long-term Decay가 실제 상황에서는 이루워지지 않는다고 주장한다. Query랑 Key가 일정한 값 ‘all-ones’의 경우 거리에 따라 Decay가 발생하지만 Gaussian 분포도를 따르는 Query랑 Key를 임의로 생성하여 RoPE를 적용시킬경우 Decay 성질은 존재하지않는다.\nFrequencies가 어떻게 사용되고 있나? 아래의 그림을 보면 모델은 대부분의 레이어 에서 Low Frequencies에 대해 학습을 하고있다는걸 알수있다. 중간에서 high쪽으로는 값이0에 가까우며 유일하게 1레이어의 초기 토큰에 대한 정보에는 민감하다. 이는 내적(dot product)에 영향으로 이렇게 학습됐다고 논문에서는 서술한다. 다시 말해 sementic에 대한 정보를 구할때 회전이 적을수록 좋다. 하지만 특정한 헤드에서는 high frequence에 대한 정보는 학습한다. 아래에서 보면 해당 헤드에서는 위치에 대한 정보를 학습한다. 어텐션 패턴을 확인하면 이전 토큰, 아니면 지금 토큰의 위치에 집중한다. 이는 NoPE에서는 보이지 않는 패턴이다. 하지만 너무 low한 Frequencies에는 회전을 하지 않아 BOS(시작) 토큰에만 집중을한다. 그렇기에 Contex길이가 학습된 길이를 넘을 경우 제대로된 성능이 나오지 않는 것이다. 이에 대한 해결책으로 저자들은 R 매트릭스를 짜르는 제안을 했다. 0.75만 가지고 가거나 0.25만 가지고 가는거다. ",
+  "wordCount" : "386",
+  "inLanguage": "en",
+  "datePublished": "2024-12-12T00:00:00Z",
+  "dateModified": "2024-12-12T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://new-sunset-shimmer.github.io/Round/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Sunset",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://new-sunset-shimmer.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class=" dark" id="top">
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://new-sunset-shimmer.github.io/" accesskey="h" title="Sunset (Alt + H)">Sunset</a>
+            <div class="logo-switches">
+                <ul class="lang-switch"><li>|</li>
+                </ul>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      ROUND AND ROUND WE GO! WHAT MAKES ROTARY
+POSITIONAL ENCODINGS USEFUL?
+    </h1>
+    <div class="post-meta"><span title='2024-12-12 00:00:00 +0000 UTC'>December 12, 2024</span>
+
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#motivation" aria-label="Motivation">Motivation</a></li>
+                <li>
+                    <a href="#research-questions" aria-label="Research questions">Research questions</a></li>
+                <li>
+                    <a href="#methodology" aria-label="Methodology">Methodology</a>
+                </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><blockquote>
+<p>Full Title : ROUND AND ROUND WE GO! WHAT MAKES ROTARY
+POSITIONAL ENCODINGS USEFUL?</p>
+</blockquote>
+<blockquote>
+<p>Link : <a href="https://arxiv.org/pdf/2410.06205">2410.06205 (.org)</a></p>
+</blockquote>
+<blockquote>
+<p>Related Link : <a href="https://arxiv.org/pdf/2104.09864v5">RoFormer (arxiv.org) </a><a href="https://www.youtube.com/watch?v=GQPOtyITy54">RoPE (Rotary positional embeddings) explained: The positional workhorse of modern LLMs - YouTube</a></p>
+</blockquote>
+<pre><code>[[논문리뷰] Enhanced Transformer with Rotary Position Embedding(RoFormer) (tistory.com)](https://g3lu.tistory.com/38)
+
+[[논문리뷰] RoFormer: Enhanced Transformer with Rotary Position Embedding - 전생했더니 인공지능이었던 건에 대하여 (kimjy99.github.io)](https://kimjy99.github.io/%EB%85%BC%EB%AC%B8%EB%A6%AC%EB%B7%B0/roformer/) 
+
+[https://drive.google.com/file/d/152NPPyNjo-N6MMIaupXacS41BUJgjE5l/view](https://drive.google.com/file/d/152NPPyNjo-N6MMIaupXacS41BUJgjE5l/view)
+
+[[논문리뷰] RoFormer: Enhanced Transformer with Rotary Position Embedding (velog.io)](https://velog.io/@you-genie/%EB%85%BC%EB%AC%B8%EB%A6%AC%EB%B7%B0-RoFormer-Enhanced-Transformer-with-Rotary-Position-Embedding)
+</code></pre>
+<blockquote>
+<p>Released Date :  2024 10 08</p>
+</blockquote>
+<blockquote>
+<p>Review Date : 2024 11 15</p>
+</blockquote>
+<p>RoPE에 대한 분석</p>
+<h3 id="motivation">Motivation<a hidden class="anchor" aria-hidden="true" href="#motivation">#</a></h3>
+<ul>
+<li>이번논문에서는 RoPE(Rotary Positional Encodings)이 실제로 좋은 방법인지를 확인한다.</li>
+</ul>
+<h3 id="research-questions">Research questions<a hidden class="anchor" aria-hidden="true" href="#research-questions">#</a></h3>
+<ul>
+<li>
+<p>RoPE는 효과적인 방법론이 맞는가?</p>
+</li>
+<li>
+<p>RoPE는 왜 효과적인가?</p>
+</li>
+<li>
+<p>NoPE는 왜 효과적인가?</p>
+</li>
+</ul>
+<h3 id="methodology">Methodology<a hidden class="anchor" aria-hidden="true" href="#methodology">#</a></h3>
+<ul>
+<li>
+<p>RoPE</p>
+<ul>
+<li>기존의 Attention은 Query와 Key의 내적으로 계산된다. 이때 Query와 Key의 상대적인 정보는 고려되지 않는다. 그렇기에 RoPE이전에도 Attention을 계산할때 많은 위치정보도 같이 주는 연구들이 있었다.</li>
+</ul>
+</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-2b353" hidden>
+<label for="zoomCheck-2b353">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/628cdc4b-8cfd-45e2-80b5-40891d8baf69.png#center" alt=""  />
+</label></p>
+<pre><code>	위의 그림에서 보다싶이 이전 연구들은 단순히 더해주거나 아니면 곱해주는 방식으로 접근했다. 이러한 방식은 원본값을 크게 아니면 적게, 다른 방향으로 다른 스케일로 변환되어 비효율적이다.
+
+- Rotary Positional Encodings은 특정한 값을 더해주거나 곱해주는게 아닌 현재해당 위치에 따라 매트릭스를 회전시켜준다.
+</code></pre>
+<p>
+
+<input type="checkbox" id="zoomCheck-fc211" hidden>
+<label for="zoomCheck-fc211">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/5561d958-12df-43a9-bc2a-8bc58bee974f.png#center" alt=""  />
+</label></p>
+<pre><code>	가중치 W와 입력 X를 각각 cos, sin을 이용하여 회전시킨다. 여기서 delta는 Frequency, hyperparameter(식 4의 10000처럼)다.
+</code></pre>
+<p>
+
+<input type="checkbox" id="zoomCheck-ffbc5" hidden>
+<label for="zoomCheck-ffbc5">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-806c-b077-d737bbb703fc.png#center" alt=""  />
+</label></p>
+<p>
+
+<input type="checkbox" id="zoomCheck-23fe9" hidden>
+<label for="zoomCheck-23fe9">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-80d9-b994-c62341af6606.png#center" alt=""  />
+</label></p>
+<p>
+
+<input type="checkbox" id="zoomCheck-07138" hidden>
+<label for="zoomCheck-07138">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-802b-98f3-f09dd9f1d918.png#center" alt=""  />
+</label></p>
+<p>
+
+<input type="checkbox" id="zoomCheck-368cd" hidden>
+<label for="zoomCheck-368cd">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-80b0-a534-ec6d767d8c15.png#center" alt=""  />
+</label></p>
+<p>위의 식을 다차원으로 확장하여 아래와 같이 서술한다. R은 아래와같이 유사 대각행렬로 표현할수있다.</p>
+<p>
+
+<input type="checkbox" id="zoomCheck-b8fc4" hidden>
+<label for="zoomCheck-b8fc4">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-8087-baec-cccfcaab2c08.png#center" alt=""  />
+</label></p>
+<p>
+
+<input type="checkbox" id="zoomCheck-ce8b5" hidden>
+<label for="zoomCheck-ce8b5">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-8010-a66b-e2e41bf7a1cc.png#center" alt=""  />
+</label></p>
+<p>계상효율화를 위해서 elementwise연산을 사용할수있다.</p>
+<p>
+
+<input type="checkbox" id="zoomCheck-54dd8" hidden>
+<label for="zoomCheck-54dd8">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-80f1-9ce4-fb30032ce68f.png#center" alt=""  />
+</label></p>
+<p>
+
+<input type="checkbox" id="zoomCheck-28c40" hidden>
+<label for="zoomCheck-28c40">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-80f0-8935-c3351b5b1ed2.png#center" alt=""  />
+</label></p>
+<ul>
+<li>위의 RoPE는 현재 많이 쓰이고있다. 가장 훌륭한 예시로 LLama 모델이 해당 방법론을 사용하고있다. 하지만 이 방법론에도 단점이 존재하며 이번 논문에서는 해당 문제점을 다룬다.</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-7b1f1" hidden>
+<label for="zoomCheck-7b1f1">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/2c4a259a-fdec-4269-a374-ea6e1c3e68da.png#center" alt=""  />
+</label></p>
+<ul>
+<li>
+<p>RoPE의 성질 Long-term decay. RoPE는 위치가 먼 token들간에 어텐션 score가 낮아진다. RoPE논문에서는 해당 성질은 먼 단어들은 서로 연관이 적다는 intuitaion과 일치한다고 서술했다.</p>
+</li>
+<li>
+<p>하지만 이번 논문에서는 Long-term Decay가 실제 상황에서는 이루워지지 않는다고 주장한다. Query랑 Key가 일정한 값 ‘all-ones’의 경우 거리에 따라 Decay가 발생하지만 Gaussian 분포도를 따르는 Query랑 Key를 임의로 생성하여 RoPE를 적용시킬경우 Decay 성질은 존재하지않는다.</p>
+</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-59f79" hidden>
+<label for="zoomCheck-59f79">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/9895fb32-1a22-43ff-ab22-31e2ab47b3c0.png#center" alt=""  />
+</label></p>
+<ul>
+<li>Frequencies가 어떻게 사용되고 있나? 아래의 그림을 보면 모델은 대부분의 레이어 에서 Low Frequencies에 대해 학습을 하고있다는걸 알수있다. 중간에서 high쪽으로는 값이0에 가까우며 유일하게 1레이어의 초기 토큰에 대한 정보에는 민감하다. 이는 내적(dot product)에 영향으로 이렇게 학습됐다고 논문에서는 서술한다. 다시 말해 sementic에 대한 정보를 구할때 회전이 적을수록 좋다.</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-d3f05" hidden>
+<label for="zoomCheck-d3f05">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/1f908431-26a4-47c5-aedc-05638a540c47.png#center" alt=""  />
+</label></p>
+<pre><code>하지만 특정한 헤드에서는 high frequence에 대한 정보는 학습한다.
+</code></pre>
+<p>
+
+<input type="checkbox" id="zoomCheck-f35d7" hidden>
+<label for="zoomCheck-f35d7">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/3e447ebc-0c94-4ab7-b30a-653aa808e5ac.png#center" alt=""  />
+</label></p>
+<pre><code>아래에서 보면 해당 헤드에서는 위치에 대한 정보를 학습한다. 어텐션 패턴을 확인하면 이전 토큰, 아니면 지금 토큰의 위치에 집중한다. 이는 NoPE에서는 보이지 않는 패턴이다. 
+</code></pre>
+<p>
+
+<input type="checkbox" id="zoomCheck-03aef" hidden>
+<label for="zoomCheck-03aef">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/96c3e289-c17b-45af-9971-bc505be586d0.png#center" alt=""  />
+</label></p>
+<pre><code>하지만 너무 low한 Frequencies에는 회전을 하지 않아 BOS(시작) 토큰에만 집중을한다. 그렇기에 Contex길이가 학습된 길이를 넘을 경우 제대로된 성능이 나오지 않는 것이다.
+</code></pre>
+<p>
+
+<input type="checkbox" id="zoomCheck-fb681" hidden>
+<label for="zoomCheck-fb681">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/63256b73-94d5-4b47-b3ea-d438a7d68238.png#center" alt=""  />
+</label></p>
+<pre><code>이에 대한 해결책으로 저자들은 R 매트릭스를 짜르는 제안을 했다. 0.75만 가지고 가거나 0.25만 가지고 가는거다.
+</code></pre>
+<p>
+
+<input type="checkbox" id="zoomCheck-d263e" hidden>
+<label for="zoomCheck-d263e">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/6cae1970-acae-4c64-a345-8d77c6ce43af.png#center" alt=""  />
+</label></p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://new-sunset-shimmer.github.io/tags/paper/">Paper</a></li>
+      <li><a href="https://new-sunset-shimmer.github.io/tags/features/">Features</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://new-sunset-shimmer.github.io/">Sunset</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

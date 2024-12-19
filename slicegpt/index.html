@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>SLICEGPT | Sunset</title>
+<meta name="keywords" content="Pruning, Paper">
+<meta name="description" content="LLM 경량화 방법에 대한설명">
+<meta name="author" content="">
+<link rel="canonical" href="https://new-sunset-shimmer.github.io/slicegpt/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.5cfc680b1eeaeef9efbced92d46c2a9e876b72ee14fba85846afc4cff9e6e6f8.css" integrity="sha256-XPxoCx7q7vnvvO2S1Gwqnodrcu4U&#43;6hYRq/Ez/nm5vg=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://new-sunset-shimmer.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://new-sunset-shimmer.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://new-sunset-shimmer.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://new-sunset-shimmer.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://new-sunset-shimmer.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://new-sunset-shimmer.github.io/slicegpt/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript><style>
+    @media screen and (min-width: 769px) {
+
+         
+        .post-content input[type="checkbox"]:checked~label>img {
+            transform: scale(1.6);
+            cursor: zoom-out;
+            position: relative;
+            z-index: 999;
+        }
+
+        .post-content img.zoomCheck {
+            transition: transform 0.15s ease;
+            z-index: 999;
+            cursor: zoom-in;
+        }
+    }
+</style><meta property="og:title" content="SLICEGPT" />
+<meta property="og:description" content="LLM 경량화 방법에 대한설명" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://new-sunset-shimmer.github.io/slicegpt/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-12-12T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-12-12T00:00:00+00:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="SLICEGPT"/>
+<meta name="twitter:description" content="LLM 경량화 방법에 대한설명"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://new-sunset-shimmer.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "SLICEGPT",
+      "item": "https://new-sunset-shimmer.github.io/slicegpt/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "SLICEGPT",
+  "name": "SLICEGPT",
+  "description": "LLM 경량화 방법에 대한설명",
+  "keywords": [
+    "Pruning", "Paper"
+  ],
+  "articleBody": " 인턴용 리뷰\n발표 날짜 : 2024-07-03\n링크: 2401.15024 (arxiv.org)\n깃허브 링크 : microsoft/TransformerCompression: For releasing code related to compression methods for transformers, accompanying our publications (github.com)\nLLM 경량화 방법에 대한설명\n문제 LLM은 현재 자연어처리 분야의 가장 큰 근본이 되고있다. 하지마 LLM의 scaling-law으로 인해 나날이 사이즈가 늘어났다. 그로 인해 계산량 증가, 모델 사이즈가 증가하여 추가 저장장치 및 계산장치가 필요하다. 또한 많은 모델은 학습후에 sparse한 가중치를 가지고 있다. scaling-law은 결국 모델의 가중치를 scaling 하는 행위다. 그렇기에 사이즈를 줄이기위해서는 모델의 가중치에 변화를 줘야한다 제안 방법 SLICEGPT는 이러한 문제를 해결하는 pruning 방법이다. 하지만 저자들은 일반적인 pruning 방법은 가중치를 줄이기 위해서 0으로 thershhold 하는 방식은 sparsity를 증가시켜 성능저하가 심하다. 저자들은 Q 가중치를 만들어 선형대수학의 성질을 이용하여 계산상 Q가 pruning 되지 않은 결과가 나오는 방법을 제안했다. 아키텍쳐 기존 transformer 아키텍쳐에 SLICEGPT를 적용시키기 위해서 어느정도의 변화가 많이 필요하다.\nLayerNorm 변화:\nLayerNorm은 Q를 적용할때 계산식에 방해가된다. 그렇기에 M과 diag(epsilon)을 주위 Layer로 넘겨야한다. M은 activation 이후 가중치로 diag(epsilon)은 activition 이전의 가중치로 옮긴다. M은 평균을 뺴주는 역할을 하며 epsilon은 scaling을 위해서 존재하는 학습형 파라미터다\nQ 가중치 생성:\n해당 모델에 맞는 Q 가중치를 생성해야한다. Q를 계산하기 위해서 PCA를 이용해야한다. 학습 데이터 셋에서 특정 부분을 남기고 모델을 지나게 한다. Q는 C행렬의 고유값의 내림차 순이다.\nQTQ를 생성:\n구한 Q들을 기준으로 모델에 적용시켜야한다. 하지만 residual을 위해서 이전 값을 다음 layer의 출력에 더해야하는데 생으로 더할수 없기에 QTQ롤 곱해서 더해준다. ex) XQ * QTQ = XQ\n실험결과 python run_slicegpt.py –model facebook/opt-125m –save-dir dir/to/save/sliced_model/in –sparsity 0.25 –device cuda:0 –eval-baseline –no-wandb\n",
+  "wordCount" : "233",
+  "inLanguage": "en",
+  "datePublished": "2024-12-12T00:00:00Z",
+  "dateModified": "2024-12-12T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://new-sunset-shimmer.github.io/slicegpt/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Sunset",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://new-sunset-shimmer.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class=" dark" id="top">
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://new-sunset-shimmer.github.io/" accesskey="h" title="Sunset (Alt + H)">Sunset</a>
+            <div class="logo-switches">
+                <ul class="lang-switch"><li>|</li>
+                </ul>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      SLICEGPT
+    </h1>
+    <div class="post-meta"><span title='2024-12-12 00:00:00 +0000 UTC'>December 12, 2024</span>
+
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#%eb%ac%b8%ec%a0%9c" aria-label="문제">문제</a></li>
+                <li>
+                    <a href="#%ec%a0%9c%ec%95%88-%eb%b0%a9%eb%b2%95" aria-label="제안 방법">제안 방법</a></li>
+                <li>
+                    <a href="#%ec%95%84%ed%82%a4%ed%85%8d%ec%b3%90" aria-label="아키텍쳐">아키텍쳐</a></li>
+                <li>
+                    <a href="#%ec%8b%a4%ed%97%98%ea%b2%b0%ea%b3%bc" aria-label="실험결과">실험결과</a>
+                </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><blockquote>
+<p>인턴용 리뷰</p>
+</blockquote>
+<blockquote>
+<p>발표 날짜 : 2024-07-03</p>
+</blockquote>
+<p>링크: <a href="https://arxiv.org/pdf/2401.15024">2401.15024 (arxiv.org)</a></p>
+<p>깃허브 링크 : <a href="https://github.com/microsoft/TransformerCompression">microsoft/TransformerCompression: For releasing code related to compression methods for transformers, accompanying our publications (github.com)</a></p>
+<p>LLM 경량화 방법에 대한설명</p>
+<h3 id="문제">문제<a hidden class="anchor" aria-hidden="true" href="#문제">#</a></h3>
+<ul>
+<li>LLM은 현재 자연어처리 분야의 가장 큰 근본이 되고있다. 하지마 LLM의 scaling-law으로 인해 나날이 사이즈가 늘어났다. 그로 인해 계산량 증가, 모델 사이즈가 증가하여 추가 저장장치 및 계산장치가 필요하다. 또한 많은 모델은 학습후에 sparse한 가중치를 가지고 있다.</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-c5d0a" hidden>
+<label for="zoomCheck-c5d0a">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-80c1-821f-f1c16d156edf.png#center" alt=""  />
+</label></p>
+<ul>
+<li>scaling-law은 결국 모델의 가중치를 scaling 하는 행위다. 그렇기에 사이즈를 줄이기위해서는 모델의 가중치에 변화를 줘야한다 </li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-2e675" hidden>
+<label for="zoomCheck-2e675">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-80d1-b158-e2b1183f7025.png#center" alt=""  />
+</label></p>
+<hr>
+<h3 id="제안-방법">제안 방법<a hidden class="anchor" aria-hidden="true" href="#제안-방법">#</a></h3>
+<ul>
+<li>SLICEGPT는 이러한 문제를 해결하는 pruning 방법이다. 하지만 저자들은 일반적인 pruning 방법은 가중치를 줄이기 위해서 0으로 thershhold 하는 방식은 sparsity를 증가시켜 성능저하가 심하다. 저자들은 Q 가중치를 만들어 선형대수학의 성질을 이용하여 계산상 Q가 pruning 되지 않은 결과가 나오는 방법을 제안했다.</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-fae41" hidden>
+<label for="zoomCheck-fae41">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-8032-ab5d-c317af31432a.png#center" alt=""  />
+</label></p>
+<p>
+
+<input type="checkbox" id="zoomCheck-71104" hidden>
+<label for="zoomCheck-71104">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-80a2-8869-cdc724992e85.png#center" alt=""  />
+</label></p>
+<p>
+
+<input type="checkbox" id="zoomCheck-15362" hidden>
+<label for="zoomCheck-15362">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-8042-bcc8-cda3b75aadd7.png#center" alt=""  />
+</label></p>
+<hr>
+<h3 id="아키텍쳐">아키텍쳐<a hidden class="anchor" aria-hidden="true" href="#아키텍쳐">#</a></h3>
+<p>
+
+<input type="checkbox" id="zoomCheck-4f2fa" hidden>
+<label for="zoomCheck-4f2fa">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/6f4d7d93-b4bc-4947-9eb6-b4cd0bac3f3b.png#center" alt=""  />
+</label></p>
+<p>
+
+<input type="checkbox" id="zoomCheck-7fc9b" hidden>
+<label for="zoomCheck-7fc9b">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/d0285dab-4afe-4afb-b482-94075c9d22ca.png#center" alt=""  />
+</label></p>
+<p>기존 transformer 아키텍쳐에 SLICEGPT를 적용시키기 위해서 어느정도의 변화가 많이 필요하다.</p>
+<ul>
+<li>
+<p>LayerNorm 변화:</p>
+<p>LayerNorm은 Q를 적용할때 계산식에 방해가된다. 그렇기에 M과 diag(epsilon)을 주위 Layer로 넘겨야한다. M은 activation 이후 가중치로 diag(epsilon)은 activition 이전의 가중치로 옮긴다. M은 평균을 뺴주는 역할을 하며 epsilon은 scaling을 위해서 존재하는 학습형 파라미터다</p>
+</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-9a67b" hidden>
+<label for="zoomCheck-9a67b">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/42846b30-553d-4884-8c88-b2f138f5609f.png#center" alt=""  />
+</label></p>
+<ul>
+<li>
+<p>Q 가중치 생성:</p>
+<p>해당 모델에 맞는 Q 가중치를 생성해야한다. Q를 계산하기 위해서 PCA를 이용해야한다. 학습 데이터 셋에서 특정 부분을 남기고 모델을 지나게 한다. Q는 C행렬의 고유값의 내림차 순이다.</p>
+</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-3ddaa" hidden>
+<label for="zoomCheck-3ddaa">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/2cc6c7d4-f89b-441a-9723-6675439663f3.png#center" alt=""  />
+</label></p>
+<ul>
+<li>
+<p>QTQ를 생성:</p>
+<p>구한 Q들을 기준으로 모델에 적용시켜야한다. 하지만 residual을 위해서 이전 값을 다음 layer의 출력에 더해야하는데 생으로 더할수 없기에 QTQ롤 곱해서 더해준다. ex) XQ * QTQ = XQ</p>
+</li>
+</ul>
+<hr>
+<h3 id="실험결과">실험결과<a hidden class="anchor" aria-hidden="true" href="#실험결과">#</a></h3>
+<p>
+
+<input type="checkbox" id="zoomCheck-10944" hidden>
+<label for="zoomCheck-10944">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-807e-8665-f66e0266bc1d.png#center" alt=""  />
+</label></p>
+<p>
+
+<input type="checkbox" id="zoomCheck-d2095" hidden>
+<label for="zoomCheck-d2095">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-80b9-b3c7-cd19b81af02d.png#center" alt=""  />
+</label></p>
+<p>
+
+<input type="checkbox" id="zoomCheck-98acc" hidden>
+<label for="zoomCheck-98acc">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-8067-a317-d0dbd337f164.png#center" alt=""  />
+</label></p>
+<p>python run_slicegpt.py &ndash;model facebook/opt-125m &ndash;save-dir dir/to/save/sliced_model/in &ndash;sparsity 0.25 &ndash;device cuda:0 &ndash;eval-baseline &ndash;no-wandb</p>
+<p>
+
+<input type="checkbox" id="zoomCheck-800ff" hidden>
+<label for="zoomCheck-800ff">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-806d-b9e1-c11c773ce7c5.png#center" alt=""  />
+</label></p>
+<p>
+
+<input type="checkbox" id="zoomCheck-9c1b9" hidden>
+<label for="zoomCheck-9c1b9">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-80f6-89c7-d60c3e47dce4.png#center" alt=""  />
+</label></p>
+<p>
+
+<input type="checkbox" id="zoomCheck-87c8c" hidden>
+<label for="zoomCheck-87c8c">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-80a1-a120-df9203c969f4.png#center" alt=""  />
+</label></p>
+<hr>
+<p>
+
+<input type="checkbox" id="zoomCheck-e433b" hidden>
+<label for="zoomCheck-e433b">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-806b-b140-ee85ad6456c6.png#center" alt=""  />
+</label></p>
+<p>
+
+<input type="checkbox" id="zoomCheck-8521e" hidden>
+<label for="zoomCheck-8521e">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-8050-9aa1-d028453222d7.png#center" alt=""  />
+</label></p>
+<p>
+
+<input type="checkbox" id="zoomCheck-3a9bc" hidden>
+<label for="zoomCheck-3a9bc">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-808e-93f2-e34b37c9ff72.png#center" alt=""  />
+</label></p>
+<p>
+
+<input type="checkbox" id="zoomCheck-12dd2" hidden>
+<label for="zoomCheck-12dd2">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-80a7-a4fc-cfaa87210eb3.png#center" alt=""  />
+</label></p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://new-sunset-shimmer.github.io/tags/pruning/">Pruning</a></li>
+      <li><a href="https://new-sunset-shimmer.github.io/tags/paper/">Paper</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://new-sunset-shimmer.github.io/">Sunset</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

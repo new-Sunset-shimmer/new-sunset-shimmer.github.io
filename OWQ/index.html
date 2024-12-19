@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>OWQ | Sunset</title>
+<meta name="keywords" content="Quantization, Paper">
+<meta name="description" content="Mixed-precision quantization based on Hessian matrix">
+<meta name="author" content="">
+<link rel="canonical" href="https://new-sunset-shimmer.github.io/OWQ/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.5cfc680b1eeaeef9efbced92d46c2a9e876b72ee14fba85846afc4cff9e6e6f8.css" integrity="sha256-XPxoCx7q7vnvvO2S1Gwqnodrcu4U&#43;6hYRq/Ez/nm5vg=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://new-sunset-shimmer.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://new-sunset-shimmer.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://new-sunset-shimmer.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://new-sunset-shimmer.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://new-sunset-shimmer.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://new-sunset-shimmer.github.io/OWQ/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript><style>
+    @media screen and (min-width: 769px) {
+
+         
+        .post-content input[type="checkbox"]:checked~label>img {
+            transform: scale(1.6);
+            cursor: zoom-out;
+            position: relative;
+            z-index: 999;
+        }
+
+        .post-content img.zoomCheck {
+            transition: transform 0.15s ease;
+            z-index: 999;
+            cursor: zoom-in;
+        }
+    }
+</style><meta property="og:title" content="OWQ" />
+<meta property="og:description" content="Mixed-precision quantization based on Hessian matrix" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://new-sunset-shimmer.github.io/OWQ/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-12-12T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-12-12T00:00:00+00:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="OWQ"/>
+<meta name="twitter:description" content="Mixed-precision quantization based on Hessian matrix"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://new-sunset-shimmer.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "OWQ",
+      "item": "https://new-sunset-shimmer.github.io/OWQ/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "OWQ",
+  "name": "OWQ",
+  "description": "Mixed-precision quantization based on Hessian matrix",
+  "keywords": [
+    "Quantization", "Paper"
+  ],
+  "articleBody": " Full Title : OWQ: Outlier-Aware Weight Quantization for Efficient Fine-Tuning and Inference of Large Language Models\nLink : 2306.02272 (arxiv.org)\nRelated Link : 2208.11580 (arxiv.org), 2305.14314 (arxiv.org), https://github.com/xvyaward/owq/blob/main/owq/recon.py#L13\nReleased Date : Sun, 4 Jun 2023\nReview Date : Sun, 24 Nov 2024\nMixed-precision quantazation based on Hessian matrix\nMotivation Quantazation method is hard to down very low bit one year ago. This method find outlier(in this paper refer as weak column) by Hessian matrix and keep as fp16. So model can down to very low bit. Research questions Is model can be quantize as very low bit? Methodology In this paper Authors find a outlier by Hessian matrix. By equations 4 and 5, finding the loss of quantized model is highly related to Hessian matrix.(delta is mean W-W^hat). By above intuition authors find outlier column(Weak column). They determine columns by sensitivity(equation 6). multiply by lambda(j-column). Lambda is meaning diagonal element of the Hessian matrix. Only keep unquantized top k column that most sensitive.\nIt is negligible small percentage(in this paper 0.3%) on speed.\nWe can observe weak column is same as outlier. Also some column is not huge magnitude. Weak Column Tuning is Training in quantized. Only train excluded column that named weak column. Qunatized column’s are frozen. Main result Based quantazition method is OPTQ\nPerplexity on WikiText2(Model-OPT) Perplexity on WikiText2(Model-LLaMA) Accuracy on Zero-shot accuracy(on MMLU, Model-OPT) LLaMa Accuracy on Zero-shot accuracy. WCT vs QLoRA and base, LoRA Equation compration. If perserve many column it is affected to models Group-wise qunatization Main proof ",
+  "wordCount" : "253",
+  "inLanguage": "en",
+  "datePublished": "2024-12-12T00:00:00Z",
+  "dateModified": "2024-12-12T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://new-sunset-shimmer.github.io/OWQ/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Sunset",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://new-sunset-shimmer.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class=" dark" id="top">
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://new-sunset-shimmer.github.io/" accesskey="h" title="Sunset (Alt + H)">Sunset</a>
+            <div class="logo-switches">
+                <ul class="lang-switch"><li>|</li>
+                </ul>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      OWQ
+    </h1>
+    <div class="post-meta"><span title='2024-12-12 00:00:00 +0000 UTC'>December 12, 2024</span>
+
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul><ul>
+                <li>
+                    <a href="#motivation" aria-label="Motivation">Motivation</a></li>
+                <li>
+                    <a href="#research-questions" aria-label="Research questions">Research questions</a></li>
+                <li>
+                    <a href="#methodology" aria-label="Methodology">Methodology</a></li>
+                <li>
+                    <a href="#main-result" aria-label="Main result">Main result</a></li></ul>
+                    
+                <li>
+                    <a href="#main-proof" aria-label="Main proof">Main proof</a>
+                </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><blockquote>
+<p>Full Title : OWQ: Outlier-Aware Weight Quantization for Efficient Fine-Tuning and Inference of Large Language Models</p>
+</blockquote>
+<blockquote>
+<p>Link : <a href="https://arxiv.org/pdf/2306.02272">2306.02272 (arxiv.org)</a></p>
+</blockquote>
+<blockquote>
+<p>Related Link : <a href="https://arxiv.org/pdf/2208.11580">2208.11580 (arxiv.org)</a>, <a href="https://arxiv.org/pdf/2305.14314">2305.14314 (arxiv.org)</a>, <a href="https://github.com/xvyaward/owq/blob/main/owq/recon.py#L13">https://github.com/xvyaward/owq/blob/main/owq/recon.py#L13</a></p>
+</blockquote>
+<blockquote>
+<p>Released Date :  Sun, 4 Jun 2023</p>
+</blockquote>
+<blockquote>
+<p>Review Date : Sun, 24 Nov 2024</p>
+</blockquote>
+<p>Mixed-precision quantazation based on Hessian matrix</p>
+<h3 id="motivation">Motivation<a hidden class="anchor" aria-hidden="true" href="#motivation">#</a></h3>
+<ul>
+<li>Quantazation method is hard to down very low bit one year ago. This method find outlier(in this paper refer as weak column) by Hessian matrix and keep as fp16. So model can down to very low bit.</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-ba464" hidden>
+<label for="zoomCheck-ba464">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/a12d026e-48f8-4d7a-ae2d-820b2cd6ba76.png#center" alt=""  />
+</label></p>
+<h3 id="research-questions">Research questions<a hidden class="anchor" aria-hidden="true" href="#research-questions">#</a></h3>
+<ul>
+<li>Is model can be quantize as very low bit?</li>
+</ul>
+<h3 id="methodology">Methodology<a hidden class="anchor" aria-hidden="true" href="#methodology">#</a></h3>
+<ul>
+<li>In this paper Authors find a outlier by Hessian matrix. By equations 4 and 5, finding the loss of quantized model is highly related to Hessian matrix.(delta is mean W-W^hat). By above intuition authors find outlier column(Weak column).</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-87aba" hidden>
+<label for="zoomCheck-87aba">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/c1b2c5d1-9e84-4f5a-a4ae-18a70fa03c9e.png#center" alt=""  />
+</label></p>
+<p>
+
+<input type="checkbox" id="zoomCheck-7e315" hidden>
+<label for="zoomCheck-7e315">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/aaee112e-a6eb-499d-a33b-e0081771329e.png#center" alt=""  />
+</label></p>
+<ul>
+<li>
+<p>They determine columns by sensitivity(equation 6). multiply by lambda(j-column). Lambda is meaning diagonal element of the Hessian matrix. Only keep unquantized top k column that most sensitive.</p>
+<p>It is negligible small percentage(in this paper 0.3%) on speed.</p>
+</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-d18b1" hidden>
+<label for="zoomCheck-d18b1">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/a4b3e788-3e8e-4001-8e29-32cf2a3f292d.png#center" alt=""  />
+</label></p>
+<ul>
+<li>We can observe weak column is same as outlier. Also some column is not huge magnitude.</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-999a3" hidden>
+<label for="zoomCheck-999a3">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/a288ae63-2ed2-4347-ae14-eeb6d911fc76.png#center" alt=""  />
+</label></p>
+<ul>
+<li>Weak Column Tuning is Training in quantized. Only train excluded column that named weak column. Qunatized column’s are frozen.</li>
+</ul>
+<h3 id="main-result">Main result<a hidden class="anchor" aria-hidden="true" href="#main-result">#</a></h3>
+<p>Based quantazition method is OPTQ</p>
+<ul>
+<li>Perplexity on WikiText2(Model-OPT)</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-832b9" hidden>
+<label for="zoomCheck-832b9">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/d8d42751-1082-4cca-8b94-8d79e14128ad.png#center" alt=""  />
+</label></p>
+<ul>
+<li>Perplexity on WikiText2(Model-LLaMA)</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-afc0b" hidden>
+<label for="zoomCheck-afc0b">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/d846d9b8-27b5-45e5-aa87-db18fd5dd967.png#center" alt=""  />
+</label></p>
+<ul>
+<li>Accuracy on Zero-shot accuracy(on MMLU, Model-OPT)</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-a31bf" hidden>
+<label for="zoomCheck-a31bf">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/b039557a-aaeb-4104-8dd1-5d105cf17209.png#center" alt=""  />
+</label></p>
+<ul>
+<li>LLaMa Accuracy on Zero-shot accuracy.</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-8bb60" hidden>
+<label for="zoomCheck-8bb60">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-8061-b143-ca4ee61c77d7.png#center" alt=""  />
+</label></p>
+<ul>
+<li>WCT vs QLoRA and base, LoRA</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-c5c1b" hidden>
+<label for="zoomCheck-c5c1b">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-800f-84b4-c90df4e2d154.png#center" alt=""  />
+</label></p>
+<ul>
+<li>Equation compration.</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-7a3ff" hidden>
+<label for="zoomCheck-7a3ff">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-80cf-b64e-f454921b0860.png#center" alt=""  />
+</label></p>
+<ul>
+<li>If perserve many column it is affected to models</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-c2217" hidden>
+<label for="zoomCheck-c2217">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-8064-a243-eb6794470933.png#center" alt=""  />
+</label></p>
+<ul>
+<li>Group-wise qunatization</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-12e85" hidden>
+<label for="zoomCheck-12e85">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-80c4-86f7-e74039b1cadf.png#center" alt=""  />
+</label></p>
+<h2 id="main-proof">Main proof<a hidden class="anchor" aria-hidden="true" href="#main-proof">#</a></h2>
+<p>
+
+<input type="checkbox" id="zoomCheck-8a4ba" hidden>
+<label for="zoomCheck-8a4ba">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-8043-b954-edb5d88c32c5.png#center" alt=""  />
+</label></p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://new-sunset-shimmer.github.io/tags/quantization/">Quantization</a></li>
+      <li><a href="https://new-sunset-shimmer.github.io/tags/paper/">Paper</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://new-sunset-shimmer.github.io/">Sunset</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

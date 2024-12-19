@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Features on Sunset</title>
+    <link>https://new-sunset-shimmer.github.io/tags/features/</link>
+    <description>Recent content in Features on Sunset</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Fri, 13 Dec 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://new-sunset-shimmer.github.io/tags/features/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>1</title>
+      <link>https://new-sunset-shimmer.github.io/extra/</link>
+      <pubDate>Fri, 13 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/extra/</guid>
+      <description>리뷰할 정도가 아닌 논문들을 간단 요약</description>
+    </item>
+    
+    <item>
+      <title>ROUND AND ROUND WE GO! WHAT MAKES ROTARY
+POSITIONAL ENCODINGS USEFUL?</title>
+      <link>https://new-sunset-shimmer.github.io/Round/</link>
+      <pubDate>Thu, 12 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/Round/</guid>
+      <description>RoPE에 대한 분석</description>
+    </item>
+    
+    <item>
+      <title>Features</title>
+      <link>https://new-sunset-shimmer.github.io/features/</link>
+      <pubDate>Fri, 03 Mar 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/features/</guid>
+      <description>Example of post written with Notion</description>
+    </item>
+    
+  </channel>
+</rss>

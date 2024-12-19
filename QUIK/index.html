@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>QUIK | Sunset</title>
+<meta name="keywords" content="Quantization, Paper">
+<meta name="description" content="Exclude Outlier and improve speed by custom kernels">
+<meta name="author" content="">
+<link rel="canonical" href="https://new-sunset-shimmer.github.io/QUIK/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.5cfc680b1eeaeef9efbced92d46c2a9e876b72ee14fba85846afc4cff9e6e6f8.css" integrity="sha256-XPxoCx7q7vnvvO2S1Gwqnodrcu4U&#43;6hYRq/Ez/nm5vg=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://new-sunset-shimmer.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://new-sunset-shimmer.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://new-sunset-shimmer.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://new-sunset-shimmer.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://new-sunset-shimmer.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://new-sunset-shimmer.github.io/QUIK/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript><style>
+    @media screen and (min-width: 769px) {
+
+         
+        .post-content input[type="checkbox"]:checked~label>img {
+            transform: scale(1.6);
+            cursor: zoom-out;
+            position: relative;
+            z-index: 999;
+        }
+
+        .post-content img.zoomCheck {
+            transition: transform 0.15s ease;
+            z-index: 999;
+            cursor: zoom-in;
+        }
+    }
+</style><meta property="og:title" content="QUIK" />
+<meta property="og:description" content="Exclude Outlier and improve speed by custom kernels" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://new-sunset-shimmer.github.io/QUIK/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-12-12T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-12-12T00:00:00+00:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="QUIK"/>
+<meta name="twitter:description" content="Exclude Outlier and improve speed by custom kernels"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://new-sunset-shimmer.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "QUIK",
+      "item": "https://new-sunset-shimmer.github.io/QUIK/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "QUIK",
+  "name": "QUIK",
+  "description": "Exclude Outlier and improve speed by custom kernels",
+  "keywords": [
+    "Quantization", "Paper"
+  ],
+  "articleBody": " Full Title : QUIK: Towards End-to-end 4-Bit Inference on Generative Large Language Models\nLink : QUIK: Towards End-to-end 4-Bit Inference on Generative Large Language Models (arxiv.org)\nRelated Link : IST-DASLab/QUIK: Repository for the QUIK project, enabling the use of 4bit kernels for generative inference - EMNLP 2024 (github.com)\nReleased Date : Wed, 4 Dec 2024\nReview Date : Fri, 13 Oct 2023\nExclude Outlier and improve speed by custom kernels\nMotivation For better quantized LLM we should quantize weight and activation for compute-bound. In this paper authors quantize Activation and weight into 4 bit exclude outliers.\nonly small amount of inputs are memory bound. Rest of input size is hugely related to Compute bound\nQuantizing activation is improve llm speed geatly Research questions Can we make LLM’s compute-bound more loose ? Methodology Authors quantize weights and activation. They use GPTQ in this paper that also exclude outliers when quantize the weights. But this is very slow in computation and quantize.\nIn this paper they reorder outliers to last of(in this paper named right of column) column. this help GPTQ aggregate to right columns that make quantization error and remove from quantize\n- Weight Clipping Weight clipping when quantize there is two way to apply, First, training omptimal clipping value, Second find it by heurtics. Authors use linear search over the clipping thresholds. - Sensitivity-Based Partial Quantization Finding outliers is key in this paper. Authors use norm to find outliers. they select largest norm values. Also Down-proj layers are very sensitive and important but this layer is get poor performance when quantize in 4 bit. Authors quantize Down-proj as int 8 instead of 4 bit Efficient Inference Implementation\nQuantization\nIn this paper use two method. Quantize weights symmetrically(only scale) in offline, quantize activations asymmetrically(scale and zero) in online.\nMatrix Multiplication\nThe actual MatMul is performed by the CUTLASS (NVIDIA, 2023) library, which is able to effectively utilize the hardware’s INT8/INT4 tensor-cores to perform fast low-precision calculations, while accumulating results in a wider INT32 format.\nDequantization\nAuthors refer we need to dequantize a weight in order to calculate Scale, zero for activation. multipling scaleAct and scaleWeight to inputInt and considering Zeroact we need to add constant value * wReduced.(equation 1 is for account for activation zero point)\nFlow of Quik Main result use GPTQ, finding Clipping thresholds for weight quantization are found via a linear search over the squared error\noperation time per operation\nPPL of Quik Zero-shot accuracy PPl on WIKItext2 when model is 8 bit ppl(Thresholds) Peak memory usage(GB) speed of per layer size speed of models layers speed 4-bit Down-Proj diffrent outliers numbers(This mean make more fp16 layer that excluded) Make MLP BLock 2:4 sparse. this isnt affect to overall performance than attn block Personal thought i think there is sensitive layer in model. ",
+  "wordCount" : "465",
+  "inLanguage": "en",
+  "datePublished": "2024-12-12T00:00:00Z",
+  "dateModified": "2024-12-12T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://new-sunset-shimmer.github.io/QUIK/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Sunset",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://new-sunset-shimmer.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class=" dark" id="top">
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://new-sunset-shimmer.github.io/" accesskey="h" title="Sunset (Alt + H)">Sunset</a>
+            <div class="logo-switches">
+                <ul class="lang-switch"><li>|</li>
+                </ul>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      QUIK
+    </h1>
+    <div class="post-meta"><span title='2024-12-12 00:00:00 +0000 UTC'>December 12, 2024</span>
+
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#motivation" aria-label="Motivation">Motivation</a></li>
+                <li>
+                    <a href="#research-questions" aria-label="Research questions">Research questions</a></li>
+                <li>
+                    <a href="#methodology" aria-label="Methodology">Methodology</a></li>
+                <li>
+                    <a href="#main-result" aria-label="Main result">Main result</a></li>
+                <li>
+                    <a href="#personal-thought" aria-label="Personal thought">Personal thought</a>
+                </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><blockquote>
+<p>Full Title : QUIK: Towards End-to-end 4-Bit Inference on Generative Large Language Models</p>
+</blockquote>
+<blockquote>
+<p>Link : <a href="https://arxiv.org/pdf/2310.09259">QUIK: Towards End-to-end 4-Bit Inference on Generative Large Language Models (arxiv.org)</a></p>
+</blockquote>
+<blockquote>
+<p>Related Link : <a href="https://github.com/IST-DASLab/QUIK">IST-DASLab/QUIK: Repository for the QUIK project, enabling the use of 4bit kernels for generative inference - EMNLP 2024 (github.com)</a></p>
+</blockquote>
+<blockquote>
+<p>Released Date :  Wed, 4 Dec 2024</p>
+</blockquote>
+<blockquote>
+<p>Review Date : Fri, 13 Oct 2023</p>
+</blockquote>
+<p>Exclude Outlier and improve speed by custom kernels</p>
+<h3 id="motivation">Motivation<a hidden class="anchor" aria-hidden="true" href="#motivation">#</a></h3>
+<ul>
+<li>
+<p>For better quantized LLM we should quantize weight and activation for compute-bound. In this paper authors quantize Activation and weight into 4 bit exclude outliers.</p>
+</li>
+<li>
+<p>only small amount of inputs are memory bound. Rest of input size is hugely related to Compute bound</p>
+</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-0231c" hidden>
+<label for="zoomCheck-0231c">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/6487b364-497a-4273-9c23-94087606dc5c.png#center" alt=""  />
+</label></p>
+<ul>
+<li>Quantizing activation is improve llm speed geatly</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-4f988" hidden>
+<label for="zoomCheck-4f988">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/934da64a-550f-4590-a89c-49dd53018f99.png#center" alt=""  />
+</label></p>
+<h3 id="research-questions">Research questions<a hidden class="anchor" aria-hidden="true" href="#research-questions">#</a></h3>
+<ul>
+<li>Can we make LLM’s compute-bound more loose ?</li>
+</ul>
+<h3 id="methodology">Methodology<a hidden class="anchor" aria-hidden="true" href="#methodology">#</a></h3>
+<ul>
+<li>
+<p>Authors quantize weights and activation. They use GPTQ in this paper that also exclude outliers when quantize the weights. But this is very slow in computation and quantize.</p>
+<p>In this paper they reorder outliers to last of(in this paper named right of column) column. this help GPTQ aggregate to right columns that make quantization error and remove from quantize</p>
+</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-ff7f0" hidden>
+<label for="zoomCheck-ff7f0">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/7c5be212-0850-4f28-b29b-6605b54f55b0.png#center" alt=""  />
+</label></p>
+<pre><code>-  Weight Clipping
+
+	Weight clipping when quantize there is two way to apply, First, training omptimal clipping value, Second find it by heurtics. Authors use linear search over the clipping thresholds.
+</code></pre>
+<p>
+
+<input type="checkbox" id="zoomCheck-2e025" hidden>
+<label for="zoomCheck-2e025">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/b445e3cf-f02d-48ca-b969-8bea84856b6d.png#center" alt=""  />
+</label></p>
+<pre><code>- Sensitivity-Based Partial Quantization
+
+	Finding outliers is key in this paper. Authors use norm to find outliers. they select largest norm values. Also Down-proj layers are very sensitive and important but this layer is get poor performance when quantize in 4 bit. Authors quantize Down-proj as int 8 instead of 4 bit
+</code></pre>
+<p>
+
+<input type="checkbox" id="zoomCheck-07c8f" hidden>
+<label for="zoomCheck-07c8f">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/27a5deb5-8a48-4aaf-b601-409fb516bc92.png#center" alt=""  />
+</label></p>
+<ul>
+<li>
+<p>Efficient Inference Implementation</p>
+<ul>
+<li>
+<p>Quantization</p>
+<p>In this paper use two method. Quantize weights symmetrically(only scale) in offline, quantize activations asymmetrically(scale and zero) in online.</p>
+</li>
+<li>
+<p>Matrix Multiplication</p>
+<p>The actual MatMul is performed
+by the CUTLASS (NVIDIA, 2023) library, which is able to
+effectively utilize the hardware’s INT8/INT4 tensor-cores to
+perform fast low-precision calculations, while accumulating
+results in a wider INT32 format.</p>
+</li>
+<li>
+<p>Dequantization</p>
+<p>Authors refer we need to dequantize a weight in order to calculate Scale, zero for activation. multipling scaleAct and scaleWeight to inputInt and considering Zeroact we need to add constant value * wReduced.(equation 1 is for account for activation zero point)</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-18cdb" hidden>
+<label for="zoomCheck-18cdb">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/5d42953a-eb42-4348-82be-4b9cf746e68e.png#center" alt=""  />
+</label></p>
+<p>
+
+<input type="checkbox" id="zoomCheck-71072" hidden>
+<label for="zoomCheck-71072">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/3b884010-af4c-4016-b91e-218d4af495c6.png#center" alt=""  />
+</label></p>
+<ul>
+<li>Flow of Quik</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-083d9" hidden>
+<label for="zoomCheck-083d9">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-8014-b8ca-ce5c961a0097.png#center" alt=""  />
+</label></p>
+<h3 id="main-result">Main result<a hidden class="anchor" aria-hidden="true" href="#main-result">#</a></h3>
+<ul>
+<li>
+<p>use GPTQ, finding Clipping thresholds for weight quantization are found via a linear search over the squared error</p>
+</li>
+<li>
+<p>operation time per operation</p>
+</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-b9e41" hidden>
+<label for="zoomCheck-b9e41">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/34abbca8-6c69-40e5-b88c-990970556ef1.png#center" alt=""  />
+</label></p>
+<ul>
+<li>PPL of Quik</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-2d4f1" hidden>
+<label for="zoomCheck-2d4f1">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/d5949e27-54a0-4482-9a1b-32e18315034f.png#center" alt=""  />
+</label></p>
+<ul>
+<li>Zero-shot accuracy</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-3ea80" hidden>
+<label for="zoomCheck-3ea80">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/79db80d6-ee45-416d-9807-3656beb7190e.png#center" alt=""  />
+</label></p>
+<ul>
+<li>PPl on WIKItext2 when model is 8 bit</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-e92d7" hidden>
+<label for="zoomCheck-e92d7">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/7fefbf1b-8b87-4989-a755-4bd70e4fbe49.png#center" alt=""  />
+</label></p>
+<ul>
+<li>ppl(Thresholds)</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-8e4db" hidden>
+<label for="zoomCheck-8e4db">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/9cfcb896-edc3-4ae6-8e21-aaf9b7227527.png#center" alt=""  />
+</label></p>
+<ul>
+<li>Peak memory usage(GB)</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-25767" hidden>
+<label for="zoomCheck-25767">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/4742a7dc-c3f3-49ee-b4fe-781a3a1fdc5c.png#center" alt=""  />
+</label></p>
+<ul>
+<li>speed of per layer size</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-b4c39" hidden>
+<label for="zoomCheck-b4c39">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-8073-a264-febbe9ccefd2.png#center" alt=""  />
+</label></p>
+<ul>
+<li>speed of models</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-79649" hidden>
+<label for="zoomCheck-79649">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-80ea-a5e7-ca92c98ad1f6.png#center" alt=""  />
+</label></p>
+<ul>
+<li>layers speed</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-5e364" hidden>
+<label for="zoomCheck-5e364">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-801c-87cc-c067e6a72648.png#center" alt=""  />
+</label></p>
+<ul>
+<li>4-bit Down-Proj</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-8127d" hidden>
+<label for="zoomCheck-8127d">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-80fd-b783-ce6fdb69f520.png#center" alt=""  />
+</label></p>
+<ul>
+<li>diffrent outliers numbers(This mean make more fp16 layer that excluded)</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-6502c" hidden>
+<label for="zoomCheck-6502c">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-80a2-9207-d11145c632c5.png#center" alt=""  />
+</label></p>
+<ul>
+<li>Make MLP BLock 2:4 sparse. this isnt affect to overall performance than attn block</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-09777" hidden>
+<label for="zoomCheck-09777">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-807e-a804-d3c91292619c.png#center" alt=""  />
+</label></p>
+<h3 id="personal-thought">Personal thought<a hidden class="anchor" aria-hidden="true" href="#personal-thought">#</a></h3>
+<ul>
+<li>i think there is sensitive layer in model.</li>
+</ul>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://new-sunset-shimmer.github.io/tags/quantization/">Quantization</a></li>
+      <li><a href="https://new-sunset-shimmer.github.io/tags/paper/">Paper</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://new-sunset-shimmer.github.io/">Sunset</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

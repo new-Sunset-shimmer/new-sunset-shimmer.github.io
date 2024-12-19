@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>1 | Sunset</title>
+<meta name="keywords" content="Paper, features">
+<meta name="description" content="리뷰할 정도가 아닌 논문들을 간단 요약">
+<meta name="author" content="">
+<link rel="canonical" href="https://new-sunset-shimmer.github.io/extra/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.5cfc680b1eeaeef9efbced92d46c2a9e876b72ee14fba85846afc4cff9e6e6f8.css" integrity="sha256-XPxoCx7q7vnvvO2S1Gwqnodrcu4U&#43;6hYRq/Ez/nm5vg=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://new-sunset-shimmer.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://new-sunset-shimmer.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://new-sunset-shimmer.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://new-sunset-shimmer.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://new-sunset-shimmer.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://new-sunset-shimmer.github.io/extra/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript><style>
+    @media screen and (min-width: 769px) {
+
+         
+        .post-content input[type="checkbox"]:checked~label>img {
+            transform: scale(1.6);
+            cursor: zoom-out;
+            position: relative;
+            z-index: 999;
+        }
+
+        .post-content img.zoomCheck {
+            transition: transform 0.15s ease;
+            z-index: 999;
+            cursor: zoom-in;
+        }
+    }
+</style><meta property="og:title" content="1" />
+<meta property="og:description" content="리뷰할 정도가 아닌 논문들을 간단 요약" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://new-sunset-shimmer.github.io/extra/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-12-13T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-12-13T00:00:00+00:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="1"/>
+<meta name="twitter:description" content="리뷰할 정도가 아닌 논문들을 간단 요약"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://new-sunset-shimmer.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "1",
+      "item": "https://new-sunset-shimmer.github.io/extra/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "1",
+  "name": "1",
+  "description": "리뷰할 정도가 아닌 논문들을 간단 요약",
+  "keywords": [
+    "Paper", "features"
+  ],
+  "articleBody": "QDyLoRA: Quantized Dynamic Low-Rank Adaptation for Efficient Large Language Model Tuning\nDyLoRA라는 논문을 기반으로 작성됨. DyLoRA는 기존에 고정된 rank는 모든 task를 optimal하게 학습하지 못한다는 단점이 존재한다고 비난. Dynamic Lora rank를 즉 rank를 학습중에 의 분포도를 기반으로([r_min, r_max]에서 확률적으로) 선택하여 r_max로 만들어진 low-rank에서 학습한다. QDyLoRA는 위에 방법론에 QLoRA를 적용시킨 논문이다. 그렇기에 QDyLoRA에서는 QLoRA와 성능 비교를 한다.\nMitigating the Impact of Outlier Channels for Language Model Quantization with Activation Regularization\nper-tensor level QAT다. clipping point인 c-,c+를 학습한다. 양자화 함수는 미분이 아니기에 미분알고리즘 또한 제안했다. 기존 outlier들은 첫 Layer에 생기고 Layer를 거칠수록 그 비율은 줄어든다. 또한 outlier channel은 일반 channel과 다르게 expected value가 0에 존재하지 않는다. 그렇기에 shift까지 학습하는 omniquant가 성능이 좋다고 언급한다. 양자화된 activation에 추가로 weight도 양자화시 ppl이 비약적으로 상승할수있다. 이는 weight를 학습하지 않은건 물론이고 QAT시 Activation의 outlier가 가중치에도 나타나게 된다. 그렇기에 kurtosis로 정규화하여 해당 outlier들을 줄이며 학습을한다(Cross entropy loss에 정규화된 값들의 합을 lambda로 곱하여 더함) kurtosis : 해당 매트릭스가 얼마나 heavy-tailed인지를 확인한다. → Kurtosis는 정규화시 해당 매트릭스의 mean, variance를 활용한다(epsilon도 값을 안정화시키기 위해 들어감). 논문에서는 이를 매트릭스가 얼마나 outlier를 심하게 가졌는지를 확인 할수있다고 언급한다. 추가로 outlier는 Block사이에 존재하는 residual을 기준으로 전파된다는 걸 확인했다. attention input은 outlier가 심하게 존재하지만 FFN input(MLP Proj)에는 존재하지 않는다\n[2402.14866] APTQ: Attention-aware Post-Training Mixed-Precision Quantization for Large Language Models (arxiv.org)\n양자화시 Attention layer에대한 미분으로 hessian matrix을 구한다. 단순히 linear한 정보로 구하는 GPTQ은 non linear한 정보를 구하지 않기에 문제가 있다. 덤으로 앞서 언급한 Hessian matrix는 민감한 정보를 담기에 acsending sort할시 중요도로 같이 sorting된다. 해당 논문에서는 top %로 4bit 아래의 남은 %는 2bit 양자화 했다.\nIntactKV: Improving Large Language Model Quantization by Keeping Pivot Tokens Intact\n모델이 양자화시 (추가)성능저하가 일어나는 이유를 Attention sink에서 언급한 특정 위치에 나타나는 Huge magnitude들의 값이 바뀌면서 일어난다고 지적. 해당 Attention sink가 일어나는 token들을 Pivot Token이라고 명칭. Attention sink에서 언급한 index위치는 무시하고 Initial Token만 FP16으로 가지고 나머지는 양자화. 보통 Attention sink는 [BOS]에 일어나기에 해당 토큰만 FP16으로 보존. 또한 Supervised Finetuned model은 (개인적인 의견으로는 Instruction tuned같다) system prompt가 있을시 성능이 오르기에 해당 토큰도 보존. Attention 시 해당 토큰에 해당 되는 KV값들만 Full precision model에서 사전에 가져와 저장한다. 또한 해당 KV값은 추가 학습 파라미터가 될수도 있다.(토큰이 적기에 학습 비용이 적음). Pivot token이 많으면 많을수록 모델 성능이 좋아진다.\nDynamic Memory Compression: Retrofitting LLMs for Accelerated Inference\n비고 : Round(sigmoid(K))로 이전 KV CACHE에 더할지 새로 저장할지 정함\nCOMPRESSING LLMS: THE TRUTH IS RARELY PURE AND NEVER SIMPLE\n비고 : 경량화 방법론들의 실험. Pruning은 30대가 적절하고, quantizaion의 성능은 의외로 높았다.\n[2406.12016] Prefixing Attention Sinks can Mitigate Activation Outliers for Large Language Model Quantization (arxiv.org)\n비고: Calibrated dataset에서 greedy하게 새로운 token들을 prefix 토큰에 추가한다. 추가된 토큰이 젠체 손실함수를 내리지 못하는 순간까지 토큰을 prefix에 추가한다. 이후 prefix를 미세조정한다. Lcrossentropy + lamba Lq. Lq는 양자화된 모델의 loss이며 L(tokens | Prefix_tokens)\n",
+  "wordCount" : "437",
+  "inLanguage": "en",
+  "datePublished": "2024-12-13T00:00:00Z",
+  "dateModified": "2024-12-13T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://new-sunset-shimmer.github.io/extra/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Sunset",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://new-sunset-shimmer.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class=" dark" id="top">
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://new-sunset-shimmer.github.io/" accesskey="h" title="Sunset (Alt + H)">Sunset</a>
+            <div class="logo-switches">
+                <ul class="lang-switch"><li>|</li>
+                </ul>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      1
+    </h1>
+    <div class="post-meta"><span title='2024-12-13 00:00:00 +0000 UTC'>December 13, 2024</span>
+
+</div>
+  </header> 
+
+  <div class="post-content"><p><a href="https://arxiv.org/pdf/2402.10462">QDyLoRA: Quantized Dynamic Low-Rank Adaptation for Efficient Large Language Model Tuning</a></p>
+<p>DyLoRA라는 논문을 기반으로 작성됨. DyLoRA는 기존에 고정된 rank는 모든 task를 optimal하게 학습하지 못한다는 단점이 존재한다고 비난. Dynamic Lora rank를 즉 rank를 학습중에 의 분포도를 기반으로([r_min, r_max]에서 확률적으로) 선택하여 r_max로 만들어진 low-rank에서 학습한다.
+QDyLoRA는 위에 방법론에 QLoRA를 적용시킨 논문이다. 그렇기에 QDyLoRA에서는 QLoRA와 성능 비교를 한다.</p>
+<p><a href="https://arxiv.org/pdf/2404.03605">Mitigating the Impact of Outlier Channels for Language Model Quantization with Activation Regularization</a></p>
+<p>per-tensor level QAT다. clipping point인 c-,c+를 학습한다. 양자화 함수는 미분이 아니기에 미분알고리즘 또한 제안했다.
+기존 outlier들은 첫 Layer에 생기고 Layer를 거칠수록 그 비율은 줄어든다. 또한 outlier channel은 일반 channel과 다르게 expected value가 0에 존재하지 않는다. 그렇기에 shift까지 학습하는 omniquant가 성능이 좋다고 언급한다.
+양자화된 activation에 추가로 weight도 양자화시 ppl이 비약적으로 상승할수있다. 이는 weight를 학습하지 않은건 물론이고 QAT시 Activation의 outlier가 가중치에도 나타나게 된다. 그렇기에 kurtosis로 정규화하여 해당 outlier들을 줄이며 학습을한다(Cross entropy loss에 정규화된 값들의 합을 lambda로 곱하여 더함)
+kurtosis : 해당 매트릭스가 얼마나 heavy-tailed인지를 확인한다. → Kurtosis는 정규화시 해당 매트릭스의 mean, variance를 활용한다(epsilon도 값을 안정화시키기 위해 들어감). 논문에서는 이를 매트릭스가 얼마나 outlier를 심하게 가졌는지를 확인 할수있다고 언급한다.
+추가로 outlier는 Block사이에 존재하는 residual을 기준으로 전파된다는 걸 확인했다. attention input은 outlier가 심하게 존재하지만 FFN input(MLP Proj)에는 존재하지 않는다</p>
+<p><a href="https://arxiv.org/abs/2402.14866">[2402.14866] APTQ: Attention-aware Post-Training Mixed-Precision Quantization for Large Language Models (arxiv.org)</a></p>
+<p>양자화시 Attention layer에대한 미분으로 hessian matrix을 구한다. 단순히 linear한 정보로 구하는 GPTQ은 non linear한 정보를 구하지 않기에 문제가 있다. 덤으로 앞서 언급한 Hessian matrix는 민감한 정보를 담기에 acsending sort할시 중요도로 같이 sorting된다. 해당 논문에서는 top %로 4bit 아래의 남은 %는 2bit 양자화 했다.</p>
+<p><a href="https://arxiv.org/pdf/2403.01241">IntactKV: Improving Large Language Model Quantization by
+Keeping Pivot Tokens Intact</a></p>
+<p>모델이 양자화시 (추가)성능저하가 일어나는 이유를 Attention sink에서 언급한  특정 위치에 나타나는 Huge magnitude들의 값이 바뀌면서 일어난다고 지적. 해당 Attention sink가 일어나는 token들을 Pivot Token이라고 명칭. Attention sink에서 언급한 index위치는 무시하고 Initial Token만 FP16으로 가지고 나머지는 양자화. 보통 Attention sink는 [BOS]에 일어나기에 해당 토큰만 FP16으로 보존. 또한 Supervised Finetuned model은 (개인적인 의견으로는 Instruction tuned같다) system prompt가 있을시 성능이 오르기에 해당 토큰도 보존.
+Attention 시 해당 토큰에 해당 되는 KV값들만 Full precision model에서 사전에 가져와 저장한다. 또한 해당 KV값은 추가 학습 파라미터가 될수도 있다.(토큰이 적기에 학습 비용이 적음). Pivot token이 많으면 많을수록 모델 성능이 좋아진다.</p>
+<p><a href="https://arxiv.org/pdf/2403.09636">Dynamic Memory Compression: Retrofitting LLMs for Accelerated Inference</a></p>
+<p>비고 : Round(sigmoid(K))로 이전 KV CACHE에 더할지 새로 저장할지 정함</p>
+<p><a href="https://arxiv.org/pdf/2310.01382">COMPRESSING LLMS: THE TRUTH IS RARELY PURE
+AND NEVER SIMPLE</a></p>
+<p>비고 : 경량화 방법론들의 실험. Pruning은 30대가 적절하고, quantizaion의 성능은 의외로 높았다.</p>
+<p><a href="https://arxiv.org/abs/2406.12016">[2406.12016] Prefixing Attention Sinks can Mitigate Activation Outliers for Large Language Model Quantization (arxiv.org)</a></p>
+<p>비고: Calibrated dataset에서 greedy하게 새로운 token들을 prefix 토큰에 추가한다. 추가된 토큰이 젠체 손실함수를 내리지 못하는 순간까지 토큰을 prefix에 추가한다. 이후 prefix를 미세조정한다. Lcrossentropy + lamba Lq. Lq는 양자화된 모델의 loss이며 L(tokens | Prefix_tokens)</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://new-sunset-shimmer.github.io/tags/paper/">Paper</a></li>
+      <li><a href="https://new-sunset-shimmer.github.io/tags/features/">Features</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://new-sunset-shimmer.github.io/">Sunset</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

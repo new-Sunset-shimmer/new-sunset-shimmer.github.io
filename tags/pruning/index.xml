@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Pruning on Sunset</title>
+    <link>https://new-sunset-shimmer.github.io/tags/pruning/</link>
+    <description>Recent content in Pruning on Sunset</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 12 Dec 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://new-sunset-shimmer.github.io/tags/pruning/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ATTENTION SINKS</title>
+      <link>https://new-sunset-shimmer.github.io/ATTENTION_SINKS/</link>
+      <pubDate>Thu, 12 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/ATTENTION_SINKS/</guid>
+      <description>Attention sink를 해결하여 window attention 방식을 효율화</description>
+    </item>
+    
+    <item>
+      <title>DUOATTENTION</title>
+      <link>https://new-sunset-shimmer.github.io/DUOATTENTION/</link>
+      <pubDate>Thu, 12 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/DUOATTENTION/</guid>
+      <description>Attention sink + Retrieval attention을 이용한 Token pruning</description>
+    </item>
+    
+    <item>
+      <title>InfLLM</title>
+      <link>https://new-sunset-shimmer.github.io/InfLLM/</link>
+      <pubDate>Thu, 12 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/InfLLM/</guid>
+      <description>token을 split하여 KV cache를 줄임</description>
+    </item>
+    
+    <item>
+      <title>SLICEGPT</title>
+      <link>https://new-sunset-shimmer.github.io/slicegpt/</link>
+      <pubDate>Thu, 12 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/slicegpt/</guid>
+      <description>LLM 경량화 방법에 대한설명</description>
+    </item>
+    
+  </channel>
+</rss>

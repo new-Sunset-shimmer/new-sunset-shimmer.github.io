@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Massive Activations | Sunset</title>
+<meta name="keywords" content="Quantization, Paper">
+<meta name="description" content="Massive activations에 대한 조사">
+<meta name="author" content="">
+<link rel="canonical" href="https://new-sunset-shimmer.github.io/MATT/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.5cfc680b1eeaeef9efbced92d46c2a9e876b72ee14fba85846afc4cff9e6e6f8.css" integrity="sha256-XPxoCx7q7vnvvO2S1Gwqnodrcu4U&#43;6hYRq/Ez/nm5vg=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://new-sunset-shimmer.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://new-sunset-shimmer.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://new-sunset-shimmer.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://new-sunset-shimmer.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://new-sunset-shimmer.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://new-sunset-shimmer.github.io/MATT/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript><style>
+    @media screen and (min-width: 769px) {
+
+         
+        .post-content input[type="checkbox"]:checked~label>img {
+            transform: scale(1.6);
+            cursor: zoom-out;
+            position: relative;
+            z-index: 999;
+        }
+
+        .post-content img.zoomCheck {
+            transition: transform 0.15s ease;
+            z-index: 999;
+            cursor: zoom-in;
+        }
+    }
+</style><meta property="og:title" content="Massive Activations" />
+<meta property="og:description" content="Massive activations에 대한 조사" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://new-sunset-shimmer.github.io/MATT/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-12-12T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-12-12T00:00:00+00:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Massive Activations"/>
+<meta name="twitter:description" content="Massive activations에 대한 조사"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://new-sunset-shimmer.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Massive Activations",
+      "item": "https://new-sunset-shimmer.github.io/MATT/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Massive Activations",
+  "name": "Massive Activations",
+  "description": "Massive activations에 대한 조사",
+  "keywords": [
+    "Quantization", "Paper"
+  ],
+  "articleBody": "arxiv.org/pdf/2402.17762\nMassive Activations in Large Language Models\nReleased Date : 2024 08 10\nReview Date : 2024 10 21\nMassive activations에 대한 조사\nMotivation 저자들은 LLM에 대한 특이한 형상을 하나 발견하였다. 아주 소수의 활성화 값이 아주 높은 값을 가지는 형상이 발견되었다. 그 소수의 활성화 값은 들어온 context, sementic에 무관하게 특정 위치, 특정 tokens에 나타났다. 이번 논문에서는 해당 형상에 대한 조사를 다룬다. Research questions 왜 Massive activation은 생기는가? Methodology Massive activation?\n저자들은 LLM의 내부의 활성화 값들을 확인하였다. 그중에 평균보다 월등이 높은 값을 가지는 값들 또한 존재한다. 저자들은 이를 Massive activition이라 칭한다. 아래는 모델별 가장 높은 값들을 가지는 활성값들의 값을 나열한것이다.\n어디에 나타나는가?\n저자들은 현재 많이 사용되는 모델들을 비교 분석을 실시하였다.\nLLaMA2-7B : (1415, 2533 ) 차원, 가장 첫 위치의 token, . (period), \\n (newline) 에 생긴다 - LLaMA2-13B : (2100, 4743) 차원, 가장 첫 위치의 token. - Mixtral-8x7B : 2070 3398차원. 가장 첫 위치의 token, and, of 에 생긴다. - 또한 Massive activiation이 생기는 Layer는 대부분 첫번째 그리고 마지막 Layer 뺀 나머지 Layer에 집중되어 있다. - 저자들은 위의 토큰들은 특별한 의미를 내포하고 있지 않거나 혹은 과하게 많이 나타난다는 특성이 존재하기에 Massive attention이 생긴다고 추측했다. Outlier와 다른점은 ?\n저자들은 Massive activition은 scaler 값이고 outlier는 거의 모든 token에 에 나타나는vector값이라고 구분을 지엇다. 또한 outlier가 나타나는 위치에는 Massive activition이생기지 않고, Massive activition이 생기는 위치에는 outlier가 생기지 않는다. Massive activition의 기능은 ?\n저자들은 Massive activition의 값을 평균, zero로 바꿔 성능을 비교했다. 그 결과 Massive activition도 어느정도의 순 기능을 하며 모델이 필요로 하는 값임을 알수있다. Massive activition은 왜 생기는가?\n저자들은 해당 이유를 모델의 특성에 있다고 생각한다. 일단 auto-regressive model의 특성상 첫번째 token이 과하게 중복으로 학습되며 동시에 softmax 함수의 특성상 절대 0은 나오지 않는다. 결국 모델이 Massive activition을 생성할 수 밖에 없는 형태로 학습이 된다는 말로 해석할수있다.\n아래는 Layer 3의 start, period token에 대한 massive 값의 layer normalize 이후의 변화이다. Massive activition의 값은 낮아지지 사라지지 않는다.\n아래는 Massive activition을 방지 하기위해 sink Token, attention Bias를 넣어 실험을 한 그래프다. 3다 성능은 비슷했지만 Massive activition의 값이 달랐다. attention bias Main result 저자들은 결국 아래와 같이 결론을 내렸다 대규모 활성화는 셀프 어텐션(self-attention)과 연결됩니다. 대형 언어 모델(LLM)은 대규모 활성화를 사용하여 매우 적은 수의 토큰에 상당한 주의를 집중시키며, 어텐션 계산에 암묵적인 편향 용어를 주입합니다. 또한, 명시적인 어텐션 편향을 추가하면 대규모 활성화를 제거할 수 있습니다. Personal thought outlier도 일종의 Massive activition이 아닌가?\nself-attention의 노이즈가 존재하 않으면 Massive activation도 존재하지 않는가?\n",
+  "wordCount" : "378",
+  "inLanguage": "en",
+  "datePublished": "2024-12-12T00:00:00Z",
+  "dateModified": "2024-12-12T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://new-sunset-shimmer.github.io/MATT/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Sunset",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://new-sunset-shimmer.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class=" dark" id="top">
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://new-sunset-shimmer.github.io/" accesskey="h" title="Sunset (Alt + H)">Sunset</a>
+            <div class="logo-switches">
+                <ul class="lang-switch"><li>|</li>
+                </ul>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      Massive Activations
+    </h1>
+    <div class="post-meta"><span title='2024-12-12 00:00:00 +0000 UTC'>December 12, 2024</span>
+
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#motivation" aria-label="Motivation">Motivation</a></li>
+                <li>
+                    <a href="#research-questions" aria-label="Research questions">Research questions</a></li>
+                <li>
+                    <a href="#methodology" aria-label="Methodology">Methodology</a></li>
+                <li>
+                    <a href="#main-result" aria-label="Main result">Main result</a></li>
+                <li>
+                    <a href="#personal-thought" aria-label="Personal thought">Personal thought</a>
+                </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><p><a href="https://arxiv.org/pdf/2402.17762">arxiv.org/pdf/2402.17762</a></p>
+<blockquote>
+<p>Massive Activations in Large Language Models</p>
+</blockquote>
+<blockquote>
+<p>Released Date : 2024 08 10</p>
+</blockquote>
+<blockquote>
+<p>Review Date : 2024 10 21</p>
+</blockquote>
+<p>Massive activations에 대한 조사</p>
+<h3 id="motivation">Motivation<a hidden class="anchor" aria-hidden="true" href="#motivation">#</a></h3>
+<ul>
+<li>저자들은 LLM에 대한 특이한 형상을 하나 발견하였다. 아주 소수의 활성화 값이 아주 높은 값을 가지는 형상이 발견되었다. 그 소수의 활성화 값은 들어온 context, sementic에 무관하게 특정 위치, 특정 tokens에 나타났다. 이번 논문에서는 해당 형상에 대한 조사를 다룬다.</li>
+</ul>
+<h3 id="research-questions">Research questions<a hidden class="anchor" aria-hidden="true" href="#research-questions">#</a></h3>
+<ul>
+<li>왜 Massive activation은 생기는가?</li>
+</ul>
+<h3 id="methodology">Methodology<a hidden class="anchor" aria-hidden="true" href="#methodology">#</a></h3>
+<ul>
+<li>
+<p>Massive activation?</p>
+<ul>
+<li>저자들은 LLM의 내부의 활성화 값들을 확인하였다. 그중에 평균보다 월등이 높은 값을 가지는 값들 또한 존재한다. 저자들은 이를 Massive activition이라 칭한다.</li>
+</ul>
+</li>
+<li>
+<p>아래는 모델별 가장 높은 값들을 가지는 활성값들의 값을 나열한것이다.</p>
+</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-1df57" hidden>
+<label for="zoomCheck-1df57">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-801e-880b-ef6351abea6d.png#center" alt=""  />
+</label></p>
+<ul>
+<li>
+<p>어디에 나타나는가?</p>
+<ul>
+<li>
+<p>저자들은 현재 많이 사용되는 모델들을 비교 분석을 실시하였다.</p>
+<ul>
+<li>LLaMA2-7B : (1415, 2533 ) 차원, 가장 첫 위치의 token, . (period), \n (newline) 에 생긴다</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-d4c34" hidden>
+<label for="zoomCheck-d4c34">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/f7b97d7d-04a6-442d-bd0d-c7e7ef594caa.png#center" alt=""  />
+</label></p>
+<pre><code>	- LLaMA2-13B : (2100, 4743) 차원, 가장 첫 위치의 token.
+</code></pre>
+<p>
+
+<input type="checkbox" id="zoomCheck-32fd5" hidden>
+<label for="zoomCheck-32fd5">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/ec24d160-2278-4161-8c28-002951ce7d61.png#center" alt=""  />
+</label></p>
+<pre><code>	- Mixtral-8x7B : 2070 3398차원. 가장 첫 위치의 token, and, of 에 생긴다.
+</code></pre>
+<p>
+
+<input type="checkbox" id="zoomCheck-d0847" hidden>
+<label for="zoomCheck-d0847">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/a56c791e-a6ee-44a3-ab04-f2782b3c9524.png#center" alt=""  />
+</label></p>
+<pre><code>- 또한 Massive activiation이 생기는 Layer는 대부분 첫번째 그리고 마지막 Layer 뺀 나머지 Layer에 집중되어 있다.
+</code></pre>
+<p>
+
+<input type="checkbox" id="zoomCheck-51f00" hidden>
+<label for="zoomCheck-51f00">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/148061f7-91e6-4598-b407-3868358c038f.png#center" alt=""  />
+</label></p>
+<pre><code>- 저자들은 위의 토큰들은 특별한 의미를 내포하고 있지 않거나 혹은 과하게 많이 나타난다는 특성이 존재하기에 Massive attention이 생긴다고 추측했다.
+</code></pre>
+<ul>
+<li>
+<p>Outlier와 다른점은 ?</p>
+<ul>
+<li>저자들은 Massive activition은 scaler 값이고 outlier는 거의 모든 token에 에 나타나는vector값이라고 구분을 지엇다. 또한 outlier가 나타나는 위치에는 Massive activition이생기지 않고, Massive activition이 생기는 위치에는 outlier가 생기지 않는다.</li>
+</ul>
+</li>
+<li>
+<p>Massive activition의 기능은 ?</p>
+<ul>
+<li>저자들은 Massive activition의 값을 평균, zero로 바꿔 성능을 비교했다. 그 결과 Massive activition도 어느정도의 순 기능을 하며 모델이 필요로 하는 값임을 알수있다.</li>
+</ul>
+</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-f86e0" hidden>
+<label for="zoomCheck-f86e0">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/8caa958c-4b4c-4309-9454-6c7170f8396b.png#center" alt=""  />
+</label></p>
+<ul>
+<li>
+<p>Massive activition은 왜 생기는가?</p>
+<ul>
+<li>
+<p>저자들은 해당 이유를 모델의 특성에 있다고 생각한다. 일단 auto-regressive model의 특성상 첫번째 token이 과하게 중복으로 학습되며 동시에 softmax 함수의 특성상 절대 0은 나오지 않는다. 결국 모델이 Massive activition을 생성할 수 밖에 없는 형태로 학습이 된다는 말로 해석할수있다.</p>
+</li>
+<li>
+<p>아래는 Layer 3의 start, period token에 대한 massive 값의 layer normalize 이후의 변화이다. Massive activition의 값은 낮아지지 사라지지 않는다.</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-39d4a" hidden>
+<label for="zoomCheck-39d4a">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/0661ad5d-6b47-4d4d-a669-ea4d82267277.png#center" alt=""  />
+</label></p>
+<ul>
+<li>아래는 Massive activition을 방지 하기위해 sink Token, attention Bias를 넣어 실험을 한 그래프다. 3다 성능은 비슷했지만 Massive activition의 값이 달랐다.</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-6eccf" hidden>
+<label for="zoomCheck-6eccf">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-8062-b613-d8896225c936.png#center" alt=""  />
+</label></p>
+<ul>
+<li>attention bias</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-b2f73" hidden>
+<label for="zoomCheck-b2f73">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-806a-929f-ff2b278483e5.png#center" alt=""  />
+</label></p>
+<h3 id="main-result">Main result<a hidden class="anchor" aria-hidden="true" href="#main-result">#</a></h3>
+<ul>
+<li>저자들은 결국 아래와 같이 결론을 내렸다
+대규모 활성화는 셀프 어텐션(self-attention)과 연결됩니다. 대형 언어 모델(LLM)은 대규모 활성화를 사용하여 매우 적은 수의 토큰에 상당한 주의를 집중시키며, 어텐션 계산에 암묵적인 편향 용어를 주입합니다. 또한, 명시적인 어텐션 편향을 추가하면 대규모 활성화를 제거할 수 있습니다.</li>
+</ul>
+<hr>
+<h3 id="personal-thought">Personal thought<a hidden class="anchor" aria-hidden="true" href="#personal-thought">#</a></h3>
+<ol>
+<li>
+<p>outlier도 일종의 Massive activition이 아닌가?</p>
+</li>
+<li>
+<p>self-attention의 노이즈가 존재하 않으면 Massive activation도 존재하지 않는가?</p>
+</li>
+</ol>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://new-sunset-shimmer.github.io/tags/quantization/">Quantization</a></li>
+      <li><a href="https://new-sunset-shimmer.github.io/tags/paper/">Paper</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://new-sunset-shimmer.github.io/">Sunset</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

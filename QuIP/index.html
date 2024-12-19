@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>QuIP | Sunset</title>
+<meta name="keywords" content="Quantization, Paper">
+<meta name="description" content="Hessian matrix을 이용한 AdaptRound 최적화">
+<meta name="author" content="">
+<link rel="canonical" href="https://new-sunset-shimmer.github.io/QuIP/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.5cfc680b1eeaeef9efbced92d46c2a9e876b72ee14fba85846afc4cff9e6e6f8.css" integrity="sha256-XPxoCx7q7vnvvO2S1Gwqnodrcu4U&#43;6hYRq/Ez/nm5vg=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://new-sunset-shimmer.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://new-sunset-shimmer.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://new-sunset-shimmer.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://new-sunset-shimmer.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://new-sunset-shimmer.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://new-sunset-shimmer.github.io/QuIP/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript><style>
+    @media screen and (min-width: 769px) {
+
+         
+        .post-content input[type="checkbox"]:checked~label>img {
+            transform: scale(1.6);
+            cursor: zoom-out;
+            position: relative;
+            z-index: 999;
+        }
+
+        .post-content img.zoomCheck {
+            transition: transform 0.15s ease;
+            z-index: 999;
+            cursor: zoom-in;
+        }
+    }
+</style><meta property="og:title" content="QuIP" />
+<meta property="og:description" content="Hessian matrix을 이용한 AdaptRound 최적화" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://new-sunset-shimmer.github.io/QuIP/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-12-12T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-12-12T00:00:00+00:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="QuIP"/>
+<meta name="twitter:description" content="Hessian matrix을 이용한 AdaptRound 최적화"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://new-sunset-shimmer.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "QuIP",
+      "item": "https://new-sunset-shimmer.github.io/QuIP/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "QuIP",
+  "name": "QuIP",
+  "description": "Hessian matrix을 이용한 AdaptRound 최적화",
+  "keywords": [
+    "Quantization", "Paper"
+  ],
+  "articleBody": " Full Title : QuIP: 2-Bit Quantization of Large Language Models With Guarantees\nLink : 0df38cd13520747e1e64e5b123a78ef8-Paper-Conference.pdf (neurips.cc)\nRelated Link : Up or Down? Adaptive Rounding for Post-Training Quantization (arxiv.org) QuIP: 2-Bit Quantization for LLMs - YouTube\nReleased Date : 2023 06 25\nReview Date : 2024 11 04\nHessian matrix을 이용한 AdaptRound 최적화\nMotivation 이전연구인 Up or Down? Adaptive Rounding for Post-Training Quantization (arxiv.org)에서 제시한 Adaptive Round을 최적하는 방법론을 제시한다. Research questions 2bit로 최적화가 가능한가? Methodology 이전논문인 Up or Down? Adaptive Rounding for Post-Training Quantization (arxiv.org)에서는 Layer단위의 양자화 손실을 구하는 식 2를 확장시켰다. 확장시킬 때 TAYLOR series를 이용하였다. (a)는 Taylor series를 활용하여 확장했다는 듯이다. Tayelor series는 어떠한 함수의 근사로서 사용될수있다. 아래의 그림을 보면 여기서는 e^x를 근사하고있다. Tayelor Series는 Local minimum을 보장한다는 성질있다.[확실하지는 않음]. 그렇기에 근사할려는 함수를 보다 빠르게 local minimum을 찾을수있다. 위의 식 4를 이전 연구The unconstrained binary quadratic programming problem: a survey | Journal of Combinatorial Optimization (springer.com)을 따라 아래와 같은 식을 유도할수있다. H는 Hessian matrix이다. 또한 H는 Memory complexity가 높기에 해당 논문(upper, down)에서는 다른 식을 유도하여 사용한다. Hessian matrix는 어떠한 매트릭스의 2차 미분이다. 이는 1차 미분인 gredient처럼 어느 방향으로 얼마나 갚파른지를 확인할수있다. 하지만 gredient가 직선이라면 Hessian matrix은 굴곡졌다. 이번 논문인 QuIP에서는 위의 식 13을 그대로 쓴다. 이는 H의 Memory complexity를 무시하고도 쓸 가치가 있다는 이야기다. 저자들은 H가 가중치와 incohirence하여 보다 빠르게 local minimum을 안정적이고 확실하게 찾을수있다고 서술했다. 이 모든 과정을 Guarante 즉 수학적으로 증명하여 확실하게 모든 LLM에 적용이 된다는 걸 서술했다. 모든 식과 증명을 이번 요약에서 설명하면 좋겠지만 배움의 한계로 힘들어서 생략하겠다. 결국 이번 논문에서의 가장 큰 아이디어는 직교행렬들의 Kronecker 곱셈을 이용하여 H와 가중치가 incohirence하다는 걸 보장한다.\n앞서 언급했듯 H는 일종의 gredient로서 작용이 가능하다. 이러한 매트릭스와 incogirence하다는 건 반대 해당 매트릭스가 H와 반대방향으로 달려간다는 뜻이다. 또한 H는 µ-incoherent positive semi-definite symmetric matrix다. Positive이라는 건 0 이상의 값들만 가지고, Symmetric은 H=H^-1가 동일하는 뜻이다. Symmetric으로 W와 H를 곱해줄때 W가 rotation이 안되도록 보장하며 Positive semi-definite는 해당 gredient의 방향과 형태를 보다 잘 나타낸다[chatgpt 피셜].\nKronecker 곱셈\n이래의 알고리즘을 확이하면 결국 1의 5번 2의 3번이 가중치와 H을 직교행렬로 곱해주는 연산이 중요하다. Adaptive rounding Main result 파라미터별 2bit로 양자화시 perplexity와 성능표. 모델의 파라미터가 높으면 높을수록 손실이 적다 모델의 양자화별 성능표 알고리즘의 각 기능별 성능(ppl) 비슷한 방법론인 OPTQ와의 Throughput 비교 Personal thought 수학적인 과정이 어렵다.\n이러한 수학적인 정보는 학부때 전부다 배우나? ㄹㅇ 궁금\n",
+  "wordCount" : "367",
+  "inLanguage": "en",
+  "datePublished": "2024-12-12T00:00:00Z",
+  "dateModified": "2024-12-12T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://new-sunset-shimmer.github.io/QuIP/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Sunset",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://new-sunset-shimmer.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class=" dark" id="top">
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://new-sunset-shimmer.github.io/" accesskey="h" title="Sunset (Alt + H)">Sunset</a>
+            <div class="logo-switches">
+                <ul class="lang-switch"><li>|</li>
+                </ul>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      QuIP
+    </h1>
+    <div class="post-meta"><span title='2024-12-12 00:00:00 +0000 UTC'>December 12, 2024</span>
+
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#motivation" aria-label="Motivation">Motivation</a></li>
+                <li>
+                    <a href="#research-questions" aria-label="Research questions">Research questions</a></li>
+                <li>
+                    <a href="#methodology" aria-label="Methodology">Methodology</a></li>
+                <li>
+                    <a href="#main-result" aria-label="Main result">Main result</a></li>
+                <li>
+                    <a href="#personal-thought" aria-label="Personal thought">Personal thought</a>
+                </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><blockquote>
+<p>Full Title : QuIP: 2-Bit Quantization of Large Language Models With Guarantees</p>
+</blockquote>
+<blockquote>
+<p>Link : <a href="https://proceedings.neurips.cc/paper_files/paper/2023/file/0df38cd13520747e1e64e5b123a78ef8-Paper-Conference.pdf">0df38cd13520747e1e64e5b123a78ef8-Paper-Conference.pdf (neurips.cc)</a></p>
+</blockquote>
+<blockquote>
+<p>Related Link : <a href="https://arxiv.org/pdf/2004.10568">Up or Down? Adaptive Rounding for Post-Training Quantization (arxiv.org) </a><a href="https://www.youtube.com/watch?v=6wEVz0wkhCM&amp;t=6781s">QuIP: 2-Bit Quantization for LLMs - YouTube</a></p>
+</blockquote>
+<blockquote>
+<p>Released Date :  2023 06 25</p>
+</blockquote>
+<blockquote>
+<p>Review Date : 2024 11 04</p>
+</blockquote>
+<p>Hessian matrix을 이용한 AdaptRound 최적화</p>
+<h3 id="motivation">Motivation<a hidden class="anchor" aria-hidden="true" href="#motivation">#</a></h3>
+<ul>
+<li>이전연구인  <a href="https://arxiv.org/pdf/2004.10568">Up or Down? Adaptive Rounding for Post-Training Quantization (arxiv.org)</a>에서 제시한 Adaptive Round을 최적하는 방법론을 제시한다.</li>
+</ul>
+<h3 id="research-questions">Research questions<a hidden class="anchor" aria-hidden="true" href="#research-questions">#</a></h3>
+<ul>
+<li>2bit로 최적화가 가능한가?</li>
+</ul>
+<h3 id="methodology">Methodology<a hidden class="anchor" aria-hidden="true" href="#methodology">#</a></h3>
+<ul>
+<li>이전논문인 <a href="https://arxiv.org/pdf/2004.10568">Up or Down? Adaptive Rounding for Post-Training Quantization (arxiv.org)</a>에서는 Layer단위의 양자화 손실을 구하는 식 2를 확장시켰다. 확장시킬 때 TAYLOR series를 이용하였다. (a)는 Taylor series를 활용하여 확장했다는 듯이다.</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-4bbbe" hidden>
+<label for="zoomCheck-4bbbe">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/f164db1e-3cd3-462f-b4c2-d9f784d04c5d.png#center" alt=""  />
+</label></p>
+<ul>
+<li>Tayelor series는 어떠한 함수의 근사로서 사용될수있다. 아래의 그림을 보면 여기서는 e^x를 근사하고있다.  Tayelor Series는 Local minimum을 보장한다는 성질있다.[확실하지는 않음]. 그렇기에 근사할려는 함수를 보다 빠르게 local minimum을 찾을수있다.</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-f3de6" hidden>
+<label for="zoomCheck-f3de6">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/2287b54b-ccf7-4325-9ff2-8355d2afafd3.png#center" alt=""  />
+</label></p>
+<ul>
+<li>위의 식 4를 이전 연구<a href="https://link.springer.com/article/10.1007/s10878-014-9734-0">The unconstrained binary quadratic programming problem: a survey | Journal of Combinatorial Optimization (springer.com)</a>을 따라 아래와 같은 식을 유도할수있다. H는 Hessian matrix이다. 또한 H는 Memory complexity가 높기에 해당 논문(upper, down)에서는 다른 식을 유도하여 사용한다.</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-fbfe0" hidden>
+<label for="zoomCheck-fbfe0">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-802f-8166-d7543a0a1c81.png#center" alt=""  />
+</label></p>
+<ul>
+<li>Hessian matrix는 어떠한 매트릭스의 2차 미분이다. 이는 1차 미분인 gredient처럼 어느 방향으로 얼마나 갚파른지를 확인할수있다. 하지만 gredient가 직선이라면 Hessian matrix은 굴곡졌다.</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-d385e" hidden>
+<label for="zoomCheck-d385e">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-80cd-a4c9-de899cd824f6.png#center" alt=""  />
+</label></p>
+<ul>
+<li>
+<p>이번 논문인 QuIP에서는 위의 식 13을 그대로 쓴다. 이는 H의 Memory complexity를 무시하고도 쓸 가치가 있다는 이야기다.
+저자들은 H가 가중치와 incohirence하여 보다 빠르게 local minimum을 안정적이고 확실하게 찾을수있다고 서술했다. 이 모든 과정을 Guarante 즉 수학적으로 증명하여 확실하게 모든 LLM에 적용이 된다는 걸 서술했다. 모든 식과 증명을 이번 요약에서 설명하면 좋겠지만 배움의 한계로 힘들어서 생략하겠다.
+결국 이번 논문에서의 가장 큰 아이디어는 직교행렬들의 Kronecker 곱셈을 이용하여 H와 가중치가 incohirence하다는 걸 보장한다.</p>
+</li>
+<li>
+<p>앞서 언급했듯 H는 일종의 gredient로서 작용이 가능하다. 이러한 매트릭스와 incogirence하다는 건 반대 해당 매트릭스가 H와 반대방향으로 달려간다는 뜻이다. 또한 H는 µ-incoherent positive semi-definite symmetric matrix다. Positive이라는 건 0 이상의 값들만 가지고, Symmetric은 H=H^-1가 동일하는 뜻이다. Symmetric으로 W와 H를 곱해줄때 W가 rotation이 안되도록 보장하며 Positive semi-definite는 해당 gredient의 방향과 형태를 보다 잘 나타낸다[chatgpt 피셜].</p>
+</li>
+<li>
+<p>Kronecker 곱셈</p>
+</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-38433" hidden>
+<label for="zoomCheck-38433">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/a311e6fa-b676-4a4d-9cf3-b2f0e2ba4b60.png#center" alt=""  />
+</label></p>
+<ul>
+<li>이래의 알고리즘을 확이하면 결국 1의 5번 2의 3번이 가중치와 H을 직교행렬로 곱해주는 연산이 중요하다.</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-979c0" hidden>
+<label for="zoomCheck-979c0">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/fe22d20a-486f-413f-9332-0badc2b9821f.png#center" alt=""  />
+</label></p>
+<p>
+
+<input type="checkbox" id="zoomCheck-75c91" hidden>
+<label for="zoomCheck-75c91">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/7be0d713-fc4e-4581-b6b3-f9e9b58af2ea.png#center" alt=""  />
+</label></p>
+<ul>
+<li>Adaptive rounding</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-8e112" hidden>
+<label for="zoomCheck-8e112">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/2f603e7d-4b74-4057-ae83-d0479d235c94.png#center" alt=""  />
+</label></p>
+<h3 id="main-result">Main result<a hidden class="anchor" aria-hidden="true" href="#main-result">#</a></h3>
+<ul>
+<li>파라미터별 2bit로 양자화시 perplexity와 성능표. 모델의 파라미터가 높으면 높을수록 손실이 적다</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-6742c" hidden>
+<label for="zoomCheck-6742c">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-80c3-a7c1-dfa6d8be9354.png#center" alt=""  />
+</label></p>
+<ul>
+<li>모델의 양자화별 성능표</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-cf1b1" hidden>
+<label for="zoomCheck-cf1b1">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-80ca-b55d-f028b9134127.png#center" alt=""  />
+</label></p>
+<ul>
+<li>알고리즘의 각 기능별 성능(ppl)</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-eb912" hidden>
+<label for="zoomCheck-eb912">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-8072-88a7-ffb44044fdce.png#center" alt=""  />
+</label></p>
+<ul>
+<li>비슷한 방법론인 OPTQ와의 Throughput 비교</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-51fb4" hidden>
+<label for="zoomCheck-51fb4">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-80a2-9dce-c653ed5cab4c.png#center" alt=""  />
+</label></p>
+<h3 id="personal-thought">Personal thought<a hidden class="anchor" aria-hidden="true" href="#personal-thought">#</a></h3>
+<ol>
+<li>
+<p>수학적인 과정이 어렵다.</p>
+</li>
+<li>
+<p>이러한 수학적인 정보는 학부때 전부다 배우나? ㄹㅇ 궁금</p>
+</li>
+</ol>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://new-sunset-shimmer.github.io/tags/quantization/">Quantization</a></li>
+      <li><a href="https://new-sunset-shimmer.github.io/tags/paper/">Paper</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://new-sunset-shimmer.github.io/">Sunset</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

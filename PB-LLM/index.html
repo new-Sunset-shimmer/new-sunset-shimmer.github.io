@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>PB-LLM | Sunset</title>
+<meta name="keywords" content="Quantization, Paper">
+<meta name="description" content="Partial binarize the model">
+<meta name="author" content="">
+<link rel="canonical" href="https://new-sunset-shimmer.github.io/PB-LLM/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.5cfc680b1eeaeef9efbced92d46c2a9e876b72ee14fba85846afc4cff9e6e6f8.css" integrity="sha256-XPxoCx7q7vnvvO2S1Gwqnodrcu4U&#43;6hYRq/Ez/nm5vg=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://new-sunset-shimmer.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://new-sunset-shimmer.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://new-sunset-shimmer.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://new-sunset-shimmer.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://new-sunset-shimmer.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://new-sunset-shimmer.github.io/PB-LLM/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript><style>
+    @media screen and (min-width: 769px) {
+
+         
+        .post-content input[type="checkbox"]:checked~label>img {
+            transform: scale(1.6);
+            cursor: zoom-out;
+            position: relative;
+            z-index: 999;
+        }
+
+        .post-content img.zoomCheck {
+            transition: transform 0.15s ease;
+            z-index: 999;
+            cursor: zoom-in;
+        }
+    }
+</style><meta property="og:title" content="PB-LLM" />
+<meta property="og:description" content="Partial binarize the model" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://new-sunset-shimmer.github.io/PB-LLM/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-12-12T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-12-12T00:00:00+00:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="PB-LLM"/>
+<meta name="twitter:description" content="Partial binarize the model"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://new-sunset-shimmer.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "PB-LLM",
+      "item": "https://new-sunset-shimmer.github.io/PB-LLM/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "PB-LLM",
+  "name": "PB-LLM",
+  "description": "Partial binarize the model",
+  "keywords": [
+    "Quantization", "Paper"
+  ],
+  "articleBody": " Full Title : PB-LLM: PARTIALLY BINARIZED LARGE LANGUAGE MODELS\nLink : 2310.00034 (arxiv.org)\nRelated Link :\nReleased Date : Fri, 29 Sep 2023\nReview Date : Thu, 5 Dec 2024\nPartial binarize the model\nMotivation There is many research on quantization. Recent research prove that LLM can preserve linguistics ability even if weight are binary. in this paper challenging to extremely low bit. Authors quantize non-salient weight into one-bit, and keep fp16 salient weights. Also QAT that partial-binarized model. Research questions Can we binarize model ? Methodology PRELIMINARY: NETWORK BINARIZATION\nWe can make weight to binarize using sign(-) function. in forward A_F,o=W_b * A_F,i, - In the backward propagation, the sing(-) function is non-differentiable. For solve that problem researchers use Straight-through estimator(STE)(equation 2). It is numerically approximate the derivative of while BNN - In this paper implement binarization llm naively. from figure 2 authors implement recent binarization method to opt-1.3B model they are worse than just randomly chosen answer PARTIALLY BINARIZED WEIGHT MATRIX\noutlier(in this paper refer as salient weight) extend quantization range unnecessarily. Recent researches(late 2023, early 2024) exclude them from quantization. Concurrently make outlier more smoother, flatter for not extend the quantization range. in this paper authors exclude them from binarization.\nSALIENT WEIGHT: CRITERIA, GRANULARITY, AND COST\nCriteria(a principle or standard by which something may be judged or decided.) Authors use magnitude based salient weight chooser. It is not different from expensive Hessian based method\nGranularity(the scale or level of detail present in a set of data or other phenomenon.) : There is two method select salient weight as range. one is Element-wise, Column-wise. Authors elect Element-wise method. From Figure 3 salient weights are appear in random index and uniform. In column-wise can’t filter salient weight.\nSalient weight Storing cost can calculated by equation 3. if we binarize 90 weight and quantize 10 as 8bit, at most, 2.7-bit POST-TRAINING QUANTIZATION FOR PB-LLMS\nMost important thing is recover performance after PTQ.\nAuthors use GPTQ for finding what is important(salient) weight.\nIn GPTQ they are calculate from Hessian matrix layer by layer. from equation 4 they are make calculate gradient (equation 5). Determine which value is important in layer(column). Authors binarize non-salient value in layer and quantize salient value found by equeation w=w^2/[H-1]^2. and save as W = Wsal + Wunsal. Authors named this as PB-QPTQ\nQUANTIZATION-AWARE TRAINING FOR PB-LLMS\nSALIENT WEIGHTS FROZEN\nWhile training in quantization authors freeze salient weights because that weights are very important to model keep them as original value make train more efficient(Figure 5).\n- OPTIMAL SCALING FACTOR FOR BINARY WEIGHTS. Instead of training in general way they train scaling factor for binarized weights wF = αw¯ B.\nThe optimal values of scaling factor α for the W in binarization can calculated by minimizing the L2 error. from equation XNOT-Net Wb is binarized values In that case we can calculate alpha as eaquation 9 train by OPTIMAL SCALING FACTOR FOR BINARY WEIGHTS we can preserve linguistic ability of model preserve salient-weight and freeze it in train make very effective Main result Accuracy on PB-GPTQ and PB-LLM perplexity on PB-GPTQ got different salient weight preserve rate heuristic base of why authors chose hessian based quantize method. Personal thought why salient are uniform ? ",
+  "wordCount" : "537",
+  "inLanguage": "en",
+  "datePublished": "2024-12-12T00:00:00Z",
+  "dateModified": "2024-12-12T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://new-sunset-shimmer.github.io/PB-LLM/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Sunset",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://new-sunset-shimmer.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class=" dark" id="top">
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://new-sunset-shimmer.github.io/" accesskey="h" title="Sunset (Alt + H)">Sunset</a>
+            <div class="logo-switches">
+                <ul class="lang-switch"><li>|</li>
+                </ul>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      PB-LLM
+    </h1>
+    <div class="post-meta"><span title='2024-12-12 00:00:00 +0000 UTC'>December 12, 2024</span>
+
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#motivation" aria-label="Motivation">Motivation</a></li>
+                <li>
+                    <a href="#research-questions" aria-label="Research questions">Research questions</a></li>
+                <li>
+                    <a href="#methodology" aria-label="Methodology">Methodology</a></li>
+                <li>
+                    <a href="#main-result" aria-label="Main result">Main result</a></li>
+                <li>
+                    <a href="#personal-thought" aria-label="Personal thought">Personal thought</a>
+                </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><blockquote>
+<p>Full Title : PB-LLM: PARTIALLY BINARIZED LARGE LANGUAGE MODELS</p>
+</blockquote>
+<blockquote>
+<p>Link : <a href="https://arxiv.org/pdf/2310.00034">2310.00034 (arxiv.org)</a></p>
+</blockquote>
+<blockquote>
+<p>Related Link :</p>
+</blockquote>
+<blockquote>
+<p>Released Date :  Fri, 29 Sep 2023</p>
+</blockquote>
+<blockquote>
+<p>Review Date :  Thu, 5 Dec 2024</p>
+</blockquote>
+<p>Partial binarize the model</p>
+<h3 id="motivation">Motivation<a hidden class="anchor" aria-hidden="true" href="#motivation">#</a></h3>
+<ul>
+<li>There is many research on quantization. Recent research prove that LLM can preserve linguistics ability even if weight are binary. in this paper challenging to extremely low bit. Authors quantize non-salient weight into one-bit, and keep fp16 salient weights. Also QAT that partial-binarized model.</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-2763a" hidden>
+<label for="zoomCheck-2763a">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-8004-8bcd-f97d136a19d6.png#center" alt=""  />
+</label></p>
+<h3 id="research-questions">Research questions<a hidden class="anchor" aria-hidden="true" href="#research-questions">#</a></h3>
+<ul>
+<li>Can we binarize model ?</li>
+</ul>
+<h3 id="methodology">Methodology<a hidden class="anchor" aria-hidden="true" href="#methodology">#</a></h3>
+<ul>
+<li>
+<p>PRELIMINARY: NETWORK BINARIZATION</p>
+<ul>
+<li>We can make weight to binarize using sign(-) function. in forward A_F,o=W_b * A_F,i,</li>
+</ul>
+</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-9a2e5" hidden>
+<label for="zoomCheck-9a2e5">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/617b8ec0-c3b1-4d96-acfb-716ff2dffdf6.png#center" alt=""  />
+</label></p>
+<pre><code>- In the backward propagation, the sing(-) function is non-differentiable. For solve that problem researchers use Straight-through estimator(STE)(equation 2). It is numerically approximate the derivative of while BNN
+</code></pre>
+<p>
+
+<input type="checkbox" id="zoomCheck-271ca" hidden>
+<label for="zoomCheck-271ca">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/b8d87a49-0586-4d41-8527-405b577f2392.png#center" alt=""  />
+</label></p>
+<pre><code>- In this paper implement binarization llm naively. from figure 2 authors implement recent binarization method to opt-1.3B model they are worse than just randomly chosen answer
+</code></pre>
+<p>
+
+<input type="checkbox" id="zoomCheck-a93ae" hidden>
+<label for="zoomCheck-a93ae">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/41e50539-7617-4e84-9c9e-e43c0a84012b.png#center" alt=""  />
+</label></p>
+<ul>
+<li>
+<p>PARTIALLY BINARIZED WEIGHT MATRIX</p>
+<p>outlier(in this paper refer as salient weight) extend quantization range unnecessarily. Recent researches(late 2023, early 2024) exclude them from quantization. Concurrently make outlier more smoother, flatter for not  extend the quantization range. in this paper authors exclude them from binarization.</p>
+<ul>
+<li>
+<p>SALIENT WEIGHT: CRITERIA, GRANULARITY, AND COST</p>
+</li>
+<li>
+<p>Criteria(a principle or standard by which something may be <a href="https://www.google.com/search?newwindow=1&amp;sca_esv=91d4dd8f3c245c7a&amp;sxsrf=ADLYWIILcVZ5hSfjwYLuHx4LpvamJIuvEA%3A1733406973824&amp;q=judged&amp;si=ACC90nwdkA2npcVVmNPViiSe8FMKsMoqEb56anLaPxpKdoHLjLPBoSXKKC158XZI9zHk9Bs11eP-sLUVhSzU-9bdvCIGvykJyQ%3D%3D&amp;expnd=1&amp;sa=X&amp;ved=2ahUKEwiq67OX5JCKAxX31jQHHYTSKKkQyecJegQIKxAO">judged</a> or decided.) Authors use magnitude based salient weight chooser. It is not different from expensive Hessian based method</p>
+</li>
+<li>
+<p>Granularity(the scale or level of detail present in a set of data or other phenomenon.) : There is two method select salient weight as range. one is Element-wise, Column-wise. Authors elect Element-wise method. From Figure 3 salient weights are appear in random index and uniform. In column-wise can’t filter salient weight.</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-7cd1f" hidden>
+<label for="zoomCheck-7cd1f">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/af3afe71-8cd2-4cf9-8c83-4c6e3e982857.png#center" alt=""  />
+</label></p>
+<ul>
+<li>Salient weight Storing cost can calculated by equation 3. if we binarize 90 weight and quantize 10 as 8bit, at most, 2.7-bit</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-4f421" hidden>
+<label for="zoomCheck-4f421">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/ad8042b3-5cf3-4994-a527-67266ce0f287.png#center" alt=""  />
+</label></p>
+<p>
+
+<input type="checkbox" id="zoomCheck-bc529" hidden>
+<label for="zoomCheck-bc529">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/d486e24c-5e31-4571-85a9-df8d56e063a3.png#center" alt=""  />
+</label></p>
+<p>
+
+<input type="checkbox" id="zoomCheck-a92bc" hidden>
+<label for="zoomCheck-a92bc">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-803b-bcd4-f3d188d7176c.png#center" alt=""  />
+</label></p>
+<ul>
+<li>
+<p>POST-TRAINING QUANTIZATION FOR PB-LLMS</p>
+<p>Most important thing is recover performance after PTQ.</p>
+<p>Authors use GPTQ for finding what is important(salient) weight.</p>
+<p>In GPTQ they are calculate from Hessian matrix layer by layer. from equation 4 they are make calculate gradient (equation 5). Determine which value is important in layer(column). Authors binarize non-salient value in layer and quantize salient value found by equeation w=w^2/[H-1]^2. and save as W = Wsal + Wunsal. Authors named this as PB-QPTQ</p>
+</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-19dcf" hidden>
+<label for="zoomCheck-19dcf">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/6c19e773-a355-4723-8378-2465dd028ee4.png#center" alt=""  />
+</label></p>
+<p>
+
+<input type="checkbox" id="zoomCheck-2a997" hidden>
+<label for="zoomCheck-2a997">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/20b479b1-14fb-4e67-9175-b408c45e8929.png#center" alt=""  />
+</label></p>
+<p>
+
+<input type="checkbox" id="zoomCheck-ebb92" hidden>
+<label for="zoomCheck-ebb92">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-8014-b799-cdf5badeb364.png#center" alt=""  />
+</label></p>
+<p>
+
+<input type="checkbox" id="zoomCheck-6ea69" hidden>
+<label for="zoomCheck-6ea69">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-805b-b5e8-e41609a2d4e5.png#center" alt=""  />
+</label></p>
+<ul>
+<li>
+<p>QUANTIZATION-AWARE TRAINING FOR PB-LLMS</p>
+<ul>
+<li>
+<p>SALIENT WEIGHTS FROZEN</p>
+<p>While training in quantization authors freeze salient weights because that weights are very important to model keep them as original value make train more efficient(Figure 5).</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-a08b6" hidden>
+<label for="zoomCheck-a08b6">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/71e35bd3-1797-4bd1-a880-cf64798e00ae.png#center" alt=""  />
+</label></p>
+<pre><code>- OPTIMAL SCALING FACTOR FOR BINARY WEIGHTS.
+</code></pre>
+<p>Instead of training in general way they train scaling factor for binarized weights wF = αw¯ B.</p>
+<pre><code>	The optimal values of scaling factor α for the W in binarization can calculated by minimizing the L2 error. 
+</code></pre>
+<p>
+
+<input type="checkbox" id="zoomCheck-635b1" hidden>
+<label for="zoomCheck-635b1">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/6145f01f-e341-47fe-bc8c-e6c86c6415ad.png#center" alt=""  />
+</label></p>
+<pre><code>	from equation XNOT-Net
+</code></pre>
+<p>
+
+<input type="checkbox" id="zoomCheck-17e98" hidden>
+<label for="zoomCheck-17e98">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/ce96d770-ab52-4a6a-a5a1-9ce2c4865a4b.png#center" alt=""  />
+</label></p>
+<pre><code>	Wb is binarized values
+</code></pre>
+<p>
+
+<input type="checkbox" id="zoomCheck-79727" hidden>
+<label for="zoomCheck-79727">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/de80c937-8abb-490e-a53c-750e08f8838f.png#center" alt=""  />
+</label></p>
+<pre><code>	In that case we can calculate alpha as eaquation 9
+</code></pre>
+<p>
+
+<input type="checkbox" id="zoomCheck-b4adb" hidden>
+<label for="zoomCheck-b4adb">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/bcdf2029-8a2e-4422-9d19-e3d8321554ed.png#center" alt=""  />
+</label></p>
+<ul>
+<li>train by OPTIMAL SCALING FACTOR FOR BINARY WEIGHTS we can preserve linguistic ability of model</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-57646" hidden>
+<label for="zoomCheck-57646">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/4dfd19c1-8aac-429f-8298-42ae48437f45.png#center" alt=""  />
+</label></p>
+<ul>
+<li>preserve salient-weight and freeze it in train make very effective</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-d59df" hidden>
+<label for="zoomCheck-d59df">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-8000-916c-e3be74ce35cc.png#center" alt=""  />
+</label></p>
+<h3 id="main-result">Main result<a hidden class="anchor" aria-hidden="true" href="#main-result">#</a></h3>
+<ul>
+<li>Accuracy on PB-GPTQ and PB-LLM</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-1301f" hidden>
+<label for="zoomCheck-1301f">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-8003-858b-f9e182c97c9f.png#center" alt=""  />
+</label></p>
+<ul>
+<li>perplexity on PB-GPTQ got different salient weight preserve rate</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-32c50" hidden>
+<label for="zoomCheck-32c50">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-807d-9300-cfb2d84a398c.png#center" alt=""  />
+</label></p>
+<ul>
+<li>heuristic base of why authors chose hessian based quantize method.</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-9719e" hidden>
+<label for="zoomCheck-9719e">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-8078-a2cc-eed049b54e43.png#center" alt=""  />
+</label></p>
+<h3 id="personal-thought">Personal thought<a hidden class="anchor" aria-hidden="true" href="#personal-thought">#</a></h3>
+<ul>
+<li>why salient are uniform ?</li>
+</ul>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://new-sunset-shimmer.github.io/tags/quantization/">Quantization</a></li>
+      <li><a href="https://new-sunset-shimmer.github.io/tags/paper/">Paper</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://new-sunset-shimmer.github.io/">Sunset</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

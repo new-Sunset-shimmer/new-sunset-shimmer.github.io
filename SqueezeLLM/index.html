@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>SqueezeLLM | Sunset</title>
+<meta name="keywords" content="Quantization, Paper">
+<meta name="description" content="Exclude Dense and Sparse vector">
+<meta name="author" content="">
+<link rel="canonical" href="https://new-sunset-shimmer.github.io/SqueezeLLM/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.5cfc680b1eeaeef9efbced92d46c2a9e876b72ee14fba85846afc4cff9e6e6f8.css" integrity="sha256-XPxoCx7q7vnvvO2S1Gwqnodrcu4U&#43;6hYRq/Ez/nm5vg=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://new-sunset-shimmer.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://new-sunset-shimmer.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://new-sunset-shimmer.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://new-sunset-shimmer.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://new-sunset-shimmer.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://new-sunset-shimmer.github.io/SqueezeLLM/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript><style>
+    @media screen and (min-width: 769px) {
+
+         
+        .post-content input[type="checkbox"]:checked~label>img {
+            transform: scale(1.6);
+            cursor: zoom-out;
+            position: relative;
+            z-index: 999;
+        }
+
+        .post-content img.zoomCheck {
+            transition: transform 0.15s ease;
+            z-index: 999;
+            cursor: zoom-in;
+        }
+    }
+</style><meta property="og:title" content="SqueezeLLM" />
+<meta property="og:description" content="Exclude Dense and Sparse vector" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://new-sunset-shimmer.github.io/SqueezeLLM/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-12-12T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-12-12T00:00:00+00:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="SqueezeLLM"/>
+<meta name="twitter:description" content="Exclude Dense and Sparse vector"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://new-sunset-shimmer.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "SqueezeLLM",
+      "item": "https://new-sunset-shimmer.github.io/SqueezeLLM/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "SqueezeLLM",
+  "name": "SqueezeLLM",
+  "description": "Exclude Dense and Sparse vector",
+  "keywords": [
+    "Quantization", "Paper"
+  ],
+  "articleBody": " Full Title : SqueezeLLM: Dense-and-Sparse Quantization\nLink : SqueezeLLM: Dense-and-Sparse Quantization (arxiv.org)\nRelated Link : SqueezeAILab/SqueezeLLM: [ICML 2024] SqueezeLLM: Dense-and-Sparse Quantization (github.com)\nReleased Date : Tue, 13 Jun 2023\nReview Date : Sun Nov 24 2024\nExclude Dense and Sparse vector\nMotivation Existing LLM is very huge and unfavor to frame of devices. Quantazation is state-of-art approach to solve this problem but tradeoff speed and accuracy. Also, Authors mention most of speed degrade came from memory reading, computation speed is marginal. In this paper authors propose two novel ideas. First sensitivity based non-uniform quantization, Second The Dense-and-Sparse decomposition. Research questions Is only computation cost is degrade model speed?\nIs there any weight that important in model?\nMethodology Sensitivity-Based Non-uniform Quantization\nNon-uniform Quantization is more accuracy than Uniform Quantization because most Weight matrix isn’t uniform, Also uniform quantization isn’t superior at speed than Non-uniform quantization. So, Authors select Non-uniform quantization - Finding a sensitive value is “not” easy. Personally it is near close to NP hard. Authors shift problem to K-means problem on given the model weight. - According to equation 1, We quantize weight(W) based on k clusters. Quantized weights(w) represented by k distinct values {q1, …, qk}. Q(w)* can be obtained by 1-dimentional k-means clustering. Centriod of each cluster as qj - Authors want to minimize the overall perturbation with respect to the final loss rather than focusing on individual layers. It is mean authors not minimize problem of finding sensitive value. For better(Minimize) final loss Centroid(qj) is need to be in sensitive value - Expanding equation 1 by Tayler series we can get equation 2 and equation 3. if Loss is 0 we can ignore gradient[g] and L(w). So we can obtain equation 4. - Second derivative, H(Hessian matrix) is more sensitive to small perturbations. - Hessian matrix is got huge computing cost, Authors approximate the hessian matrix based on Fisher information - Training by equation 6 centroids are close to Top-20 sensitive values. Dense-and-Sparse Quantization\nOutlier is challenge in low-bit LLM. In this paper removing small percentage(0.1%) of values that outlier keep as FP16 and make them to another matrix(named Sparse matrix). Dense matrix is matrix that not containing outliers.\nAuthors find outliers by Threshold values. W can make by sum of D,S. D = W[Tmin \u003c w \u003c Tmax], S = W[w \u003c Tmin or w \u003e Tmax]. S value is very small percentage that negligible in speed and memory load. WX = DX + SX. If we mitigate to Sparse matrix, we can better quantize the dense matrix.\nSensitivity-Based Sparse Matrix\nFor more better accuracy authors isolate sensitive values(it is easily identified based on Fisher information) in FP16. Main result Use GPTQ with activation ordering\nPerformance of SqueezeLLM, SqueezeLLM is Dense-only Quantization(no exclude outliers). Dense-and-Sparse Quantization(using Dense matrix)\n3-bit quantization where even dense-only SqueezeLLM achieves comparable perplexity to grouped GPTQ/AWQ. 0-shot MMLU evalution Speed and memory usage Instruction-Following Ability Personal thought How Top 20 Sensitive values are computed in Figure 3? ",
+  "wordCount" : "496",
+  "inLanguage": "en",
+  "datePublished": "2024-12-12T00:00:00Z",
+  "dateModified": "2024-12-12T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://new-sunset-shimmer.github.io/SqueezeLLM/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Sunset",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://new-sunset-shimmer.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class=" dark" id="top">
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://new-sunset-shimmer.github.io/" accesskey="h" title="Sunset (Alt + H)">Sunset</a>
+            <div class="logo-switches">
+                <ul class="lang-switch"><li>|</li>
+                </ul>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      SqueezeLLM
+    </h1>
+    <div class="post-meta"><span title='2024-12-12 00:00:00 +0000 UTC'>December 12, 2024</span>
+
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#motivation" aria-label="Motivation">Motivation</a></li>
+                <li>
+                    <a href="#research-questions" aria-label="Research questions">Research questions</a></li>
+                <li>
+                    <a href="#methodology" aria-label="Methodology">Methodology</a></li>
+                <li>
+                    <a href="#main-result" aria-label="Main result">Main result</a></li>
+                <li>
+                    <a href="#personal-thought" aria-label="Personal thought">Personal thought</a>
+                </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><blockquote>
+<p>Full Title : SqueezeLLM: Dense-and-Sparse Quantization</p>
+</blockquote>
+<blockquote>
+<p>Link : <a href="https://arxiv.org/pdf/2306.07629">SqueezeLLM: Dense-and-Sparse Quantization (arxiv.org)</a></p>
+</blockquote>
+<blockquote>
+<p>Related Link : <a href="https://github.com/SqueezeAILab/SqueezeLLM/tree/main">SqueezeAILab/SqueezeLLM: [ICML 2024] SqueezeLLM: Dense-and-Sparse Quantization (github.com)</a></p>
+</blockquote>
+<blockquote>
+<p>Released Date :  Tue, 13 Jun 2023</p>
+</blockquote>
+<blockquote>
+<p>Review Date : Sun Nov 24 2024</p>
+</blockquote>
+<p>Exclude Dense and Sparse vector</p>
+<h3 id="motivation">Motivation<a hidden class="anchor" aria-hidden="true" href="#motivation">#</a></h3>
+<ul>
+<li>Existing LLM is very huge and unfavor to frame of devices. Quantazation is state-of-art approach to solve this problem but tradeoff speed and accuracy. Also, Authors mention most of speed degrade came from memory reading, computation speed is marginal. In this paper authors propose two novel ideas. First sensitivity based non-uniform quantization, Second The Dense-and-Sparse decomposition.</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-3554a" hidden>
+<label for="zoomCheck-3554a">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-8058-be5b-f6b0568727d1.png#center" alt=""  />
+</label></p>
+<h3 id="research-questions">Research questions<a hidden class="anchor" aria-hidden="true" href="#research-questions">#</a></h3>
+<ul>
+<li>
+<p>Is only computation cost is degrade model speed?</p>
+</li>
+<li>
+<p>Is there any weight that important in model?</p>
+</li>
+</ul>
+<h3 id="methodology">Methodology<a hidden class="anchor" aria-hidden="true" href="#methodology">#</a></h3>
+<ul>
+<li>
+<p>Sensitivity-Based Non-uniform Quantization</p>
+<ul>
+<li>Non-uniform Quantization is more accuracy than Uniform Quantization because most Weight matrix isn’t uniform, Also uniform quantization isn’t superior at speed than Non-uniform quantization. So, Authors select Non-uniform quantization</li>
+</ul>
+</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-e0a20" hidden>
+<label for="zoomCheck-e0a20">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/bab16365-0fbd-4152-b37c-d3e8372efcd9.png#center" alt=""  />
+</label></p>
+<pre><code>- Finding a sensitive value is “not” easy. Personally it is near close to NP hard. Authors shift problem to K-means problem on given the model weight. 
+</code></pre>
+<p>
+
+<input type="checkbox" id="zoomCheck-f16d5" hidden>
+<label for="zoomCheck-f16d5">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/10c1fe17-3f60-4385-a4e5-3b83a4b04175.png#center" alt=""  />
+</label></p>
+<pre><code>- According to equation 1, We quantize weight(W) based on k clusters. Quantized weights(w) represented by k distinct values {q1, …, qk}. Q(w)* can be obtained by 1-dimentional k-means clustering. Centriod of each cluster as qj
+
+- Authors want to minimize the overall perturbation with respect to the final loss rather than focusing on individual layers. It is mean authors not minimize problem of finding sensitive value. For better(Minimize) final loss Centroid(qj) is need to be in sensitive value
+
+- Expanding equation 1 by Tayler series we can get equation 2 and equation 3. if Loss is 0 we can ignore gradient[g] and L(w). So we can obtain equation 4. 
+</code></pre>
+<p>
+
+<input type="checkbox" id="zoomCheck-466cc" hidden>
+<label for="zoomCheck-466cc">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/4535b265-18d7-42d4-b8f8-7caeefab505d.png#center" alt=""  />
+</label></p>
+<p>
+
+<input type="checkbox" id="zoomCheck-145f0" hidden>
+<label for="zoomCheck-145f0">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/488d264d-52ad-48ac-963c-a4527688ed1d.png#center" alt=""  />
+</label></p>
+<pre><code>- Second derivative, H(Hessian matrix) is more sensitive to small perturbations.
+
+- Hessian matrix is got huge computing cost, Authors approximate the hessian matrix based on Fisher information
+</code></pre>
+<p>
+
+<input type="checkbox" id="zoomCheck-65ffa" hidden>
+<label for="zoomCheck-65ffa">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/fec77187-bd94-4551-a7ca-648bef5ba68e.png#center" alt=""  />
+</label></p>
+<p>
+
+<input type="checkbox" id="zoomCheck-a3b05" hidden>
+<label for="zoomCheck-a3b05">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/c72c5842-47a8-42cb-b0ec-3b9a7e99fece.png#center" alt=""  />
+</label></p>
+<pre><code>- Training by equation 6 centroids are close to Top-20 sensitive values.
+</code></pre>
+<p>
+
+<input type="checkbox" id="zoomCheck-9613b" hidden>
+<label for="zoomCheck-9613b">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/18929b93-b7ba-4438-81f1-36310c7410d3.png#center" alt=""  />
+</label></p>
+<ul>
+<li>
+<p>Dense-and-Sparse Quantization</p>
+<ul>
+<li>
+<p>Outlier is challenge in low-bit LLM. In this paper removing small percentage(0.1%) of values that outlier keep as FP16 and make them to another matrix(named Sparse matrix). Dense matrix is matrix that not containing outliers.</p>
+</li>
+<li>
+<p>Authors find outliers by Threshold values. W can make by sum of D,S. D = W[Tmin &lt; w &lt; Tmax], S = W[w &lt; Tmin or w &gt; Tmax]. S value is very small percentage that negligible in speed and memory load. WX = DX + SX. If we mitigate to Sparse matrix, we can better quantize the dense matrix.</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-fe0bb" hidden>
+<label for="zoomCheck-fe0bb">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-80f3-8c0d-ff71f4612cd4.png#center" alt=""  />
+</label></p>
+<ul>
+<li>
+<p>Sensitivity-Based Sparse Matrix</p>
+<ul>
+<li>For more better accuracy authors isolate sensitive values(it is easily identified based on Fisher information) in FP16.</li>
+</ul>
+</li>
+</ul>
+<h3 id="main-result">Main result<a hidden class="anchor" aria-hidden="true" href="#main-result">#</a></h3>
+<ul>
+<li>
+<p>Use GPTQ with activation ordering</p>
+<p>Performance of SqueezeLLM, SqueezeLLM is Dense-only Quantization(no exclude outliers). Dense-and-Sparse Quantization(using Dense matrix)</p>
+</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-1da6f" hidden>
+<label for="zoomCheck-1da6f">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/7a381373-e378-449d-9f1b-d735be5740bc.png#center" alt=""  />
+</label></p>
+<pre><code>3-bit quantization where even dense-only SqueezeLLM achieves comparable perplexity to grouped GPTQ/AWQ.
+</code></pre>
+<p>
+
+<input type="checkbox" id="zoomCheck-bddc3" hidden>
+<label for="zoomCheck-bddc3">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/c6120a80-b20f-491a-a8fa-f95e0d8df127.png#center" alt=""  />
+</label></p>
+<pre><code>0-shot MMLU evalution 
+</code></pre>
+<p>
+
+<input type="checkbox" id="zoomCheck-fbb24" hidden>
+<label for="zoomCheck-fbb24">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/04feb6fd-feb1-43ff-912c-eacc78aba935.png#center" alt=""  />
+</label></p>
+<pre><code>Speed and memory usage
+</code></pre>
+<p>
+
+<input type="checkbox" id="zoomCheck-dc2e4" hidden>
+<label for="zoomCheck-dc2e4">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/2a62ee50-6f4a-4dd6-b19d-582d4a3cc51e.png#center" alt=""  />
+</label></p>
+<pre><code>Instruction-Following Ability
+</code></pre>
+<p>
+
+<input type="checkbox" id="zoomCheck-8f4a4" hidden>
+<label for="zoomCheck-8f4a4">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/251fdbee-75ae-4814-822c-2fc5a9f8cde3.png#center" alt=""  />
+</label></p>
+<h3 id="personal-thought">Personal thought<a hidden class="anchor" aria-hidden="true" href="#personal-thought">#</a></h3>
+<ul>
+<li>How Top 20 Sensitive values are computed in Figure 3?</li>
+</ul>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://new-sunset-shimmer.github.io/tags/quantization/">Quantization</a></li>
+      <li><a href="https://new-sunset-shimmer.github.io/tags/paper/">Paper</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://new-sunset-shimmer.github.io/">Sunset</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

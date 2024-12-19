@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>FlattenQuant | Sunset</title>
+<meta name="keywords" content="Quantization, Paper">
+<meta name="description" content="Smooth and Flatten for better speed and accuracy">
+<meta name="author" content="">
+<link rel="canonical" href="https://new-sunset-shimmer.github.io/FlattenQuant/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.5cfc680b1eeaeef9efbced92d46c2a9e876b72ee14fba85846afc4cff9e6e6f8.css" integrity="sha256-XPxoCx7q7vnvvO2S1Gwqnodrcu4U&#43;6hYRq/Ez/nm5vg=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://new-sunset-shimmer.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://new-sunset-shimmer.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://new-sunset-shimmer.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://new-sunset-shimmer.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://new-sunset-shimmer.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://new-sunset-shimmer.github.io/FlattenQuant/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript><style>
+    @media screen and (min-width: 769px) {
+
+         
+        .post-content input[type="checkbox"]:checked~label>img {
+            transform: scale(1.6);
+            cursor: zoom-out;
+            position: relative;
+            z-index: 999;
+        }
+
+        .post-content img.zoomCheck {
+            transition: transform 0.15s ease;
+            z-index: 999;
+            cursor: zoom-in;
+        }
+    }
+</style><meta property="og:title" content="FlattenQuant" />
+<meta property="og:description" content="Smooth and Flatten for better speed and accuracy" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://new-sunset-shimmer.github.io/FlattenQuant/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-12-12T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-12-12T00:00:00+00:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="FlattenQuant"/>
+<meta name="twitter:description" content="Smooth and Flatten for better speed and accuracy"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://new-sunset-shimmer.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "FlattenQuant",
+      "item": "https://new-sunset-shimmer.github.io/FlattenQuant/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "FlattenQuant",
+  "name": "FlattenQuant",
+  "description": "Smooth and Flatten for better speed and accuracy",
+  "keywords": [
+    "Quantization", "Paper"
+  ],
+  "articleBody": " Full Title : FlattenQuant: Breaking Through the Inference Compute-bound for Large Language Models with Per-tensor Quantization\nLink : 2402.17985 (arxiv.org)\nRelated Link : SmoothQuant: Accurate and Efficient Post-Training Quantization for Large Language Models (arxiv.org)\nReleased Date : Wed, 28 Feb 2024\nReview Date : Wed, 11 Dec 2024\nSmooth and Flatten for better speed and accuracy\nMotivation Mixed-precision quantization is not very efficient, By Adding batch to input it make model to Compute bound in Mixed-Precision weight. In this paper quantize model as Mixed-precision but in low-bit(8,4) and make outlier flatten to easy to quantize\nResearch questions can we make mixed-precision more effective\nMethodology This paper uses smoothing and flattening techniques. The smoothing approach comes from SmoothQuant. The authors criticize SmoothQuant for being ineffective when outliers are extremely large. Authors propose Flatten that split outlier to new channel also Repeat corresponding channel of weight to flattening a outlier. in the end the Quantize model in low-bit mixed-precision.\n(a) is showing how to flattening. (b) is visualizing after a (Flatten+Repeat).\nFlattening the Tensor\nAuthor splitting outlier by treshold T. Ej is count of extended channels, Total count of extended channels are denote as C_extended\nWe Flatten(extend outlier by number of E) and original xij is mod by T. Wj is repeat by count of extended channel\nAchieving High-precision\nAuthor smoothing X and W in order to reducing total number of count. Authors find S by expected value(median) and distribution on channel\nSelection of the truncation threshold\nThey can find threshold value for avoid increasing channels hugely. Q1 is lower quartile Q2 is upper quartile that divide data into lowest and highest 25% respectively. IQR is interquartile range defined as Q3 - Q1. and result we can find Threashold value that normalized by all tensor.\nQuantize some layers to INT4.\nAuthors goal is reduce compute speed. Int 4 is more hardware friendly. Authors find LAYER performance in 4 bits using KL divergence of P(Original data distribution) and Quantized tensor distribution(Q) with comparing threshold γ.\nMain result per-tensor quantization, OPT model, α is set to 0.5, β is set to 1.3, γ as 1.86\nPersonal thought this paper focus on speed of when batch is huge\n",
+  "wordCount" : "363",
+  "inLanguage": "en",
+  "datePublished": "2024-12-12T00:00:00Z",
+  "dateModified": "2024-12-12T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://new-sunset-shimmer.github.io/FlattenQuant/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Sunset",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://new-sunset-shimmer.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class=" dark" id="top">
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://new-sunset-shimmer.github.io/" accesskey="h" title="Sunset (Alt + H)">Sunset</a>
+            <div class="logo-switches">
+                <ul class="lang-switch"><li>|</li>
+                </ul>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      FlattenQuant
+    </h1>
+    <div class="post-meta"><span title='2024-12-12 00:00:00 +0000 UTC'>December 12, 2024</span>
+
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#motivation" aria-label="Motivation">Motivation</a></li>
+                <li>
+                    <a href="#research-questions" aria-label="Research questions">Research questions</a></li>
+                <li>
+                    <a href="#methodology" aria-label="Methodology">Methodology</a></li>
+                <li>
+                    <a href="#main-result" aria-label="Main result">Main result</a></li>
+                <li>
+                    <a href="#personal-thought" aria-label="Personal thought">Personal thought</a>
+                </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><blockquote>
+<p>Full Title : FlattenQuant: Breaking Through the Inference Compute-bound for Large Language Models with Per-tensor Quantization</p>
+</blockquote>
+<blockquote>
+<p>Link : <a href="https://arxiv.org/pdf/2402.17985">2402.17985 (arxiv.org)</a></p>
+</blockquote>
+<blockquote>
+<p>Related Link : <a href="https://arxiv.org/pdf/2211.10438">SmoothQuant: Accurate and Efficient Post-Training Quantization for Large Language Models (arxiv.org)</a></p>
+</blockquote>
+<blockquote>
+<p>Released Date : Wed, 28 Feb 2024</p>
+</blockquote>
+<blockquote>
+<p>Review Date : Wed, 11 Dec 2024</p>
+</blockquote>
+<p>Smooth and Flatten for better speed and accuracy</p>
+<h3 id="motivation">Motivation<a hidden class="anchor" aria-hidden="true" href="#motivation">#</a></h3>
+<p>Mixed-precision quantization is not very efficient, By Adding batch to input it make model to Compute bound in Mixed-Precision weight. In this paper quantize model as Mixed-precision but in low-bit(8,4) and make outlier flatten to easy to quantize</p>
+<p>
+
+<input type="checkbox" id="zoomCheck-bf79c" hidden>
+<label for="zoomCheck-bf79c">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-80b7-96bc-da22f45d72ad.png#center" alt=""  />
+</label></p>
+<p>
+
+<input type="checkbox" id="zoomCheck-f5c86" hidden>
+<label for="zoomCheck-f5c86">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-8071-90d7-d00769b422f3.png#center" alt=""  />
+</label></p>
+<h3 id="research-questions">Research questions<a hidden class="anchor" aria-hidden="true" href="#research-questions">#</a></h3>
+<p>can we make mixed-precision more effective</p>
+<h3 id="methodology">Methodology<a hidden class="anchor" aria-hidden="true" href="#methodology">#</a></h3>
+<p>This paper uses smoothing and flattening techniques. The smoothing approach comes from SmoothQuant. The authors criticize SmoothQuant for being ineffective when outliers are extremely large. Authors propose Flatten that split outlier to new channel also Repeat corresponding channel of weight to flattening a outlier. in the end the Quantize model in low-bit mixed-precision.</p>
+<p>
+
+<input type="checkbox" id="zoomCheck-4ad98" hidden>
+<label for="zoomCheck-4ad98">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-8085-af71-f0e0c0d05746.png#center" alt=""  />
+</label></p>
+<p>(a) is showing how to flattening. (b) is visualizing after a (Flatten+Repeat).</p>
+<p>
+
+<input type="checkbox" id="zoomCheck-a3767" hidden>
+<label for="zoomCheck-a3767">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-80db-8b88-fb2f70725cca.png#center" alt=""  />
+</label></p>
+<ul>
+<li>
+<p>Flattening the Tensor</p>
+<p>Author splitting outlier by treshold T. Ej is count of extended channels, Total count of extended channels are denote as C_extended</p>
+</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-6a076" hidden>
+<label for="zoomCheck-6a076">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-800e-86fd-f1347e604503.png#center" alt=""  />
+</label></p>
+<p>We Flatten(extend outlier by number of E) and original xij is mod by T. Wj is repeat by count of extended channel</p>
+<p>
+
+<input type="checkbox" id="zoomCheck-83162" hidden>
+<label for="zoomCheck-83162">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-8098-a2eb-ca14a381f013.png#center" alt=""  />
+</label></p>
+<ul>
+<li>
+<p>Achieving High-precision</p>
+<p>Author smoothing X and W in order to reducing total number of count. Authors find S by expected value(median) and distribution on channel</p>
+</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-a444b" hidden>
+<label for="zoomCheck-a444b">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-80fe-94ca-c284c92d3855.png#center" alt=""  />
+</label></p>
+<ul>
+<li>
+<p>Selection of the truncation threshold</p>
+<p>They can find threshold value for avoid increasing channels hugely. Q1 is lower quartile Q2 is upper quartile that divide data into lowest and highest 25% respectively. IQR is interquartile range defined as Q3 - Q1. and result we can find Threashold value that normalized by all tensor.</p>
+</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-c02e7" hidden>
+<label for="zoomCheck-c02e7">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-800d-aeaa-dbfdd64a8bd2.png#center" alt=""  />
+</label></p>
+<ul>
+<li>
+<p>Quantize some layers to INT4.</p>
+<p>Authors goal is reduce compute speed. Int 4 is more hardware friendly. Authors find LAYER performance in 4 bits using KL divergence of P(Original data distribution) and Quantized tensor distribution(Q) with comparing threshold γ.</p>
+</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-b7e29" hidden>
+<label for="zoomCheck-b7e29">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-8015-815d-f37382141bf2.png#center" alt=""  />
+</label></p>
+<h3 id="main-result">Main result<a hidden class="anchor" aria-hidden="true" href="#main-result">#</a></h3>
+<p>per-tensor quantization,  OPT model, α is set to 0.5, β is set to 1.3, γ as 1.86</p>
+<p>
+
+<input type="checkbox" id="zoomCheck-1dc2e" hidden>
+<label for="zoomCheck-1dc2e">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-80cb-809c-c276ace4f81f.png#center" alt=""  />
+</label></p>
+<p>
+
+<input type="checkbox" id="zoomCheck-4e463" hidden>
+<label for="zoomCheck-4e463">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-801c-862a-cf530ac3a810.png#center" alt=""  />
+</label></p>
+<p>
+
+<input type="checkbox" id="zoomCheck-958c4" hidden>
+<label for="zoomCheck-958c4">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-80ed-bb6a-c42f6a3978fd.png#center" alt=""  />
+</label></p>
+<p>
+
+<input type="checkbox" id="zoomCheck-96698" hidden>
+<label for="zoomCheck-96698">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-806d-8614-df2d1d5139f5.png#center" alt=""  />
+</label></p>
+<p>
+
+<input type="checkbox" id="zoomCheck-54551" hidden>
+<label for="zoomCheck-54551">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-804d-9ca6-c938ea355af5.png#center" alt=""  />
+</label></p>
+<p>
+
+<input type="checkbox" id="zoomCheck-2b784" hidden>
+<label for="zoomCheck-2b784">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-806a-8519-f336d5daf1fb.png#center" alt=""  />
+</label></p>
+<p>
+
+<input type="checkbox" id="zoomCheck-c99d8" hidden>
+<label for="zoomCheck-c99d8">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-8001-9620-e2781dd23280.png#center" alt=""  />
+</label></p>
+<p>
+
+<input type="checkbox" id="zoomCheck-ea43a" hidden>
+<label for="zoomCheck-ea43a">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-80e7-a728-db932d79f566.png#center" alt=""  />
+</label></p>
+<p>
+
+<input type="checkbox" id="zoomCheck-4f5a3" hidden>
+<label for="zoomCheck-4f5a3">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-8041-845a-ca4429f20a6f.png#center" alt=""  />
+</label></p>
+<h3 id="personal-thought">Personal thought<a hidden class="anchor" aria-hidden="true" href="#personal-thought">#</a></h3>
+<p>this paper focus on speed of when batch is huge</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://new-sunset-shimmer.github.io/tags/quantization/">Quantization</a></li>
+      <li><a href="https://new-sunset-shimmer.github.io/tags/paper/">Paper</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://new-sunset-shimmer.github.io/">Sunset</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

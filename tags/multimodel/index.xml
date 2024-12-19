@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Multimodel on Sunset</title>
+    <link>https://new-sunset-shimmer.github.io/tags/multimodel/</link>
+    <description>Recent content in Multimodel on Sunset</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 12 Dec 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://new-sunset-shimmer.github.io/tags/multimodel/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The Evolution of Multimodal Model Architectures</title>
+      <link>https://new-sunset-shimmer.github.io/Multimodal/</link>
+      <pubDate>Thu, 12 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/Multimodal/</guid>
+      <description>멀티 모델들의 아키텍쳐 분류</description>
+    </item>
+    
+  </channel>
+</rss>

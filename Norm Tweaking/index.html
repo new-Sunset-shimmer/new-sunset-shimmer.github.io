@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Norm Tweaking | Sunset</title>
+<meta name="keywords" content="Quantization, Paper">
+<meta name="description" content="Tweak quantized Layernorm to as same as Floating point layernorm distribution">
+<meta name="author" content="">
+<link rel="canonical" href="https://new-sunset-shimmer.github.io/Norm%20Tweaking/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.5cfc680b1eeaeef9efbced92d46c2a9e876b72ee14fba85846afc4cff9e6e6f8.css" integrity="sha256-XPxoCx7q7vnvvO2S1Gwqnodrcu4U&#43;6hYRq/Ez/nm5vg=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://new-sunset-shimmer.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://new-sunset-shimmer.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://new-sunset-shimmer.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://new-sunset-shimmer.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://new-sunset-shimmer.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://new-sunset-shimmer.github.io/Norm%20Tweaking/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript><style>
+    @media screen and (min-width: 769px) {
+
+         
+        .post-content input[type="checkbox"]:checked~label>img {
+            transform: scale(1.6);
+            cursor: zoom-out;
+            position: relative;
+            z-index: 999;
+        }
+
+        .post-content img.zoomCheck {
+            transition: transform 0.15s ease;
+            z-index: 999;
+            cursor: zoom-in;
+        }
+    }
+</style><meta property="og:title" content="Norm Tweaking" />
+<meta property="og:description" content="Tweak quantized Layernorm to as same as Floating point layernorm distribution" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://new-sunset-shimmer.github.io/Norm%20Tweaking/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-12-12T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-12-12T00:00:00+00:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Norm Tweaking"/>
+<meta name="twitter:description" content="Tweak quantized Layernorm to as same as Floating point layernorm distribution"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://new-sunset-shimmer.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Norm Tweaking",
+      "item": "https://new-sunset-shimmer.github.io/Norm%20Tweaking/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Norm Tweaking",
+  "name": "Norm Tweaking",
+  "description": "Tweak quantized Layernorm to as same as Floating point layernorm distribution",
+  "keywords": [
+    "Quantization", "Paper"
+  ],
+  "articleBody": " Full Title : Norm Tweaking: High-performance Low-bit Quantization of Large Language Models\nLink : 2309.02784 (arxiv.org)\nRelated Link :\nReleased Date :\nReview Date :\nTweak quantized Layernorm to as same as Floating point layernorm distribution\nMotivation Quantized model’s distribution is diffrent from original model. In this paper set a goal that tweaking Layernorm distribution to enhancing quantized model accuracy. Research questions could we improve the performance of the quantized model by simply matching its activation distribution to that of the float model? Methodology Authors define problems as minimizing original model’s weight and Quantization model’s weight distribution(Equation 1). But training on all weight is expensive so authors freeze all weights expect Layernorm weight(W_ln). For fast train and not damage to model(layer norm is very sensitive) on only small iterations. Instead of using already generated calibrated dataset like wikitext using dataset that model generated texts. if we use texts that using own model it can be more general and get rich sementic information. for ensure Generality authors generate from one single token that came from model vocalbury(set a restrict only use top languages that compse most of dataset) Channel-wise Distribution Loss(2). 1) model got outlier that make quantazation harder. 2) strict aligment make over-fitting on calibrated datasets. All over authors make relaxed loss function that learn variable and mean of each channels. all layer got different learning rate for different speed Main result find lr by grid search set at 1e-5, use quantaztion algorithm as GPTQ group 64\nAccuracy on LAMBADA dataset\nNorm tweaking cost Using another quantazition method with norm tweak example of generation for show more accurate performance learning many iterations is very bad to model performance Evalution on LM eval harness Generated data set is make more general quantized model Loss dist is got more accracy Personal thought is quantization learnable? is quantization deriveable? ",
+  "wordCount" : "306",
+  "inLanguage": "en",
+  "datePublished": "2024-12-12T00:00:00Z",
+  "dateModified": "2024-12-12T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://new-sunset-shimmer.github.io/Norm%20Tweaking/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Sunset",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://new-sunset-shimmer.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class=" dark" id="top">
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://new-sunset-shimmer.github.io/" accesskey="h" title="Sunset (Alt + H)">Sunset</a>
+            <div class="logo-switches">
+                <ul class="lang-switch"><li>|</li>
+                </ul>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      Norm Tweaking
+    </h1>
+    <div class="post-meta"><span title='2024-12-12 00:00:00 +0000 UTC'>December 12, 2024</span>
+
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#motivation" aria-label="Motivation">Motivation</a></li>
+                <li>
+                    <a href="#research-questions" aria-label="Research questions">Research questions</a></li>
+                <li>
+                    <a href="#methodology" aria-label="Methodology">Methodology</a></li>
+                <li>
+                    <a href="#main-result" aria-label="Main result">Main result</a></li>
+                <li>
+                    <a href="#personal-thought" aria-label="Personal thought">Personal thought</a>
+                </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><blockquote>
+<p>Full Title : Norm Tweaking: High-performance Low-bit Quantization of Large Language Models</p>
+</blockquote>
+<blockquote>
+<p>Link : <a href="https://arxiv.org/pdf/2309.02784">2309.02784 (arxiv.org)</a></p>
+</blockquote>
+<blockquote>
+<p>Related Link :</p>
+</blockquote>
+<blockquote>
+<p>Released Date :</p>
+</blockquote>
+<blockquote>
+<p>Review Date :</p>
+</blockquote>
+<p>Tweak quantized Layernorm to as same as Floating point layernorm distribution</p>
+<h3 id="motivation">Motivation<a hidden class="anchor" aria-hidden="true" href="#motivation">#</a></h3>
+<ul>
+<li>Quantized model’s distribution is diffrent from original model. In this paper set a goal that tweaking Layernorm distribution to enhancing quantized model accuracy.</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-f70ca" hidden>
+<label for="zoomCheck-f70ca">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/fb26d1dd-caea-47ae-b2eb-ab554cfb5ec6.png#center" alt=""  />
+</label></p>
+<h3 id="research-questions">Research questions<a hidden class="anchor" aria-hidden="true" href="#research-questions">#</a></h3>
+<ul>
+<li>could we improve the performance of the quantized model by simply matching its activation distribution to that of the float model?</li>
+</ul>
+<h3 id="methodology">Methodology<a hidden class="anchor" aria-hidden="true" href="#methodology">#</a></h3>
+<ul>
+<li>Authors define problems as minimizing original model’s weight and Quantization model’s weight distribution(Equation 1). But training on all weight is expensive so authors freeze all weights expect Layernorm weight(W_ln).</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-bd584" hidden>
+<label for="zoomCheck-bd584">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/d0b694b2-5b07-4490-adaf-c401bee08624.png#center" alt=""  />
+</label></p>
+<ul>
+<li>For fast train and not damage to model(layer norm is very sensitive) on only small iterations.</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-2aed2" hidden>
+<label for="zoomCheck-2aed2">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-80e0-9703-efb69f6c4e9c.png#center" alt=""  />
+</label></p>
+<ul>
+<li>Instead of using already generated calibrated dataset like wikitext using dataset that model generated texts. if we use texts that using own model it can be more general and get rich sementic information. for ensure Generality authors generate from one single token that came from model vocalbury(set a restrict only use top languages that compse most of dataset)</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-6e062" hidden>
+<label for="zoomCheck-6e062">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-804b-9996-f41f71585fee.png#center" alt=""  />
+</label></p>
+<ul>
+<li>Channel-wise Distribution Loss(2). 1) model got outlier that make quantazation harder. 2) strict aligment make over-fitting on calibrated datasets. All over authors make relaxed loss function that learn variable and mean of each channels.</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-fb12e" hidden>
+<label for="zoomCheck-fb12e">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-80b4-85a1-c47d8f6dc0a0.png#center" alt=""  />
+</label></p>
+<ul>
+<li>all layer got different learning rate for different speed</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-5e237" hidden>
+<label for="zoomCheck-5e237">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-8082-b22f-dcf744ff4b07.png#center" alt=""  />
+</label></p>
+<h3 id="main-result">Main result<a hidden class="anchor" aria-hidden="true" href="#main-result">#</a></h3>
+<ul>
+<li>
+<p>find lr by grid search set at 1e-5, use quantaztion algorithm as GPTQ group 64</p>
+</li>
+<li>
+<p>Accuracy on LAMBADA dataset</p>
+</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-07edc" hidden>
+<label for="zoomCheck-07edc">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/bd02c807-54e3-44ca-85ea-a74a611c7cb2.png#center" alt=""  />
+</label></p>
+<ul>
+<li>Norm tweaking cost</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-e5bae" hidden>
+<label for="zoomCheck-e5bae">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/967bdcb8-973e-4449-a320-c07bed1a3af6.png#center" alt=""  />
+</label></p>
+<ul>
+<li>Using another quantazition method with norm tweak</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-e4f2e" hidden>
+<label for="zoomCheck-e4f2e">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/e07854d1-72d4-4727-96fa-30f0f0352e13.png#center" alt=""  />
+</label></p>
+<ul>
+<li>example of generation for show more accurate performance</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-3373e" hidden>
+<label for="zoomCheck-3373e">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/808a13a3-d1d6-4d48-b2ef-d62ea964adc7.png#center" alt=""  />
+</label></p>
+<ul>
+<li>learning many iterations is very bad to model performance</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-e77fb" hidden>
+<label for="zoomCheck-e77fb">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/0b8fd1bf-b774-40f0-9b06-17b6352f8c7f.png#center" alt=""  />
+</label></p>
+<ul>
+<li>Evalution on LM eval harness</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-f19d9" hidden>
+<label for="zoomCheck-f19d9">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/bd9ebe73-34c2-428d-a960-f5a1ef748b98.png#center" alt=""  />
+</label></p>
+<ul>
+<li>Generated data set is make more general quantized model</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-bfc69" hidden>
+<label for="zoomCheck-bfc69">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/9f0d48f2-75d2-4452-9758-540e97b2499a.png#center" alt=""  />
+</label></p>
+<ul>
+<li>Loss dist is got more accracy</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-55e7d" hidden>
+<label for="zoomCheck-55e7d">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/bc5e8a85-8907-4595-9f45-182c9563c65b.png#center" alt=""  />
+</label></p>
+<h3 id="personal-thought">Personal thought<a hidden class="anchor" aria-hidden="true" href="#personal-thought">#</a></h3>
+<ul>
+<li>is quantization learnable? is quantization deriveable?</li>
+</ul>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://new-sunset-shimmer.github.io/tags/quantization/">Quantization</a></li>
+      <li><a href="https://new-sunset-shimmer.github.io/tags/paper/">Paper</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://new-sunset-shimmer.github.io/">Sunset</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

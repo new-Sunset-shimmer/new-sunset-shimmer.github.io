@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Tags on Sunset</title>
+    <link>https://new-sunset-shimmer.github.io/tags/</link>
+    <description>Recent content in Tags on Sunset</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 19 Dec 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://new-sunset-shimmer.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Paper</title>
+      <link>https://new-sunset-shimmer.github.io/tags/paper/</link>
+      <pubDate>Thu, 19 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/tags/paper/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Quantization</title>
+      <link>https://new-sunset-shimmer.github.io/tags/quantization/</link>
+      <pubDate>Thu, 19 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/tags/quantization/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Features</title>
+      <link>https://new-sunset-shimmer.github.io/tags/features/</link>
+      <pubDate>Fri, 13 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/tags/features/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Awsome</title>
+      <link>https://new-sunset-shimmer.github.io/tags/awsome/</link>
+      <pubDate>Thu, 12 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/tags/awsome/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>KV Cache</title>
+      <link>https://new-sunset-shimmer.github.io/tags/kv-cache/</link>
+      <pubDate>Thu, 12 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/tags/kv-cache/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Multimodel</title>
+      <link>https://new-sunset-shimmer.github.io/tags/multimodel/</link>
+      <pubDate>Thu, 12 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/tags/multimodel/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Project</title>
+      <link>https://new-sunset-shimmer.github.io/tags/project/</link>
+      <pubDate>Thu, 12 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/tags/project/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Pruning</title>
+      <link>https://new-sunset-shimmer.github.io/tags/pruning/</link>
+      <pubDate>Thu, 12 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/tags/pruning/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Usage</title>
+      <link>https://new-sunset-shimmer.github.io/tags/usage/</link>
+      <pubDate>Sat, 04 Mar 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/tags/usage/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

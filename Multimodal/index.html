@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>The Evolution of Multimodal Model Architectures | Sunset</title>
+<meta name="keywords" content="Paper, Awsome, Multimodel">
+<meta name="description" content="멀티 모델들의 아키텍쳐 분류">
+<meta name="author" content="">
+<link rel="canonical" href="https://new-sunset-shimmer.github.io/Multimodal/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.5cfc680b1eeaeef9efbced92d46c2a9e876b72ee14fba85846afc4cff9e6e6f8.css" integrity="sha256-XPxoCx7q7vnvvO2S1Gwqnodrcu4U&#43;6hYRq/Ez/nm5vg=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://new-sunset-shimmer.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://new-sunset-shimmer.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://new-sunset-shimmer.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://new-sunset-shimmer.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://new-sunset-shimmer.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://new-sunset-shimmer.github.io/Multimodal/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript><style>
+    @media screen and (min-width: 769px) {
+
+         
+        .post-content input[type="checkbox"]:checked~label>img {
+            transform: scale(1.6);
+            cursor: zoom-out;
+            position: relative;
+            z-index: 999;
+        }
+
+        .post-content img.zoomCheck {
+            transition: transform 0.15s ease;
+            z-index: 999;
+            cursor: zoom-in;
+        }
+    }
+</style><meta property="og:title" content="The Evolution of Multimodal Model Architectures" />
+<meta property="og:description" content="멀티 모델들의 아키텍쳐 분류" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://new-sunset-shimmer.github.io/Multimodal/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-12-12T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-12-12T00:00:00+00:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="The Evolution of Multimodal Model Architectures"/>
+<meta name="twitter:description" content="멀티 모델들의 아키텍쳐 분류"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://new-sunset-shimmer.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "The Evolution of Multimodal Model Architectures",
+      "item": "https://new-sunset-shimmer.github.io/Multimodal/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "The Evolution of Multimodal Model Architectures",
+  "name": "The Evolution of Multimodal Model Architectures",
+  "description": "멀티 모델들의 아키텍쳐 분류",
+  "keywords": [
+    "Paper", "Awsome", "Multimodel"
+  ],
+  "articleBody": "2405.17927 (arxiv.org)\nThe Evolution of Multimodal Model Architectures\nReleased : 2024 05 28\nReview Date : 2024 09 21\n멀티 모델들의 아키텍쳐 분류\nMotivation 저자들은 현재 연구되고있는 멀티모델들을 조사했으며 그 모델들을 분류하고 그에 따른 데이트셋과 특징들을 해당 논문에서 설명했다. Methodology 저자들은 모델 분류를 총 A,B,C,D 4개로 분류했다. A와 B는 모델 내부에 파라미터를 추가하는 Deep fusion, C와 D는 입력층에 파라미터를 추가하는 Early fusion이다. Type A : encoder를 통해 LLM에 일반적인 cross-attention Layer로 상호작용한다. 보통 self-Attention뒤 혹은 앞에 넣는지로 갈린다.\n장점 : 모델의 흐름을 미세하게 조절이 가능. end-to-end 학습과 출력가능\n단점 : 필요 학습 데이터, 모델 사이즈 증가, 사용하는 LLM의 구조에대한 이해도가 필요. cross-attention Layer추가 후 다른 Layer 추가가 힘듬. 스케일링이 어려움\nType B : 일반적인 cross-attention이 아닌 Custom Cross-attention Layer, Custom Learnable Layer을 쓴다. Custom Cross-attention Layer은 일반적으로 encoder을 쓰며 Custom Learnable Layer은 굳이 encoder을 필요로 하지않는다.\n장점 : 모델의 흐름을 미세하게 조절이 가능. end-to-end 학습과 출력가능. A type과 비교하여 다른 Layer 추가가 비교적 쉬움. 파라미터 조절이 쉬움\n단점 : 스케일링에 어려움이 존재. 필요 학습 데이터, 모델 사이즈 증가. text 아닌 다른 형식의 출력을 auto-regressive하게 학습하기 힘듬\nType C : 모델 내부에 어떤 값을 보내지 않으며 입력층을 통해서 값을 모델로 전달한다. 보통 encoder층을 이용하고 해당 출력을 특정한 길이의 값으로 바꾸기 위해 특정한 Layer을 쓴다. LLM 아키텍쳐에 변화를 주지않는다(Lora는 쓸수있음). Encoder 출력을 바꾸는 Layer에는 Reasmpler(Q-former과 비슷하지만 image와 text는 다른 self-attention층을 씀), Linear Layer, MLP, Q-former(가벼운 transformer. 텍스트, 이미지를 학습하는 하나의 query embeddings, cross-attention을 가지고있으며 이미지와 텍스트는 하나의 self-attention층을 공유), Attention Pooling등이 있다.\n장점 : 필요 학습 데이터, 모델 사이즈 증가가 비교적 적음. end-to-end 학습과 출력가능. LLM을 쉽게 바꿀수있음. 모델 타입의 모델 사용가능. Layer추가가 비교적 쉬움.\n단점 : 모델의 흐름을 미세하게 조절이 힘듬. 텍스트가 출력으로 auto-regressive하게 학습이 힘듬\nType D : 이미지, 비디오, 오디오를 특정한 토큰들로 변환하는 타입이다. LLM, Encder-Decder모델을 쓰는 형식으로 나뉜다.\n장점 : 모든 형식의 출력에 auto-regressive하게 학습이 가능. end-to-end 학습과 출력가능.\n단점 : 모델의 흐름을 미세하게 조절이 힘듬. 학습해야 하는 파라미터가 다른 타입들 보다 많음(다른 Token들을 학습해야 하기에)\n",
+  "wordCount" : "318",
+  "inLanguage": "en",
+  "datePublished": "2024-12-12T00:00:00Z",
+  "dateModified": "2024-12-12T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://new-sunset-shimmer.github.io/Multimodal/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Sunset",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://new-sunset-shimmer.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class=" dark" id="top">
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://new-sunset-shimmer.github.io/" accesskey="h" title="Sunset (Alt + H)">Sunset</a>
+            <div class="logo-switches">
+                <ul class="lang-switch"><li>|</li>
+                </ul>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      The Evolution of Multimodal Model Architectures
+    </h1>
+    <div class="post-meta"><span title='2024-12-12 00:00:00 +0000 UTC'>December 12, 2024</span>
+
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#motivation" aria-label="Motivation">Motivation</a></li>
+                <li>
+                    <a href="#methodology" aria-label="Methodology">Methodology</a>
+                </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><p><a href="https://arxiv.org/pdf/2405.17927">2405.17927 (arxiv.org)</a></p>
+<blockquote>
+<p>The Evolution of Multimodal Model Architectures</p>
+</blockquote>
+<blockquote>
+<p>Released : 2024 05 28</p>
+</blockquote>
+<blockquote>
+<p>Review Date : 2024 09 21</p>
+</blockquote>
+<p>멀티 모델들의 아키텍쳐 분류</p>
+<h3 id="motivation">Motivation<a hidden class="anchor" aria-hidden="true" href="#motivation">#</a></h3>
+<ul>
+<li>저자들은 현재 연구되고있는 멀티모델들을 조사했으며 그 모델들을 분류하고 그에 따른 데이트셋과 특징들을 해당 논문에서 설명했다.</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-56c19" hidden>
+<label for="zoomCheck-56c19">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-8059-90ff-e3414b19f98a.png#center" alt=""  />
+</label></p>
+<h3 id="methodology">Methodology<a hidden class="anchor" aria-hidden="true" href="#methodology">#</a></h3>
+<ul>
+<li>저자들은 모델 분류를 총 A,B,C,D 4개로 분류했다. A와 B는 모델 내부에 파라미터를 추가하는 Deep fusion, C와 D는 입력층에 파라미터를 추가하는 Early fusion이다.</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-5a1a3" hidden>
+<label for="zoomCheck-5a1a3">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/4772fada-9a95-4058-8b4c-97f5ffcb2d8d.png#center" alt=""  />
+</label></p>
+<ul>
+<li>
+<p>Type A : encoder를 통해 LLM에 일반적인 cross-attention Layer로 상호작용한다. 보통 self-Attention뒤 혹은 앞에 넣는지로 갈린다.</p>
+</li>
+<li>
+<p>장점 : 모델의 흐름을 미세하게 조절이 가능. end-to-end 학습과 출력가능</p>
+</li>
+<li>
+<p>단점 : 필요 학습 데이터, 모델 사이즈 증가, 사용하는 LLM의 구조에대한 이해도가 필요. cross-attention Layer추가 후 다른 Layer 추가가 힘듬. 스케일링이 어려움</p>
+</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-6acee" hidden>
+<label for="zoomCheck-6acee">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/f7b66ef0-af80-48c3-8268-b56c4874ecfb.png#center" alt=""  />
+</label></p>
+<ul>
+<li>
+<p>Type B : 일반적인 cross-attention이 아닌 Custom Cross-attention Layer, Custom Learnable Layer을 쓴다. Custom Cross-attention Layer은 일반적으로 encoder을 쓰며 Custom Learnable Layer은 굳이 encoder을 필요로 하지않는다.</p>
+</li>
+<li>
+<p>장점 : 모델의 흐름을 미세하게 조절이 가능. end-to-end 학습과 출력가능. A type과 비교하여 다른 Layer 추가가 비교적 쉬움. 파라미터 조절이 쉬움</p>
+</li>
+<li>
+<p>단점 : 스케일링에 어려움이 존재. 필요 학습 데이터, 모델 사이즈 증가. text 아닌 다른 형식의 출력을 auto-regressive하게 학습하기 힘듬</p>
+</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-71390" hidden>
+<label for="zoomCheck-71390">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/688cf079-06b4-4d2e-a8c7-be5779ee631b.png#center" alt=""  />
+</label></p>
+<ul>
+<li>
+<p>Type C : 모델 내부에 어떤 값을 보내지 않으며 입력층을 통해서 값을 모델로 전달한다. 보통 encoder층을 이용하고 해당 출력을 특정한 길이의 값으로 바꾸기 위해 특정한 Layer을 쓴다. LLM 아키텍쳐에 변화를 주지않는다(Lora는 쓸수있음). Encoder 출력을 바꾸는 Layer에는 Reasmpler(Q-former과 비슷하지만 image와 text는 다른 self-attention층을 씀), Linear Layer, MLP, Q-former(가벼운 transformer. 텍스트, 이미지를 학습하는 하나의 query embeddings, cross-attention을 가지고있으며 이미지와 텍스트는 하나의 self-attention층을 공유), Attention Pooling등이 있다.</p>
+</li>
+<li>
+<p>장점 : 필요 학습 데이터, 모델 사이즈 증가가 비교적 적음. end-to-end 학습과 출력가능. LLM을 쉽게 바꿀수있음. 모델 타입의 모델 사용가능. Layer추가가 비교적 쉬움.</p>
+</li>
+<li>
+<p>단점 : 모델의 흐름을 미세하게 조절이 힘듬. 텍스트가 출력으로 auto-regressive하게 학습이 힘듬</p>
+</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-ebcf6" hidden>
+<label for="zoomCheck-ebcf6">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/d3dfba37-7390-45b8-8989-7e17ef79e186.png#center" alt=""  />
+</label></p>
+<ul>
+<li>
+<p>Type D : 이미지, 비디오, 오디오를 특정한 토큰들로 변환하는 타입이다. LLM, Encder-Decder모델을 쓰는 형식으로 나뉜다.</p>
+</li>
+<li>
+<p>장점 : 모든 형식의 출력에 auto-regressive하게 학습이 가능. end-to-end 학습과 출력가능.</p>
+</li>
+<li>
+<p>단점 : 모델의 흐름을 미세하게 조절이 힘듬. 학습해야 하는 파라미터가 다른 타입들 보다 많음(다른 Token들을 학습해야 하기에)</p>
+</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-8a27d" hidden>
+<label for="zoomCheck-8a27d">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/cce52370-d913-4b31-9379-9dc9ba2a7441.png#center" alt=""  />
+</label></p>
+<p>
+
+<input type="checkbox" id="zoomCheck-8d53d" hidden>
+<label for="zoomCheck-8d53d">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-806b-aa58-f834fe47943b.png#center" alt=""  />
+</label></p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://new-sunset-shimmer.github.io/tags/paper/">Paper</a></li>
+      <li><a href="https://new-sunset-shimmer.github.io/tags/awsome/">Awsome</a></li>
+      <li><a href="https://new-sunset-shimmer.github.io/tags/multimodel/">Multimodel</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://new-sunset-shimmer.github.io/">Sunset</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

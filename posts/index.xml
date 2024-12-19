@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Posts on Sunset</title>
+    <link>https://new-sunset-shimmer.github.io/posts/</link>
+    <description>Recent content in Posts on Sunset</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 19 Dec 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://new-sunset-shimmer.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>DuQuant</title>
+      <link>https://new-sunset-shimmer.github.io/DuQuant/</link>
+      <pubDate>Thu, 19 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/DuQuant/</guid>
+      <description>ZigZag matrix for mitigate outlier to activation channels</description>
+    </item>
+    
+    <item>
+      <title>OneBit</title>
+      <link>https://new-sunset-shimmer.github.io/OneBit/</link>
+      <pubDate>Sat, 14 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/OneBit/</guid>
+      <description>make one-bit model more cheaper way</description>
+    </item>
+    
+    <item>
+      <title>1</title>
+      <link>https://new-sunset-shimmer.github.io/extra/</link>
+      <pubDate>Fri, 13 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/extra/</guid>
+      <description>리뷰할 정도가 아닌 논문들을 간단 요약</description>
+    </item>
+    
+    <item>
+      <title>ATOM</title>
+      <link>https://new-sunset-shimmer.github.io/ATOM/</link>
+      <pubDate>Thu, 12 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/ATOM/</guid>
+      <description>보다 나은 양자화</description>
+    </item>
+    
+    <item>
+      <title>ATTENTION SINKS</title>
+      <link>https://new-sunset-shimmer.github.io/ATTENTION_SINKS/</link>
+      <pubDate>Thu, 12 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/ATTENTION_SINKS/</guid>
+      <description>Attention sink를 해결하여 window attention 방식을 효율화</description>
+    </item>
+    
+    <item>
+      <title>AWEQ</title>
+      <link>https://new-sunset-shimmer.github.io/AWEQ/</link>
+      <pubDate>Thu, 12 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/AWEQ/</guid>
+      <description>Activation-Weight Equalization + Bias Correction</description>
+    </item>
+    
+    <item>
+      <title>AWQ</title>
+      <link>https://new-sunset-shimmer.github.io/AWQ/</link>
+      <pubDate>Thu, 12 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/AWQ/</guid>
+      <description>Quantize된 가중치에 스케일링을 줘서 outlier를 따라하기</description>
+    </item>
+    
+    <item>
+      <title>DUOATTENTION</title>
+      <link>https://new-sunset-shimmer.github.io/DUOATTENTION/</link>
+      <pubDate>Thu, 12 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/DUOATTENTION/</guid>
+      <description>Attention sink + Retrieval attention을 이용한 Token pruning</description>
+    </item>
+    
+    <item>
+      <title>FlattenQuant</title>
+      <link>https://new-sunset-shimmer.github.io/FlattenQuant/</link>
+      <pubDate>Thu, 12 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/FlattenQuant/</guid>
+      <description>Smooth and Flatten for better speed and accuracy</description>
+    </item>
+    
+    <item>
+      <title>InfLLM</title>
+      <link>https://new-sunset-shimmer.github.io/InfLLM/</link>
+      <pubDate>Thu, 12 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/InfLLM/</guid>
+      <description>token을 split하여 KV cache를 줄임</description>
+    </item>
+    
+    <item>
+      <title>KVQuant</title>
+      <link>https://new-sunset-shimmer.github.io/KVQuant/</link>
+      <pubDate>Thu, 12 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/KVQuant/</guid>
+      <description>Long context에서의 Quantization</description>
+    </item>
+    
+    <item>
+      <title>LoftQ</title>
+      <link>https://new-sunset-shimmer.github.io/LoftQ/</link>
+      <pubDate>Thu, 12 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/LoftQ/</guid>
+      <description>Quantization aware initializing</description>
+    </item>
+    
+    <item>
+      <title>LONGLORA</title>
+      <link>https://new-sunset-shimmer.github.io/LONGLORA/</link>
+      <pubDate>Thu, 12 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/LONGLORA/</guid>
+      <description>긴 context를 위한 모델 만들기</description>
+    </item>
+    
+    <item>
+      <title>LQ-LORA</title>
+      <link>https://new-sunset-shimmer.github.io/LQ-LORA/</link>
+      <pubDate>Thu, 12 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/LQ-LORA/</guid>
+      <description>Quantize Lora for efficient model finetuning</description>
+    </item>
+    
+    <item>
+      <title>Massive Activations</title>
+      <link>https://new-sunset-shimmer.github.io/MATT/</link>
+      <pubDate>Thu, 12 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/MATT/</guid>
+      <description>Massive activations에 대한 조사</description>
+    </item>
+    
+    <item>
+      <title>Norm Tweaking</title>
+      <link>https://new-sunset-shimmer.github.io/Norm%20Tweaking/</link>
+      <pubDate>Thu, 12 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/Norm%20Tweaking/</guid>
+      <description>Tweak quantized Layernorm to as same as Floating point layernorm distribution</description>
+    </item>
+    
+    <item>
+      <title>OMNIQUANT</title>
+      <link>https://new-sunset-shimmer.github.io/OMNIQUANT/</link>
+      <pubDate>Thu, 12 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/OMNIQUANT/</guid>
+      <description>PTQ의 효율성을 가지면서 QAT의 성능을 가지는 양자화 방법론</description>
+    </item>
+    
+    <item>
+      <title>OWQ</title>
+      <link>https://new-sunset-shimmer.github.io/OWQ/</link>
+      <pubDate>Thu, 12 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/OWQ/</guid>
+      <description>Mixed-precision quantization based on Hessian matrix</description>
+    </item>
+    
+    <item>
+      <title>PB-LLM</title>
+      <link>https://new-sunset-shimmer.github.io/PB-LLM/</link>
+      <pubDate>Thu, 12 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/PB-LLM/</guid>
+      <description>Partial binarize the model</description>
+    </item>
+    
+    <item>
+      <title>QA-LORA</title>
+      <link>https://new-sunset-shimmer.github.io/QA-LORA/</link>
+      <pubDate>Thu, 12 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/QA-LORA/</guid>
+      <description>양자화된 Lora</description>
+    </item>
+    
+    <item>
+      <title>QLLM</title>
+      <link>https://new-sunset-shimmer.github.io/QLLM/</link>
+      <pubDate>Thu, 12 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/QLLM/</guid>
+      <description>Splitting outlier to sub channels</description>
+    </item>
+    
+    <item>
+      <title>Quest</title>
+      <link>https://new-sunset-shimmer.github.io/Quest/</link>
+      <pubDate>Thu, 12 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/Quest/</guid>
+      <description>KV Cache에서 필요없는 token 버리기</description>
+    </item>
+    
+    <item>
+      <title>QUIK</title>
+      <link>https://new-sunset-shimmer.github.io/QUIK/</link>
+      <pubDate>Thu, 12 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/QUIK/</guid>
+      <description>Exclude Outlier and improve speed by custom kernels</description>
+    </item>
+    
+    <item>
+      <title>QuIP</title>
+      <link>https://new-sunset-shimmer.github.io/QuIP/</link>
+      <pubDate>Thu, 12 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/QuIP/</guid>
+      <description>Hessian matrix을 이용한 AdaptRound 최적화</description>
+    </item>
+    
+    <item>
+      <title>RAG Project</title>
+      <link>https://new-sunset-shimmer.github.io/project_1/</link>
+      <pubDate>Thu, 12 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/project_1/</guid>
+      <description>공모전 2024</description>
+    </item>
+    
+    <item>
+      <title>RETHINKING CHANNEL DIMENSIONS TO ISOLATE OUTLIERS FOR LOW-BIT WEIGHT QUANTIZATION OF LARGE LANGUAGE MODELS</title>
+      <link>https://new-sunset-shimmer.github.io/RETHINKING/</link>
+      <pubDate>Thu, 12 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/RETHINKING/</guid>
+      <description>Per Input Channel Quantization</description>
+    </item>
+    
+    <item>
+      <title>RoLoRA</title>
+      <link>https://new-sunset-shimmer.github.io/RoLoRA/</link>
+      <pubDate>Thu, 12 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/RoLoRA/</guid>
+      <description>Rotation에 Lora를 적용시킨 모델</description>
+    </item>
+    
+    <item>
+      <title>ROUND AND ROUND WE GO! WHAT MAKES ROTARY
+POSITIONAL ENCODINGS USEFUL?</title>
+      <link>https://new-sunset-shimmer.github.io/Round/</link>
+      <pubDate>Thu, 12 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/Round/</guid>
+      <description>RoPE에 대한 분석</description>
+    </item>
+    
+    <item>
+      <title>SLICEGPT</title>
+      <link>https://new-sunset-shimmer.github.io/slicegpt/</link>
+      <pubDate>Thu, 12 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/slicegpt/</guid>
+      <description>LLM 경량화 방법에 대한설명</description>
+    </item>
+    
+    <item>
+      <title>SmoothQuant</title>
+      <link>https://new-sunset-shimmer.github.io/SmoothQuant/</link>
+      <pubDate>Thu, 12 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/SmoothQuant/</guid>
+      <description>Make easy weight and activation to quantize</description>
+    </item>
+    
+    <item>
+      <title>SP3</title>
+      <link>https://new-sunset-shimmer.github.io/SP3/</link>
+      <pubDate>Thu, 12 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/SP3/</guid>
+      <description>principal components aware pruning</description>
+    </item>
+    
+    <item>
+      <title>SpinQuant</title>
+      <link>https://new-sunset-shimmer.github.io/SpinQuant/</link>
+      <pubDate>Thu, 12 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/SpinQuant/</guid>
+      <description>학습가능한 Rotation matrix을 이용한 Quatazation</description>
+    </item>
+    
+    <item>
+      <title>SpinQuant</title>
+      <link>https://new-sunset-shimmer.github.io/SpinQuant/</link>
+      <pubDate>Thu, 12 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/SpinQuant/</guid>
+      <description>학습가능한 Rotation matrix을 이용한 Quantization</description>
+    </item>
+    
+    <item>
+      <title>SqueezeLLM</title>
+      <link>https://new-sunset-shimmer.github.io/SqueezeLLM/</link>
+      <pubDate>Thu, 12 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/SqueezeLLM/</guid>
+      <description>Exclude Dense and Sparse vector</description>
+    </item>
+    
+    <item>
+      <title>The Evolution of Multimodal Model Architectures</title>
+      <link>https://new-sunset-shimmer.github.io/Multimodal/</link>
+      <pubDate>Thu, 12 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/Multimodal/</guid>
+      <description>멀티 모델들의 아키텍쳐 분류</description>
+    </item>
+    
+    <item>
+      <title>How to use</title>
+      <link>https://new-sunset-shimmer.github.io/usage/</link>
+      <pubDate>Sat, 04 Mar 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/usage/</guid>
+      <description>Step-by-step guide to make your own blog with Notion and Hugo, hosted on GitHub Pages</description>
+    </item>
+    
+    <item>
+      <title>Features</title>
+      <link>https://new-sunset-shimmer.github.io/features/</link>
+      <pubDate>Fri, 03 Mar 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://new-sunset-shimmer.github.io/features/</guid>
+      <description>Example of post written with Notion</description>
+    </item>
+    
+  </channel>
+</rss>

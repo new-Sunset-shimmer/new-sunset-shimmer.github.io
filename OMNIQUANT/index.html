@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>OMNIQUANT | Sunset</title>
+<meta name="keywords" content="Quantization, Paper">
+<meta name="description" content="PTQ의 효율성을 가지면서 QAT의 성능을 가지는 양자화 방법론">
+<meta name="author" content="">
+<link rel="canonical" href="https://new-sunset-shimmer.github.io/OMNIQUANT/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.5cfc680b1eeaeef9efbced92d46c2a9e876b72ee14fba85846afc4cff9e6e6f8.css" integrity="sha256-XPxoCx7q7vnvvO2S1Gwqnodrcu4U&#43;6hYRq/Ez/nm5vg=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://new-sunset-shimmer.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://new-sunset-shimmer.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://new-sunset-shimmer.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://new-sunset-shimmer.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://new-sunset-shimmer.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://new-sunset-shimmer.github.io/OMNIQUANT/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript><style>
+    @media screen and (min-width: 769px) {
+
+         
+        .post-content input[type="checkbox"]:checked~label>img {
+            transform: scale(1.6);
+            cursor: zoom-out;
+            position: relative;
+            z-index: 999;
+        }
+
+        .post-content img.zoomCheck {
+            transition: transform 0.15s ease;
+            z-index: 999;
+            cursor: zoom-in;
+        }
+    }
+</style><meta property="og:title" content="OMNIQUANT" />
+<meta property="og:description" content="PTQ의 효율성을 가지면서 QAT의 성능을 가지는 양자화 방법론" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://new-sunset-shimmer.github.io/OMNIQUANT/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-12-12T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-12-12T00:00:00+00:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="OMNIQUANT"/>
+<meta name="twitter:description" content="PTQ의 효율성을 가지면서 QAT의 성능을 가지는 양자화 방법론"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://new-sunset-shimmer.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "OMNIQUANT",
+      "item": "https://new-sunset-shimmer.github.io/OMNIQUANT/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "OMNIQUANT",
+  "name": "OMNIQUANT",
+  "description": "PTQ의 효율성을 가지면서 QAT의 성능을 가지는 양자화 방법론",
+  "keywords": [
+    "Quantization", "Paper"
+  ],
+  "articleBody": " Full Title : OMNIQUANT: OMNIDIRECTIONALLY CALIBRATED QUANTIZATION FOR LARGE LANGUAGE MODELS\nLink : 2308.13137 (arxiv.org)\nRelated Link : 2304.09145 (arxiv.org), SmoothQuant: Accurate and Efficient Post-Training Quantization for Large Language Models (arxiv.org)\nReleased Date : ICLR 2024\nReview Date : 2024 11 04\nPTQ의 효율성을 가지면서 QAT의 성능을 가지는 양자화 방법론\nMotivation LLM은 놀라운 성능만큼 놀랍도록 큰 계산량과 계산자원, 사이즈를 가지고있다. 그를 위해서 모델을 양자화하는 방법론이 많이 존재한다. 하지만 PTQ를 할시 양자화 속도는 빠르지만 성능은 QAT보다 낮으며 QAT는 그 성능이 높지만 학습이 느리다. 이번 논문에서는 둘의 장점만 살리는 방향으로 연구를 하여 방법론을 제시했다고 생각한다. Research questions QAT의 성능을 달성하면서도 PTQ의 시간 및 데이터 효율성을 유지할 수 있을까? Methodology 이번 논문에서의 최종목표는 학습가능한 파라미터들을 모델에 적용시켜서 양자화에 친숙한 모델로 변환시키는게 최종목표다. 앞서 언급했다싶이 QAT와 PTQ의 장점을 가져가기를 원하기에 둘중 장정과 단점 사이의 어느 선을 정했다는 느낌이 강하다. 위에서 보다싶이 일반적인 모델은 양자화하기 굉장히 불친절하다. 저자들은 이를위해서 학습가능한 Layer인 Weight Clipping(LWC), Equivalent Transformation(LET)을 모델에 적용시켜 학습시킨다. 결론적으로 양자화에 친숙한 모델을 만든다. 저자들은 PTQ 방법론을 학습에 최적으로 만들기 위해서 모델 최적화에서 블록 최적화로 downstreaming을 시켰다. 아래의 수식을 보면 F는 Transformer의 블록이고 Q는 양자화 함수, theta_1, theta_2는 학습가능한 파라미터이다. 결국 양자화된 블록과 일반 블록의 손실을 최소화시키는 theta_1, theta_2를 찾는 Problem Space로 문제를 단순화시켰다. 이를 BLOCK-WISE QUANTIZATION ERROR MINIMIZATION이라 칭했다. LWC(LEARNABLE WEIGHT CLIPPING)은 가중치의 양자화 난이도를 낮추기 위해서 존재한다. 위의 식을 이용하여 최적의 Clipping 지점을 γ , β 를 학습하여 찾는다. 이둘은 0에서 1사이에 무작위 값으로 초기화된다. 저자들은 가중치의 최대값과 최소값을 얼마나 어느정도로 스케일링 하여 clipping시 양자화에 적합한지를 학습시킬 의도로 해당 식을 섰다고 생각한다. 결국 최소한의 양자화 오차를 내는 지점을 학습시킨다고 생각한다. theta_1 = γ , β\nLET(LEARNABLE EQUIVALENT TRANSFORMATION)은 말그대로 학습하는 유사 트랜스포머의 Layer다. T는 원본 Layer고 T’는 LET다. 이둘은 전혀다른 수식을 가지지만 X의 대한 맵핑은 서로 비슷하다. 개인적으로 Equal이 아닌 EQUIVALENT라고 칭한건 해당 학습 space map을 단순화시키기 위한 가정이라고 생각한다.\n결국 T’(X)는 Activition 양자화를 위해서 Outlier를 억제하는 방향으로 학습을 해야한다. 저자들은 이전 연구인 SmoothQuant, Outlier Suppression+에서 영감을 얻어 수식들을 바꿨다.\n- Linear Layer(EQUIVALENT) 일반적인 Linear layer의 식 XW+B를 변환시켰다. δ와 s를 학습시킨다. 이전 연구에서도 확인됐다싶이 매트릭스에 사라지는 어떠한 값을 곱해주면 outlier가 사라지는 현상이 있다. 저자들은 s를 element wise로 x의 divinder, W의 multiple값으로 설정해줬다. 해당 곱해지고 나눠진 S들은 linear 계산시 사라진다. 그렇기에 해당논문에서는 s를 Scale로 부른다. s ∈ R^1xC_in δ은 Shift로 가중치의 분포도를 양자화에 맞게 재조정하는 역할을 한다고 생각한다. 논문에서는 적혀있지 않지만 해당 방법론의 코드상에서는 shift값을 Layer norm의 bias로서 들어간다. 그렇기에 저자들은 이전 Layer norm에 흡수될수있다, 해당 Layer에서 쓰일수있다고 서술했다. δ ∈ R^1xC_in\n이미 학습된 B의 분포도를 새로운 X^tilde 맞춰주는 작업이 필요하다. δ의 형태를 B의 1 x C_out과 맞춰주기 위해서 W와 곱해줬다. 개인적으로 이는 출력 행렬의 차원을 δ로 스케일링하는 것으로 보인다. 단순히 B의 분포도만이 아니라 이전 X - δ로 옮겨진 분포도를 다시 원래 Y로 맞추는 현상이 나타날수도있다. 해당 추측은 정확하지 않다. 저자들은 Outlier supression+에서 영감을 얻어 해당 식을 만들었기에 자세한 설명을 하지 않았다.\n결국 학습시 해당 행렬들을 양자화하여 출력을 낸다. Qa는 vanilla min-max quant, Qw는 LWC다\n- Attention operation(EQUIVALENT) s_a는 어텐션 전용 스케일링 벡터다. 앞서 언급했다 싶이 s scaling으로 outlier를 최소화 시키기 위해서 학습가능한 s를 설정한다. s_a ∈ R^1xC_out FFN Layer에서 FC를 LET로 바꾸지 않은 이유는 두 연산의 행렬은 sparse하기에 성능에 악형향을 끼친다는 이유로 바꾸지 않았다. Main result 가중치 양자화 가중치, 활성화 양자화 다른 양자화 방법론들 보다 instruction-tuned 모델의 LOW-BIT에서의 성능이 좋다. Local device에서도 빠르게 돌아간다. Personal thought 왜 굳이 shift를 적용시키나? scaling만으로도 충분한 성능이 나오지 않나? 특히 코드상에서는 shift를 Layer norm에서도 적용이 가능하게 만든걸 봐서는 shift를 수식상에서는 사라지게 만든것같은데 굳이 이게 필요하나?\nB에 δW를 더해야 하는가? 새로운 파라미터를 넣거나 B를 뺐어도 되지 않았나?\n",
+  "wordCount" : "569",
+  "inLanguage": "en",
+  "datePublished": "2024-12-12T00:00:00Z",
+  "dateModified": "2024-12-12T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://new-sunset-shimmer.github.io/OMNIQUANT/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Sunset",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://new-sunset-shimmer.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class=" dark" id="top">
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://new-sunset-shimmer.github.io/" accesskey="h" title="Sunset (Alt + H)">Sunset</a>
+            <div class="logo-switches">
+                <ul class="lang-switch"><li>|</li>
+                </ul>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      OMNIQUANT
+    </h1>
+    <div class="post-meta"><span title='2024-12-12 00:00:00 +0000 UTC'>December 12, 2024</span>
+
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#motivation" aria-label="Motivation">Motivation</a></li>
+                <li>
+                    <a href="#research-questions" aria-label="Research questions">Research questions</a></li>
+                <li>
+                    <a href="#methodology" aria-label="Methodology">Methodology</a></li>
+                <li>
+                    <a href="#main-result" aria-label="Main result">Main result</a></li>
+                <li>
+                    <a href="#personal-thought" aria-label="Personal thought">Personal thought</a>
+                </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><blockquote>
+<p>Full Title : OMNIQUANT: OMNIDIRECTIONALLY CALIBRATED
+QUANTIZATION FOR LARGE LANGUAGE MODELS</p>
+</blockquote>
+<blockquote>
+<p>Link : <a href="https://arxiv.org/pdf/2308.13137">2308.13137 (arxiv.org)</a></p>
+</blockquote>
+<blockquote>
+<p>Related Link : <a href="https://arxiv.org/pdf/2304.09145">2304.09145 (arxiv.org)</a>, <a href="https://arxiv.org/pdf/2211.10438">SmoothQuant: Accurate and Efficient Post-Training Quantization for Large Language Models (arxiv.org)</a></p>
+</blockquote>
+<blockquote>
+<p>Released Date :  ICLR 2024</p>
+</blockquote>
+<blockquote>
+<p>Review Date : 2024 11 04</p>
+</blockquote>
+<p>PTQ의 효율성을 가지면서 QAT의 성능을 가지는 양자화 방법론</p>
+<h3 id="motivation">Motivation<a hidden class="anchor" aria-hidden="true" href="#motivation">#</a></h3>
+<ul>
+<li>LLM은 놀라운 성능만큼 놀랍도록 큰 계산량과 계산자원, 사이즈를 가지고있다. 그를 위해서 모델을 양자화하는 방법론이 많이 존재한다. 하지만 PTQ를 할시 양자화 속도는 빠르지만 성능은 QAT보다 낮으며 QAT는 그 성능이 높지만 학습이 느리다. 이번 논문에서는 둘의 장점만 살리는 방향으로 연구를 하여 방법론을 제시했다고 생각한다.</li>
+</ul>
+<h3 id="research-questions">Research questions<a hidden class="anchor" aria-hidden="true" href="#research-questions">#</a></h3>
+<ul>
+<li>QAT의 성능을 달성하면서도 PTQ의 시간 및 데이터 효율성을 유지할 수 있을까?</li>
+</ul>
+<h3 id="methodology">Methodology<a hidden class="anchor" aria-hidden="true" href="#methodology">#</a></h3>
+<ul>
+<li>이번 논문에서의 최종목표는 학습가능한 파라미터들을 모델에 적용시켜서 양자화에 친숙한 모델로 변환시키는게 최종목표다. 앞서 언급했다싶이 QAT와 PTQ의 장점을 가져가기를 원하기에 둘중 장정과 단점 사이의 어느 선을 정했다는 느낌이 강하다.</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-35937" hidden>
+<label for="zoomCheck-35937">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-800e-a91f-daa6f22c3245.png#center" alt=""  />
+</label></p>
+<ul>
+<li>위에서 보다싶이 일반적인 모델은 양자화하기 굉장히 불친절하다. 저자들은 이를위해서 학습가능한 Layer인 Weight Clipping(LWC), Equivalent Transformation(LET)을 모델에 적용시켜 학습시킨다. 결론적으로 양자화에 친숙한 모델을 만든다.</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-7dffd" hidden>
+<label for="zoomCheck-7dffd">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/715a374c-275e-41ba-b897-5063344bc058.png#center" alt=""  />
+</label></p>
+<ul>
+<li>저자들은 PTQ 방법론을 학습에 최적으로 만들기 위해서 모델 최적화에서 블록 최적화로 downstreaming을 시켰다.
+아래의 수식을 보면 F는 Transformer의 블록이고 Q는 양자화 함수, theta_1, theta_2는 학습가능한 파라미터이다. 결국 양자화된 블록과 일반 블록의 손실을 최소화시키는 theta_1, theta_2를 찾는 Problem Space로 문제를 단순화시켰다. 이를 BLOCK-WISE QUANTIZATION ERROR MINIMIZATION이라 칭했다.</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-de12c" hidden>
+<label for="zoomCheck-de12c">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-80ec-a93f-ec63622fb02d.png#center" alt=""  />
+</label></p>
+<p>
+
+<input type="checkbox" id="zoomCheck-331f2" hidden>
+<label for="zoomCheck-331f2">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-80a5-ab96-fac81f1db59d.png#center" alt=""  />
+</label></p>
+<ul>
+<li>
+<p>LWC(LEARNABLE WEIGHT CLIPPING)은 가중치의 양자화 난이도를 낮추기 위해서 존재한다. 위의 식을 이용하여 최적의 Clipping 지점을 γ , β 를 학습하여 찾는다. 이둘은 0에서 1사이에 무작위 값으로 초기화된다. 저자들은 가중치의 최대값과 최소값을 얼마나 어느정도로 스케일링 하여 clipping시 양자화에 적합한지를 학습시킬 의도로 해당 식을 섰다고 생각한다. 결국 최소한의 양자화 오차를 내는 지점을 학습시킨다고 생각한다.
+theta_1 = γ , β</p>
+</li>
+<li>
+<p>LET(LEARNABLE EQUIVALENT TRANSFORMATION)은 말그대로 학습하는 유사 트랜스포머의 Layer다. T는 원본 Layer고 T’는 LET다. 이둘은 전혀다른 수식을 가지지만 X의 대한 맵핑은 서로 비슷하다. 개인적으로 Equal이 아닌 EQUIVALENT라고 칭한건 해당 학습 space map을 단순화시키기 위한 가정이라고 생각한다.</p>
+</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-7f59b" hidden>
+<label for="zoomCheck-7f59b">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-80af-b73e-e063bc7d70f7.png#center" alt=""  />
+</label></p>
+<p>결국 T’(X)는 Activition 양자화를 위해서 Outlier를 억제하는 방향으로 학습을 해야한다. 저자들은 이전 연구인 SmoothQuant, Outlier Suppression+에서 영감을 얻어 수식들을 바꿨다.</p>
+<pre><code>- Linear Layer(EQUIVALENT)
+</code></pre>
+<p>
+
+<input type="checkbox" id="zoomCheck-dc369" hidden>
+<label for="zoomCheck-dc369">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/fef6c242-d09a-4064-81f4-b8d0faf14212.png#center" alt=""  />
+</label></p>
+<p>일반적인 Linear layer의 식 XW+B를 변환시켰다. δ와 s를 학습시킨다. 이전 연구에서도 확인됐다싶이 매트릭스에 사라지는 어떠한 값을 곱해주면 outlier가 사라지는 현상이 있다. 저자들은 s를 element wise로 x의 divinder, W의 multiple값으로 설정해줬다. 해당 곱해지고 나눠진 S들은 linear 계산시 사라진다. 그렇기에 해당논문에서는 s를 Scale로 부른다. s ∈ R^1xC_in
+δ은 Shift로 가중치의 분포도를 양자화에 맞게 재조정하는 역할을 한다고 생각한다. 논문에서는 적혀있지 않지만 해당 방법론의 코드상에서는 shift값을 Layer norm의 bias로서 들어간다. 그렇기에 저자들은 이전 Layer norm에 흡수될수있다, 해당 Layer에서 쓰일수있다고 서술했다. δ ∈ R^1xC_in</p>
+<p>이미 학습된 B의 분포도를 새로운 X^tilde 맞춰주는 작업이 필요하다. δ의 형태를 B의 1 x C_out과 맞춰주기 위해서 W와 곱해줬다. 개인적으로 이는 출력 행렬의 차원을 δ로 스케일링하는 것으로 보인다. 단순히 B의 분포도만이 아니라 이전 X - δ로 옮겨진 분포도를 다시 원래 Y로 맞추는 현상이 나타날수도있다. 해당 추측은 정확하지 않다. 저자들은 Outlier supression+에서 영감을 얻어 해당 식을 만들었기에 자세한 설명을 하지 않았다.</p>
+<p>
+
+<input type="checkbox" id="zoomCheck-a9b90" hidden>
+<label for="zoomCheck-a9b90">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/5afc41af-2a5c-4c4b-a3b3-331fac9b67c9.png#center" alt=""  />
+</label></p>
+<p>결국 학습시 해당 행렬들을 양자화하여 출력을 낸다. Qa는 vanilla min-max quant, Qw는 LWC다</p>
+<pre><code>- Attention operation(EQUIVALENT)
+</code></pre>
+<p>
+
+<input type="checkbox" id="zoomCheck-c6a72" hidden>
+<label for="zoomCheck-c6a72">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/6cb598b1-1082-4832-80b9-a3d8427866b4.png#center" alt=""  />
+</label></p>
+<pre><code>	s_a는 어텐션 전용 스케일링 벡터다. 앞서 언급했다 싶이 s scaling으로 outlier를 최소화 시키기 위해서 학습가능한 s를 설정한다. s_a ∈ R^1xC_out
+</code></pre>
+<p>
+
+<input type="checkbox" id="zoomCheck-4bd59" hidden>
+<label for="zoomCheck-4bd59">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-80f8-8cbc-f3d0dd3d84aa.png#center" alt=""  />
+</label></p>
+<p>
+
+<input type="checkbox" id="zoomCheck-6b0bd" hidden>
+<label for="zoomCheck-6b0bd">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-802a-a3e8-dc70a5ea6060.png#center" alt=""  />
+</label></p>
+<ul>
+<li>FFN Layer에서 FC를 LET로 바꾸지 않은 이유는 두 연산의 행렬은 sparse하기에 성능에 악형향을 끼친다는 이유로 바꾸지 않았다.</li>
+</ul>
+<h3 id="main-result">Main result<a hidden class="anchor" aria-hidden="true" href="#main-result">#</a></h3>
+<ul>
+<li>가중치 양자화</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-0da5b" hidden>
+<label for="zoomCheck-0da5b">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-80af-885d-e237bba33816.png#center" alt=""  />
+</label></p>
+<ul>
+<li>가중치, 활성화 양자화</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-992f4" hidden>
+<label for="zoomCheck-992f4">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-80d5-85e3-e24c22b266dd.png#center" alt=""  />
+</label></p>
+<ul>
+<li>다른 양자화 방법론들 보다 instruction-tuned 모델의 LOW-BIT에서의 성능이 좋다.</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-32430" hidden>
+<label for="zoomCheck-32430">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-8060-9b2d-dd4de0a3e6af.png#center" alt=""  />
+</label></p>
+<ul>
+<li>Local device에서도 빠르게 돌아간다.</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-9584e" hidden>
+<label for="zoomCheck-9584e">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-80dd-89c5-d074c55d9b89.png#center" alt=""  />
+</label></p>
+<h3 id="personal-thought">Personal thought<a hidden class="anchor" aria-hidden="true" href="#personal-thought">#</a></h3>
+<ol>
+<li>
+<p>왜 굳이 shift를 적용시키나? scaling만으로도 충분한 성능이 나오지 않나? 특히 코드상에서는 shift를 Layer norm에서도 적용이 가능하게 만든걸 봐서는 shift를 수식상에서는 사라지게 만든것같은데 굳이 이게 필요하나?</p>
+</li>
+<li>
+<p>B에 δW를 더해야 하는가? 새로운 파라미터를 넣거나 B를 뺐어도 되지 않았나?</p>
+</li>
+</ol>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://new-sunset-shimmer.github.io/tags/quantization/">Quantization</a></li>
+      <li><a href="https://new-sunset-shimmer.github.io/tags/paper/">Paper</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://new-sunset-shimmer.github.io/">Sunset</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

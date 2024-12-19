@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>ATOM | Sunset</title>
+<meta name="keywords" content="Quantization, Paper">
+<meta name="description" content="보다 나은 양자화">
+<meta name="author" content="">
+<link rel="canonical" href="https://new-sunset-shimmer.github.io/ATOM/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.5cfc680b1eeaeef9efbced92d46c2a9e876b72ee14fba85846afc4cff9e6e6f8.css" integrity="sha256-XPxoCx7q7vnvvO2S1Gwqnodrcu4U&#43;6hYRq/Ez/nm5vg=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://new-sunset-shimmer.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://new-sunset-shimmer.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://new-sunset-shimmer.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://new-sunset-shimmer.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://new-sunset-shimmer.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://new-sunset-shimmer.github.io/ATOM/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript><style>
+    @media screen and (min-width: 769px) {
+
+         
+        .post-content input[type="checkbox"]:checked~label>img {
+            transform: scale(1.6);
+            cursor: zoom-out;
+            position: relative;
+            z-index: 999;
+        }
+
+        .post-content img.zoomCheck {
+            transition: transform 0.15s ease;
+            z-index: 999;
+            cursor: zoom-in;
+        }
+    }
+</style><meta property="og:title" content="ATOM" />
+<meta property="og:description" content="보다 나은 양자화" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://new-sunset-shimmer.github.io/ATOM/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-12-12T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-12-12T00:00:00+00:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="ATOM"/>
+<meta name="twitter:description" content="보다 나은 양자화"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://new-sunset-shimmer.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "ATOM",
+      "item": "https://new-sunset-shimmer.github.io/ATOM/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "ATOM",
+  "name": "ATOM",
+  "description": "보다 나은 양자화",
+  "keywords": [
+    "Quantization", "Paper"
+  ],
+  "articleBody": "Atom: Low-Bit Quantization for Efficient and Accurate LLM Serving (arxiv.org)\nATOM: LOW-BIT QUANTIZATION FOR EFFICIENT AND ACCURATE LLM SERVING\nReleased Date : 2023 10 23\nReview Date : 2024 10 20\n보다 나은 양자화\nMotivation LLM의 놀라운 성능에도 불구하고 높은 계산량, 큰 사이즈등의 문제가 존재한다. 이를 해결하기 위해서 양자화라는 기술이 연구가 되고있지만 성능을 크게 떨어트린다. 현재 Atom은 해당 문제를 성능을 보존하면서도 빠른 LLM을 위한 보다 나은 양자화 기술을 서술한다. Research questions 성능을 보존하면서 양자화가 가능한가? Methodology 대부분의 양자화의 성능 저하의 원인으로 outlier가 뽑히고 있다. 평균보다 훨씬높은 값을 가진 outlier 차원은 양자화시 사라져 원본 모델의 성능을 저하시킨다. 그렇기에 outlier 차원만 따로 양자화 시키지 않고 FP16bit 그대로 가져하는 방식이 제안 되기도 했다. 해당 논문의 연구에 따르면 outlier를 INT8bit로만 양자화 해도 충분한 성능을 보여준다는 사실을 발견했다. 가중치, 활성화 함수를 4bit 양자화, outlier는 8bit로 양자화를 한 MIXED-Precision은 계산 효율이 높지가 않다. 해당 문제를 해결하기 위해서 outlier들의 index 및 가중치의 index를 바꾸는 reorder 방식을 사용했다. 원래는 reorder를 online로 해야하지만 계산효율을 어기는 행위 이기에 offline로 reoerder했다. Mixed-precision 계산을 효율하기 하기위해서 Fused GEMM이라는 함수를 구현했다. outlier와 일반 index들을 각각 계산되어 unquantize되고 더해진다음 다시 Quantization을 한다. 또한 KV-cache도 quantazion 된 채로 존재한다. Main result 128로 랜덤하게 samplig된 wikitext2를 기반으로 outlier를 계산하였다. Personal thought 사전에 outlier를 계산하는 건 좋은 시도라고 생각한다. 동시에 따로 계산하고 마지막에만 합치는 것도 좋은 생각이라고 생각한다. ",
+  "wordCount" : "211",
+  "inLanguage": "en",
+  "datePublished": "2024-12-12T00:00:00Z",
+  "dateModified": "2024-12-12T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://new-sunset-shimmer.github.io/ATOM/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Sunset",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://new-sunset-shimmer.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class=" dark" id="top">
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://new-sunset-shimmer.github.io/" accesskey="h" title="Sunset (Alt + H)">Sunset</a>
+            <div class="logo-switches">
+                <ul class="lang-switch"><li>|</li>
+                </ul>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://new-sunset-shimmer.github.io/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      ATOM
+    </h1>
+    <div class="post-meta"><span title='2024-12-12 00:00:00 +0000 UTC'>December 12, 2024</span>
+
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#motivation" aria-label="Motivation">Motivation</a></li>
+                <li>
+                    <a href="#research-questions" aria-label="Research questions">Research questions</a></li>
+                <li>
+                    <a href="#methodology" aria-label="Methodology">Methodology</a></li>
+                <li>
+                    <a href="#main-result" aria-label="Main result">Main result</a></li>
+                <li>
+                    <a href="#personal-thought" aria-label="Personal thought">Personal thought</a>
+                </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><p><a href="https://arxiv.org/pdf/2310.19102">Atom: Low-Bit Quantization for Efficient and Accurate LLM Serving (arxiv.org)</a></p>
+<blockquote>
+<p>ATOM: LOW-BIT QUANTIZATION FOR EFFICIENT AND ACCURATE LLM
+SERVING</p>
+</blockquote>
+<blockquote>
+<p>Released Date : 2023 10 23</p>
+</blockquote>
+<blockquote>
+<p>Review Date : 2024 10 20</p>
+</blockquote>
+<p>보다 나은 양자화</p>
+<h3 id="motivation">Motivation<a hidden class="anchor" aria-hidden="true" href="#motivation">#</a></h3>
+<ul>
+<li>LLM의 놀라운 성능에도 불구하고 높은 계산량, 큰 사이즈등의 문제가 존재한다. 이를 해결하기 위해서 양자화라는 기술이 연구가 되고있지만 성능을 크게 떨어트린다. 현재 Atom은 해당 문제를 성능을 보존하면서도 빠른 LLM을 위한 보다 나은 양자화 기술을 서술한다.</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-af34a" hidden>
+<label for="zoomCheck-af34a">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-801f-8248-c6e458e80a2e.png#center" alt=""  />
+</label></p>
+<p>
+
+<input type="checkbox" id="zoomCheck-03fce" hidden>
+<label for="zoomCheck-03fce">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-809d-bc9f-c14c610c1205.png#center" alt=""  />
+</label></p>
+<h3 id="research-questions">Research questions<a hidden class="anchor" aria-hidden="true" href="#research-questions">#</a></h3>
+<ul>
+<li>성능을 보존하면서 양자화가 가능한가?</li>
+</ul>
+<h3 id="methodology">Methodology<a hidden class="anchor" aria-hidden="true" href="#methodology">#</a></h3>
+<ul>
+<li>대부분의 양자화의 성능 저하의 원인으로 outlier가 뽑히고 있다. 평균보다 훨씬높은 값을 가진 outlier 차원은 양자화시 사라져 원본 모델의 성능을 저하시킨다. 그렇기에 outlier 차원만 따로 양자화 시키지 않고 FP16bit 그대로 가져하는 방식이 제안 되기도 했다. 해당 논문의 연구에 따르면 outlier를 INT8bit로만 양자화 해도 충분한 성능을 보여준다는 사실을 발견했다. 가중치, 활성화 함수를 4bit 양자화, outlier는 8bit로 양자화를 한 MIXED-Precision은 계산 효율이 높지가 않다. 해당 문제를 해결하기 위해서 outlier들의 index 및 가중치의 index를 바꾸는 reorder 방식을 사용했다. 원래는 reorder를 online로 해야하지만 계산효율을 어기는 행위 이기에 offline로 reoerder했다.</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-1ff37" hidden>
+<label for="zoomCheck-1ff37">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-80ce-ace3-fd83b8526cd8.png#center" alt=""  />
+</label></p>
+<ul>
+<li>Mixed-precision 계산을 효율하기 하기위해서 Fused GEMM이라는 함수를 구현했다. outlier와 일반 index들을 각각 계산되어 unquantize되고 더해진다음 다시 Quantization을 한다. 또한 KV-cache도 quantazion 된 채로 존재한다.</li>
+</ul>
+<h3 id="main-result">Main result<a hidden class="anchor" aria-hidden="true" href="#main-result">#</a></h3>
+<ul>
+<li>128로 랜덤하게 samplig된 wikitext2를 기반으로 outlier를 계산하였다.</li>
+</ul>
+<p>
+
+<input type="checkbox" id="zoomCheck-f8c6f" hidden>
+<label for="zoomCheck-f8c6f">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-80ee-b6b9-d9b6a6752975.png#center" alt=""  />
+</label></p>
+<p>
+
+<input type="checkbox" id="zoomCheck-ad501" hidden>
+<label for="zoomCheck-ad501">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-800d-822e-c5df34d31bec.png#center" alt=""  />
+</label></p>
+<p>
+
+<input type="checkbox" id="zoomCheck-5eff8" hidden>
+<label for="zoomCheck-5eff8">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/15a415f9-e659-80a5-bad6-df8cd3cf44f7.png#center" alt=""  />
+</label></p>
+<h3 id="personal-thought">Personal thought<a hidden class="anchor" aria-hidden="true" href="#personal-thought">#</a></h3>
+<ul>
+<li>사전에 outlier를 계산하는 건 좋은 시도라고 생각한다. 동시에 따로 계산하고 마지막에만 합치는 것도 좋은 생각이라고 생각한다.</li>
+</ul>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://new-sunset-shimmer.github.io/tags/quantization/">Quantization</a></li>
+      <li><a href="https://new-sunset-shimmer.github.io/tags/paper/">Paper</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://new-sunset-shimmer.github.io/">Sunset</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>
